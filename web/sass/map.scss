@@ -1,0 +1,145 @@
+.map-container {
+  height: 100vh;
+  width: 100vw;
+}
+
+.whole-container {
+  position: relative;
+}
+
+.text-boxes-container {
+  position: absolute;
+  top: 0;
+}
+
+.street-container {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  bottom: 0;
+  background-color: $color-beige;
+
+  @include screen-mobile-plus-and-bigger {
+    bottom: $global-spacing-sm;
+    background-color: transparent;
+  }
+}
+
+.gender-container {
+  position: absolute;
+  top: $global-spacing-sm;
+  left: $global-spacing-sm;
+  background-color: $color-beige;
+  padding: $global-spacing-sm;
+  display: flex;
+  flex-direction: column;
+  gap: $global-spacing-xs;
+}
+
+.gender-input {
+  display: flex;
+  align-items: center;
+  gap: $global-spacing-xs;
+
+  p {
+    margin: 0;
+  }
+}
+
+.street-box {
+  padding: $global-spacing-xs;
+  background-color: $color-beige;
+  // max-width: 500px;
+}
+
+div.mapboxgl-ctrl-attrib,
+a.mapboxgl-ctrl-logo {
+  visibility: hidden;
+}
+
+.mapboxgl-ctrl-top-right {
+  padding-top: $global-spacing-lg;
+  padding-right: $global-spacing-xs;
+}
+
+.text-box {
+  padding: $global-spacing-md;
+  background-color: rgba($color-beige, 0.85);
+  margin: 100vh $global-spacing-sm 0 $global-spacing-sm;
+  font-size: $font-size-h4;
+
+  @include screen-tablet-portrait-and-bigger {
+    width: 350px;
+    margin: 100vh $global-spacing-xlg 0 $global-spacing-xlg;
+    background-color: rgba($color-beige, 1);
+  }
+}
+
+[type='checkbox'] {
+  width: 2rem;
+  height: 2rem;
+  color: dodgerblue;
+  vertical-align: middle;
+  appearance: none;
+  background: none;
+  border: 0;
+  outline: 0;
+  flex-grow: 0;
+  border-radius: 50%;
+  background-color: #ffffff;
+  transition: background 300ms;
+  cursor: pointer;
+}
+
+/* Pseudo element for check styling */
+
+[type='checkbox']::before {
+  content: '';
+  color: transparent;
+  display: block;
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
+  border: 0;
+  background-color: transparent;
+  background-size: contain;
+  box-shadow: inset 0 0 0 1px #ccd3d8;
+}
+
+.gender-input:nth-child(1) [type='checkbox']:checked {
+  background-color: #20c3aa;
+}
+
+.gender-input:nth-child(2) [type='checkbox']:checked {
+  background-color: #8724f6;
+}
+
+.gender-input:nth-child(3) [type='checkbox']:checked {
+  background-color: #bababa;
+}
+
+[type='checkbox']:checked::before {
+  box-shadow: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E %3Cpath d='M15.88 8.29L10 14.17l-1.88-1.88a.996.996 0 1 0-1.41 1.41l2.59 2.59c.39.39 1.02.39 1.41 0L17.3 9.7a.996.996 0 0 0 0-1.41c-.39-.39-1.03-.39-1.42 0z' fill='%23fff'/%3E %3C/svg%3E");
+}
+
+.button-container {
+  width: 100%;
+  display: flex;
+  margin-top: $global-spacing-xlg;
+}
+
+a.button {
+  appearance: button;
+  text-decoration: none;
+  background-color: $color-pink;
+  color: $color-beige;
+  padding: $global-spacing-xs;
+  margin: 0 auto;
+  border-radius: $global-spacing-md;
+
+  &:hover {
+    background-color: darken($color-pink, 10%);
+  }
+}

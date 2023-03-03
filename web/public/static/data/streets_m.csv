@@ -1,0 +1,901 @@
+name,distance,distance_norm
+Avenida de Fernão de Magalhães,3844,1.0
+Rua de Faria Guimarães,3109,0.828
+Rua de Costa Cabral,2987,0.799
+Rua de São Roque da Lameira,2583,0.704
+Rua de Diogo Botelho,2577,0.703
+Avenida Gustavo Eiffel,1694,0.495
+Rua do Marechal Saldanha,1609,0.475
+Rua de Manuel Pinto de Azevedo,1578,0.468
+Avenida do Marechal Gomes da Costa,1570,0.467
+Rua de Bartolomeu Velho,1567,0.466
+Rua de Santos Pousada,1352,0.415
+Rua de Santo António de Contumil,1351,0.415
+Rua de Gonçalo Cristóvão,1342,0.413
+Rua Pinto Bessa,1312,0.406
+Avenida de Paiva Couceiro,1311,0.406
+Rua de Martim Moniz,1310,0.405
+Avenida Francisco Xavier Esteves,1296,0.402
+Avenida do Doutor Antunes Guimarães,1257,0.393
+Rua de Antero de Quental,1225,0.385
+Rua Engenheiro Ferreira Dias,1214,0.383
+Rua de Oliveira Monteiro,1173,0.373
+Avenida Artur de Andrade,1126,0.362
+Rua de Justino Teixeira,1110,0.358
+Rua de São Dinis,1106,0.357
+Rua Dom João IV,1097,0.355
+Rua Doutor António Bernardino de Almeida,1078,0.351
+Rua Dom João Coutinho,1070,0.349
+Rua de Júlio Dinis,1047,0.344
+Rua João de Barros,1019,0.337
+Rua de Paulo da Gama,1010,0.335
+Rua de Camões,1009,0.335
+Rua de Fernandes Tomás,1008,0.334
+Rua do Padre Luís Cabral,1007,0.334
+Rua de Delfim Ferreira,996,0.332
+Rua de Henrique Lopes de Mendonça,987,0.33
+Rua Conde de Silva Monteiro,965,0.324
+Avenida Dom Carlos I,957,0.322
+Rua de Pelágio,955,0.322
+Rua da China,941,0.319
+Rua de António Bessa Leite,932,0.317
+Rua de Sá da Bandeira,930,0.316
+Rua de Alfredo Keil,927,0.315
+Rua Padre Diamantino Gomes,926,0.315
+Rua do Doutor Lopo de Carvalho,910,0.311
+Rua Pedro Hispano,886,0.306
+Rua João de Deus,879,0.304
+Rua de Álvaro Castelões,866,0.301
+Rua do Doutor Eduardo Santos Silva,866,0.301
+Avenida de Sidónio Pais,857,0.299
+Largo de Ferreira Lapa,855,0.299
+Rua do Almada,845,0.296
+Rua de Serpa Pinto,822,0.291
+Rua do Tenente Valadim,821,0.291
+Rua Doutor Corino de Andrade,816,0.289
+Rua do Engenheiro Ezequiel de Campos,811,0.288
+Rua de Damião de Góis,804,0.287
+Avenida de Rodrigues de Freitas,801,0.286
+Rua de Pedro Homem de Melo,799,0.285
+Rua de São Tomé,798,0.285
+Rua de Cervantes,792,0.284
+Rua Horácio Marçal,788,0.283
+Avenida de Camilo,783,0.282
+Rua do Doutor Alberto de Macedo,783,0.282
+Avenida de Vasco da Gama,781,0.281
+Rua de São João de Brito,772,0.279
+Rua do Duque da Saldanha,762,0.277
+Rua de Dom Manuel II,762,0.277
+Rua de Joaquim Leitão,761,0.276
+Rua de Azevedo,760,0.276
+Rua de Augusto Lessa,753,0.275
+Rua do Doutor Pedro de Sousa,736,0.271
+Rua Engenheiro Pedro Inácio Lopes,727,0.269
+Avenida Fontes Pereira de Melo,712,0.265
+Avenida José Domingues dos Santos,711,0.265
+Rua de Egas Moniz,709,0.264
+Rua Henrique de Sousa Reis,701,0.262
+Rua de Pedro Hispano,698,0.262
+Rua Guerra Junqueiro,697,0.261
+Rua General Norton de Matos,696,0.261
+Rua de Pinho Leal,692,0.26
+Rua Dom Jerónimo de Azevedo,682,0.258
+Rua de António Aroso,681,0.258
+Rua de Manuel Bandeira,677,0.257
+Calçada de São Pedro,668,0.255
+Rua Dom João de Mascarenhas,664,0.254
+Praça Mouzinho de Albuquerque,664,0.254
+Rua de Anselmo Braamcamp,658,0.252
+Rua Doutor Júlio de Matos,655,0.252
+Rua de António Cardoso,653,0.251
+Rua Alfredo Allen,649,0.25
+Rua do Doutor Manuel Laranjeira,642,0.249
+Rua de São Victor,637,0.247
+Rua Ferreira de Castro,636,0.247
+Rua de Afonso Baldaia,623,0.244
+Rua Dom Frei Vicente da Soledade e Castro,618,0.243
+Rua Gomes Eanes de Azurara,613,0.242
+Rua de Rocha Peixoto,613,0.242
+Rua de São Brás,612,0.242
+Rua do Conde da Covilhã,609,0.241
+Rua do Professor Augusto Nobre,604,0.24
+Rua Professor Manuel Baganha,603,0.239
+Rua Dom Pedro V,599,0.238
+Rua Professor António Cruz,599,0.238
+Rua de Ciríaco Cardoso,591,0.237
+Rua Diogo do Couto,590,0.236
+Rua Doutor Plácido da Costa,586,0.235
+Rua de Mouzinho da Silveira,585,0.235
+Rua do Mestre Guilherme Camarinha,565,0.23
+Praça Doutor Francisco Sá Carneiro,565,0.23
+Rua de Alves Redol,562,0.23
+Alameda Professor Hernâni Monteiro,562,0.23
+Rua de Carlos Malheiro Dias,543,0.225
+Rua de João Pedro Ribeiro,532,0.223
+Rua Doutor Joaquim Pires de Lima,531,0.223
+Rua do Barão de Nova Sintra,529,0.222
+Rua de Pêro da Covilhã,528,0.222
+Rua do Barão de Forrester,524,0.221
+Rua de Júlio Dantas,519,0.22
+Rua de Miguel Bombarda,515,0.219
+Praça do Marquês de Pombal,515,0.219
+Rua de Latino Coelho,515,0.219
+Rua Poente da Colónia Doutor Manuel Laranjeira,512,0.218
+Rua de Robert Auzelle,511,0.218
+Rua do Padre Américo,510,0.218
+Rua de São João Bosco,507,0.217
+Rua de Dom Luís de Ataíde,503,0.216
+Rua Doutor Roberto Frias,502,0.216
+Rua Doutor Manuel Pereira da Silva,498,0.215
+Rua Álvares Cabral,497,0.215
+Rua de António Carneiro,494,0.214
+Rua do Monte da Estação,491,0.213
+Rua do Doutor Aarão de Lacerda,490,0.213
+Rua Professor Joaquim Bastos,488,0.212
+Rua do Duque da Terceira,484,0.211
+Rua Professor Álvaro Rodrigues,484,0.211
+Rua Gonçalo Sampaio,484,0.211
+Rua do Breiner,482,0.211
+Rua do Engenheiro Carlos Amarante,478,0.21
+Rua Padre José Pacheco do Monte,478,0.21
+Rua de Chaves de Oliveira,478,0.21
+Rua Domingos Sequeira,476,0.21
+Rua Coronel Almeida Valente,476,0.21
+Rua de Agostinho de Campos,475,0.209
+Rua do Actor Ferreira da Silva,472,0.209
+Rua de Aleixo da Mota,471,0.208
+Rua de Ruben A.,471,0.208
+Rua de Barros Lima,469,0.208
+Rua de Clemente Meneres,469,0.208
+Rua Professor Bento de Jesus Caraça,468,0.208
+Rua de João Ramalho,468,0.208
+Rua José Fontes Rocha,465,0.207
+Rua João Martins Branco,465,0.207
+Rua do Furriel Guilherme Dantas,464,0.207
+Rua do Professor Mota Pinto,459,0.206
+Rua Fernão Lopes,459,0.206
+Rua Arquitecto Cassiano Barbosa,458,0.205
+Rua Honório de Lima,458,0.205
+Rua de Francisco Barreto,457,0.205
+Rua de Delfim Maia,454,0.204
+Rua Doutor Nuno Pinheiro Torres,451,0.204
+Rua Alcaide de Faria,450,0.203
+Praceta Ernesto Veiga de Oliveira,447,0.203
+Rua de Azevedo Coutinho,445,0.202
+Rua do Alfageme de Santarém,444,0.202
+Rua de Duarte Barbosa,443,0.202
+Rua Sarmento de Beires,441,0.201
+Rua Dom António Ferreira Gomes,440,0.201
+Rua de Aníbal Cunha,439,0.201
+Rua do Professor Agostinho da Silva,439,0.201
+Rua de Correia de Sá,439,0.201
+Rua do Professor Bonfim Barreiros,434,0.2
+Rua do Cunha,432,0.199
+Rua do Professor Luís de Pina,431,0.199
+Rua Conde de Avranches,431,0.199
+Rua de Alexandre Herculano,429,0.199
+Rua Ribeiro de Sousa,428,0.198
+Rua de Viana de Lima,427,0.198
+Rua do Professor Rodolfo de Abreu,427,0.198
+Rua de Vasques de Mesquita,425,0.198
+Rua do Morgado de Mateus,423,0.197
+Rua Sá de Miranda,422,0.197
+Praceta do Professor Egas Moniz,418,0.196
+Rua Doutor Alves da Veiga,416,0.196
+Rua do Professor Duarte Leite,414,0.195
+Rua do Coronel Raul Peres,410,0.194
+Rua de Cunha Júnior,410,0.194
+Rua de Santo Ildefonso,409,0.194
+Rua de Gomes Freire,409,0.194
+Rua de Dom Pedro de Meneses,408,0.194
+Rua Luís Woodhouse,407,0.193
+Rua do Doutor Júlio de Matos,406,0.193
+Rua Nascente da Colónia Doutor Manuel Laranjeira,405,0.193
+Rua Pêro de Alenquer,404,0.193
+Rua de Soeiro Mendes,399,0.192
+Rua António Cândido,398,0.191
+Rua Amorim de Carvalho,397,0.191
+Rua de André de Resende,397,0.191
+Rua de João Rodrigues Cabrilho,397,0.191
+Rua Aurélio da Paz dos Reis,397,0.191
+Largo de Valverde,395,0.191
+Travessa de Antero de Quental,393,0.19
+Rua de António Patrício,393,0.19
+Rua de Passos Manuel,393,0.19
+Rua Júlio Amaral de Carvalho,392,0.19
+Rua do Arquitecto Lobão Vital,391,0.19
+Rua do Doutor José Marques,391,0.19
+Rua do Engenheiro Nuno de Meireles,390,0.189
+Rua do Doutor Sousa Rosa,389,0.189
+Largo de Soares dos Reis,388,0.189
+Rua Nova de São Crispim,387,0.189
+Rua Visconde de Setúbal,383,0.188
+Rua de Feliciano de Castilho,382,0.188
+Rua do Doutor Roberto Frias,382,0.188
+Rua Dominguez Alvarez,381,0.187
+Rua António Nicolau d'Almeida,379,0.187
+Rua de Dom João Peculiar,374,0.186
+Largo do Padre Baltazar Guedes,374,0.186
+Rua de Dâmaso Carreiro,373,0.185
+Rua do Capitão Pombeiro,373,0.185
+Rua Coutinho de Azevedo,373,0.185
+Rua Doutor Adriano de Paiva,370,0.185
+Rua Aires de Ornelas,370,0.185
+Rua António Enes,368,0.184
+Rua Câmara Pestana,368,0.184
+Rua de Afonso de Paiva,363,0.183
+Rua do Senhor da Boa Morte,362,0.183
+Praça Gonçalves Zarco,361,0.183
+Rua de João Andresen,361,0.183
+Rua de Freire de Andrade,361,0.183
+Rua de Tristão da Cunha,359,0.182
+Travessa Monte de São João,359,0.182
+Rua de João das Regras,359,0.182
+Rua de Soares de Passos,359,0.182
+Rua do Infante Dom Henrique,358,0.182
+Rua Sousa Pinto,358,0.182
+Rua de Óscar da Silva,357,0.182
+Rua do Padre José de Anchieta,357,0.182
+Rua de Calouste Gulbenkian,356,0.181
+Rua Dom João de Azevedo,355,0.181
+Rua do Engenheiro Machado Vaz,352,0.18
+Rua de Matias de Albuquerque,350,0.18
+Rua de Jorge Viterbo Ferreira,350,0.18
+Rua de Diogo Cão,350,0.18
+Rua Dom Agostinho de Jesus e Sousa,347,0.179
+Rua de Carlos da Maia,346,0.179
+Rua António da Silva Marinho,345,0.179
+Rua do Alferes Malheiro,343,0.178
+Rua de Dom António Barroso,343,0.178
+Rua Professor Melo Adrião,343,0.178
+Rua Silva Ramos,342,0.178
+Alameda Professor Ruy Luís Gomes,341,0.178
+Rua de Jerónimo Mendonça,340,0.178
+Rua do Doutor Melo Leote,340,0.178
+Alameda do Arquitecto Carlos Ramos,333,0.176
+Rua do Rosário,333,0.176
+Rua do Doutor Marques Carvalho,332,0.176
+Rua de Dionísio dos Santos Silva,332,0.176
+Rua do Monsenhor Fonseca Soares,331,0.176
+Rua Capitão Henrique Galvão,329,0.175
+Rua de Carvalho Barbosa,328,0.175
+Rua de Luz Soriano,328,0.175
+Rua Dom Francisco de Almeida,326,0.174
+Rua de José Gomes Ferreira,326,0.174
+Rua do Conde de Ferreira,325,0.174
+Rua João Pregueira Mendes,324,0.174
+Alameda de Aquilino Ribeiro,323,0.174
+Rua de Leonardo Coimbra,322,0.173
+Rua de Duarte Lopes,322,0.173
+Rua do Maestro Raúl Casimiro,320,0.173
+Rua do Moreira,319,0.173
+Rua de São Rosendo,317,0.172
+Rua Costa Barreto,317,0.172
+Rua do Padre Himalaya,317,0.172
+Rua do Aleixo,317,0.172
+Rua de Tomé de Sousa,317,0.172
+Avenida Dom Pedro IV,315,0.172
+Rua Doutor Mário de Vasconcelos e Sá,315,0.172
+Rua do Barão de São Cosme,315,0.172
+Rua de Dom António Meireles,313,0.171
+Rua de Ferreira Cardoso,312,0.171
+Travessa Armando Alves Tavares,312,0.171
+Rua do Doutor Manuel Pereira da Silva,311,0.171
+Rua Manuel Carqueja,310,0.171
+Rua Professor Agostinho da Silva,308,0.17
+Rua Hernâni Torres,307,0.17
+Rua do Abade Correia da Serra,305,0.169
+Rua de Guilherme Braga,304,0.169
+Rua Fernando Cabral,304,0.169
+Rua do Actor Eduardo Brazão,304,0.169
+Largo do Capitão Pinheiro Torres de Meireles,303,0.169
+Rua de Eugénio de Castro,302,0.169
+Rua Professor Antão de Almeida Garrett,299,0.168
+Rua Rafael Bordalo Pinheiro,297,0.168
+Rua de Dionísio Santos Silva,296,0.167
+Rua de António Granjo,295,0.167
+Túnel Goelas de Pau,295,0.167
+Rua Joaquim António de Aguiar,295,0.167
+Rua Santo Ildefonso,294,0.167
+Rua de Felizardo de Lima,294,0.167
+Largo de António Cálem,294,0.167
+Rua de Baltazar Falcão,293,0.167
+Rua do Doutor Aires de Gouveia Osório,293,0.167
+Rua de São João da Foz,291,0.166
+Rua Inácio Alberto de Sousa,289,0.166
+Rua Professor Correia de Araújo,289,0.166
+Rua do Doutor José António Marques,289,0.166
+Rua Camilo Pessanha,289,0.166
+Rua Doutor Nunes da Ponte,288,0.165
+Rua de Gaspar Correia,288,0.165
+Rua Pereira Reis,287,0.165
+Rua de Dom João de Castro,286,0.165
+Rua Doutor Eugénio da Cunha e Freitas,285,0.165
+Rua Fernandes Costa,285,0.165
+Rua de Costa e Almeida,285,0.165
+Rua do Padre Cruz,285,0.165
+Rua de Duarte Pacheco Pereira,284,0.165
+Rua Doutor Maurício Esteves Pereira Pinto,284,0.165
+Rua Professor Mendes Correia,284,0.165
+Rua de Rui de Pina,283,0.164
+Rua de Sá de Albergaria,283,0.164
+Rua do Doutor Maurício Esteves Pereira Pinto,282,0.164
+Rua de Domingos Machado,281,0.164
+Rua Manuel Pacheco de Miranda,281,0.164
+Rua de Gil Vicente,281,0.164
+Rua de Raimundo de Macedo,278,0.163
+Rua Alberto Sampaio,277,0.163
+Rua do General Sousa Dias,277,0.163
+Rua de José Fontana,276,0.163
+Rua do Beato Inácio de Azevedo,276,0.163
+Rua do Doutor Carlos Passos,275,0.162
+Rua do Professor José Valente,274,0.162
+Rua António José da Silva,274,0.162
+Rua Adolfo Casais Monteiro,273,0.162
+Rua Beato Inácio de Azevedo,272,0.162
+Rua Brigadeiro Nunes da Ponte,272,0.162
+Rua Diogo Macedo,272,0.162
+Rua Avelino Ribeiro,271,0.161
+Rua Rodrigues Semide,270,0.161
+Rua de Augusto Gil,268,0.161
+Largo de Diogo Gomes,265,0.16
+Rua do Cónego Ferreira Pinto,265,0.16
+Rua de Júlio Ramos,264,0.16
+Rua Avelar Brotero,264,0.16
+Rua do Monsenhor Manuel Marinho,263,0.16
+Rua de São Veríssimo,262,0.159
+Rua do Padre António Vieira,262,0.159
+Rua de Afonso Lopes Vieira,261,0.159
+Rua Cardeal Dom Américo,261,0.159
+Rua Rodrigo Álvares,261,0.159
+Rua do Duque de Palmela,259,0.159
+Rua Doutor António Ferreira Braga,259,0.159
+Rua de Brito Capelo,259,0.159
+Rua António de Sousa e Silva,259,0.159
+Alameda de Manuel de Arriaga,259,0.159
+Rua de Bernardino Machado,257,0.158
+Largo de São Pedro,257,0.158
+Rua da Guiné,257,0.158
+Alameda de Basilo Teles,256,0.158
+Rua de Gonçalo Velho,256,0.158
+Rua Doutor Henrique de Miranda,256,0.158
+Rua do Doutor Vasco Valente,255,0.158
+Rua de Carlos Dubini,255,0.158
+Rua de Gil Eanes,255,0.158
+Rua de Dom Estêvão da Gama,255,0.158
+Rua Engenheiro Luis Delgado dos Santos,252,0.157
+Rua Professor Fernando Magano,252,0.157
+Rua de Frederico Ozanam,251,0.157
+Rua do Conde de Castelo Melhor,250,0.157
+Rua de Rodolfo de Araújo,249,0.156
+Rua Professor Luís Costa,247,0.156
+Rua Arquitecto Marques da Silva,247,0.156
+Rua do Conde de Campo Bello,247,0.156
+Rua Augusto Luso,246,0.156
+Travessa de Fernão de Magalhães,243,0.155
+Rua de Dom Domingos Pinho Brandão,243,0.155
+Rua Luís de Aguiar,242,0.155
+Rua de Fonseca Cardoso,241,0.154
+Rua François Guichard,241,0.154
+Rua de Gama Barros,241,0.154
+Rua de Alberto de Serpa,240,0.154
+Rua João Araújo Correia,240,0.154
+Alameda de Basilio Teles,240,0.154
+Rua de Luís Cruz,240,0.154
+Rua do Pintor António Cruz,239,0.154
+Rua Capitão Salgueiro Maia,239,0.154
+Avenida Dom João II,238,0.154
+Rua Lopo Soares de Albergaria,237,0.154
+Rua João Allen,237,0.154
+Rua Vitorino Damásio,236,0.153
+Rua Doutor Alberto de Aguiar,235,0.153
+Rua Delfim Pereira da Costa,235,0.153
+Rua Manuel Pinheiro da Rocha,235,0.153
+Rua de José Falcão,235,0.153
+Rua de Santo Isidro,233,0.153
+Rua do Padre António Coutinho,232,0.152
+Rua Alfredo Ferreira Faria,228,0.151
+Rua António Borges,228,0.151
+Rua Dom Nun'Álvares Pereira,228,0.151
+Rua João Sá Peixoto,228,0.151
+Rua Doutor Mário Cal Brandão,227,0.151
+Rua Cantor Zeca Afonso,227,0.151
+Rua do Doutor José de Figueiredo,226,0.151
+Rua Teodoro de Sousa Maldonado,225,0.151
+Rua de Azevedo de Albuquerque,223,0.15
+Rua de São Vicente,223,0.15
+Calçada do Rego Lameiro,222,0.15
+Rua de António Galvão,222,0.15
+Rua de Ferreira Borges,222,0.15
+Rua João Paulo Seara Cardoso,221,0.15
+Rua de Vieira Portuense,221,0.15
+Rua de Augusto Rosa,220,0.15
+Rua do Rêgo Lameiro,220,0.15
+Rua Reinaldo Oudinot,220,0.15
+Rua de Dom Cristóvão da Gama,219,0.149
+Rotunda Hugo Rocha,219,0.149
+Rua de Cassiano Branco,219,0.149
+Avenida Dom Afonso Henriques,219,0.149
+Rua Sá de Noronha,218,0.149
+Rua de São Filipe de Nery,218,0.149
+Rua Doutor Manuel Monterroso,217,0.149
+Rua António Maria de Sena,217,0.149
+Rua de Marques Marinho,217,0.149
+Largo da Maternidade de Júlio Dinis,217,0.149
+Travessa da China,215,0.148
+Rua de Dom Hugo,215,0.148
+Travessa de São Dinis,214,0.148
+Rua Moreira de Sá,214,0.148
+Praça de Almeida Garrett,213,0.148
+Rua Honório Barreto,213,0.148
+Rua de São Luís,212,0.148
+Rua de Francisco Carqueja,212,0.148
+Alameda Doutor Fernando Azeredo Antas,212,0.148
+Rua de António Nobre,212,0.148
+Rua de Raul Dória,210,0.147
+Rua Doutor Luís Pinto da Fonseca,209,0.147
+Rua de José Monteiro Salazar,209,0.147
+Rua São João do Porto,208,0.147
+Praceta de José Régio,208,0.147
+Rua do Professor Sousa Júnior,207,0.146
+Rua de Marques de Oliveira,207,0.146
+Rua do Professor Carlos Lima,207,0.146
+Rua do Engenheiro Guilherme Bonfim Barreiros,205,0.146
+Rua de Rui Faleiro,205,0.146
+Rua de António Pinto Machado,205,0.146
+Viaduto de Gonçalo Cristóvão,205,0.146
+Rua Armando Campos,204,0.146
+Rua Jorge Rainel,204,0.146
+Rua Doutor Barbosa de Castro,204,0.146
+Rua de Fernão Vaz Dourado,204,0.146
+Rua do Professor Damião Peres,203,0.146
+Rua do Pintor Arpad Szenes,203,0.146
+Rua Doutor Carlos Cal Brandão,202,0.145
+Rua de Pereira Reis,202,0.145
+Rua Ferreira dos Santos,202,0.145
+Rua de São Bartolomeu,202,0.145
+Rua de Dórdio Gomes,201,0.145
+Rua do Infante Santo,201,0.145
+Largo de Tomé Pires,201,0.145
+Rua Carrington da Costa,201,0.145
+Rua de Júlio de Brito,200,0.145
+Rua de Raul Brandão,200,0.145
+Rua João Corregedor da Fonseca,199,0.145
+Rua António Salgado Júnior,199,0.145
+Rua do Major David Magno,199,0.145
+Rua do Doutor Magalhães Lemos,198,0.144
+Rua Henrique Alves Costa,198,0.144
+Rua de João Grave,198,0.144
+Travessa do Veloso,197,0.144
+Rua Conde de Castro,196,0.144
+Rua de Veloso Salgado,196,0.144
+Rua de André Álvares de Almada,196,0.144
+Rua Cruz Caldas,196,0.144
+Rua Almirante Leote do Rego,196,0.144
+Rua do Abade de Baçal,196,0.144
+Praça Coronel Pacheco,195,0.144
+Praça de Carlos Alberto,194,0.143
+Rua Monte de São João,193,0.143
+Rua Maestro Virgílio Pereira,192,0.143
+Rua do Doutor Ramalho Fontes,192,0.143
+Rua de Dom Luis Filipe,191,0.143
+Rua Jaime Brasil,190,0.142
+Rua Henrique Medina,189,0.142
+Rua do Padre Luís d'Almeida,189,0.142
+Rua César das Neves,188,0.142
+Rua Daniel Constant,188,0.142
+Rua de Silva Tapada,187,0.142
+Rua de Nicolau Coelho,186,0.142
+Rua Professor Rocha Pereira,186,0.142
+Rua Vieira da Silva,185,0.141
+Rua John Whitehead,185,0.141
+Rua Professor Vicente José de Carvalho,185,0.141
+Rua Amadeu de Souza Cardoso,184,0.141
+Rua Doutor Tiago de Almeida,184,0.141
+Rua Conde de Aurora,184,0.141
+Praça Artur Santos Silva,183,0.141
+Rua de São João,183,0.141
+Rua Doutor Carlos Ramos,183,0.141
+Rua de Henrique Moreira,183,0.141
+Rua Armando Cardoso,182,0.141
+Rua do Arcediago Van Zeller,182,0.141
+Rua Doutor João Fernandes Lopes Neves,182,0.141
+Rua Jorge Gigante,182,0.141
+Rua do Conde de Vizela,182,0.141
+Rua de São Pedro,182,0.141
+Rua de Saraiva de Carvalho,181,0.14
+Rua de Arnaldo Leite,181,0.14
+Rua do Professor Câmara Sinval,181,0.14
+Rua de São Bento da Vitória,181,0.14
+Rua Gustavo de Sousa,181,0.14
+Rua Doutor Gil da Costa,180,0.14
+Rua Acácio Lino,179,0.14
+Rua Robert Smith,178,0.14
+Rua de Armando Laroze Rocha,178,0.14
+Rua de São Francisco,178,0.14
+Rua Júlio Lourenço Pinto,178,0.14
+Rua de Teixeira de Vasconcellos,177,0.139
+Rua de Ricardo Severo,177,0.139
+Travessa de Álvaro Castelões,176,0.139
+Rua de Martim de Freitas,176,0.139
+Rua de Coelho Neto,176,0.139
+Alameda de Eça de Queiroz,176,0.139
+Largo do Viriato,175,0.139
+Rua de Álvaro Ferreira Alves,175,0.139
+Rua de Costa Júnior,175,0.139
+Rua de Soeiro Pereira Gomes,175,0.139
+Rua António José de Almeida,174,0.139
+Rua de Vitorino Nemésio,174,0.139
+Rua de João Baptista Lavanha,174,0.139
+Travessa de São Brás,174,0.139
+Rua de Mário Bonito,174,0.139
+Rua de Fernando Lopes Graça,173,0.138
+Rua de João Roby,173,0.138
+Rua José Monteiro da Costa,171,0.138
+Rua do Padre Alexandre,171,0.138
+Rua de Francisco Sanches,170,0.138
+Rua Francisco da Rocha Soares,170,0.138
+Rua Doutor Emílio Peres,170,0.138
+Rua do Conde de Burnay,170,0.138
+Rua de Raul Caldevilla,170,0.138
+Rua Coronel Hélder Ribeiro,170,0.138
+Rua de José de Carvalho,169,0.138
+Praça de Afonso Pinto de Magalhães,168,0.137
+Colónia de Antero de Quental,168,0.137
+Rua de Pedro Olaio,168,0.137
+Rua Antero de Araújo,168,0.137
+Rua Engenheiro Custódio Guimarães,167,0.137
+Rua de Alberto Oliveira,166,0.137
+Rua Stephen R. Stoer,166,0.137
+Rua Conde de Vilas-Boas,166,0.137
+Rua de João de Barros,166,0.137
+Rua Guedes de Azevedo,165,0.137
+Rua do Lima,165,0.137
+Rua de Alexandre Braga,165,0.137
+Rua de Frei Heitor Pinto,165,0.137
+Rua Central do Bairro Herculano,164,0.136
+Rua Doutor António Luís Gomes,163,0.136
+Travessa do Monte de Ramalde,162,0.136
+Rotunda Orlando Ribeiro,162,0.136
+Rua de Cândido dos Reis,162,0.136
+Travessa de Ferreira dos Santos,162,0.136
+Rua de Mestre Afonso Domingues,161,0.136
+Rua Joaquim de Vasconcelos,160,0.135
+Rua de São Paulo,160,0.135
+Praceta Eduardo Soares,159,0.135
+Rua de Miguel Torga,159,0.135
+Rua de Francisco Oliveira Ferreira,159,0.135
+Rua do Actor Soares Correia,159,0.135
+Rua Miguel Bombarda,159,0.135
+Largo de São Domingos,159,0.135
+Largo de Dom João III,159,0.135
+Rua Teófilo Seyrig,158,0.135
+Rua Veiga Leitão,158,0.135
+Rua de Alberto Aires de Gouveia,158,0.135
+Rua de Pedro Escobar,158,0.135
+Travessa de Chaves de Oliveira,158,0.135
+Rua do Arco da Noeda,157,0.135
+Rua de Domingos Alvão,157,0.135
+Rua de Manuel Marques,157,0.135
+Rua de Barbosa du Bocage,157,0.135
+Rua de João dos Santos Ferreira,157,0.135
+Rua Sacadura Cabral,156,0.134
+Rua Martins Sarmento,156,0.134
+Rua Padre Rebelo da Costa,155,0.134
+Rua João Marques Pinto,155,0.134
+Praceta do Mestre de Avis,154,0.134
+Rua Marques de Abreu,154,0.134
+Rua Nicolau Marques Guedes,154,0.134
+Praceta Gonçalves Coelho,153,0.134
+Rua do Escritor Nuno de Bragança,153,0.134
+Travessa de Santo Isidro,153,0.134
+Rua Amândio Tavares,153,0.134
+Travessa de Anselmo Braancamp,152,0.134
+Rua de Arménio Losa,152,0.134
+Rua de São Sebastião,152,0.134
+Rua de Bartolomeu Dias,152,0.134
+Rua de Barata Feyo,152,0.134
+Rua do Doutor Sousa Avides,151,0.133
+Rua António Ricca Gonçalves,151,0.133
+Rua Alexandre Fleming,150,0.133
+Rua do Lourenço,149,0.133
+Rua de Gomes Leal,149,0.133
+Praça de Dom Afonso V,148,0.133
+Rua Duque de Loulé,148,0.133
+Rua do Monte do Tadeu,147,0.132
+Alameda Dr. António Macedo,147,0.132
+Rua de Vasco de Lobeira,147,0.132
+Rua de António Sérgio,147,0.132
+Rua António da Silva Cunha,146,0.132
+Rua Particular Meneses Russel,145,0.132
+Rua de Dom Lopo de Almeida,145,0.132
+Rua de Assis Vaz,144,0.132
+Rua João de Oliveira Ramos,144,0.132
+Rua Doutor Ferreira da Silva,143,0.131
+Rua Raul Castro,143,0.131
+Rua de Carlos Alberto,143,0.131
+Rua de Januário Godinho,143,0.131
+Rua Bento Carqueja,142,0.131
+Rua de Campos Monteiro,142,0.131
+Rua Artur de Sousa,141,0.131
+Rua do Abade de Faria,141,0.131
+Rua Padre Luís Rodrigues,141,0.131
+Rua de Pedro Ivo,141,0.131
+Rua de Dom Miguel da Silva,141,0.131
+Praça de Pedro Nunes,141,0.131
+Rua Moreira da Assunção,140,0.131
+Rua de Joaquim Lopes,139,0.131
+Rua Joaquim Kopke,139,0.131
+Largo Doutor Pedro Vitorino,139,0.131
+Rua António Saldanha,139,0.131
+Praceta José Luís Nunes,138,0.13
+Rua José Teixeira Barreto,138,0.13
+Rua de Sousa Viterbo,138,0.13
+Rua Bento Júnior,137,0.13
+Rua de Gaspar Coelho,137,0.13
+Rua Gonçalo Nunes de Faria,137,0.13
+Rua do Aleixo da Mota,137,0.13
+Rua Pedro Teixeira,136,0.13
+Rua do Doutor Cruz Malpique,136,0.13
+Rua do Duque de Loulé,135,0.13
+Rua de Garcia da Orta,135,0.13
+Rua do Conselheiro Correia de Barros,134,0.129
+Rua de Bernardim Ribeiro,134,0.129
+Rua de Álvaro Gomes,134,0.129
+Rua Américo Gomes,134,0.129
+Rua Fernando Pessoa,133,0.129
+Rua de Brás Cubas,133,0.129
+Rua de Júlio Brandão,133,0.129
+Rua de Viana da Mota,133,0.129
+Rua Agostinho José Freire,132,0.129
+Rua de Ângelo Frondoni,131,0.129
+Rua do Padre Xavier Coutinho,131,0.129
+Rua de Vasco de Lima Couto,131,0.129
+Rua Diogo Cão,131,0.129
+Rua de José Conceição Sousa,130,0.128
+Rua de Sampaio Bruno,130,0.128
+Rua de Afonso de Aveiro,129,0.128
+Rua de Tomás Ribeiro,129,0.128
+Rua Mestre Albino Moreira,129,0.128
+Rua de Luís Serrão Pimentel,128,0.128
+Rua de Diogo Afonso,128,0.128
+Rua de Adriano Correia Oliveira,128,0.128
+Rua Doutor António Sousa Macedo,128,0.128
+Rua de Paulo Dias de Novais,127,0.128
+Travessa de Gomes Leal,127,0.128
+Rua do Padre Fernão Cardim,127,0.128
+Rua de Carvalho Araújo,127,0.128
+Rua António Mariz Carneiro,127,0.128
+Rua de São Bernardo,126,0.127
+Rua do Visconde de Bóbeda,125,0.127
+Rua de Moraes Caldas,124,0.127
+Rua do General Silveira,124,0.127
+Rua António José Costa,124,0.127
+Rua Fernando Moreira da Silva,124,0.127
+Rua de Joaquim Alves Teixeira,123,0.127
+Rua António Correia da Silva,123,0.127
+Rua de São Miguel,123,0.127
+Rua Rogério de Azevedo,123,0.127
+Rua Pêro Vaz de Caminha,122,0.127
+Rua de João de Lisboa,122,0.127
+Rua José da Silva Passos,122,0.127
+Rua de Pedro hispano,122,0.127
+Travessa de São Pedro,121,0.126
+Largo do Maestro Miguel Ângelo,121,0.126
+Rua de Dom Miguel de Sousa Guedes,121,0.126
+Rua Bouça Ribas,121,0.126
+Rua de Antero Antunes Albuquerque,121,0.126
+Rua Ferrer Loureiro,120,0.126
+Praceta do Doutor Jaime Cortesão,120,0.126
+Rua Dom Sebastião de Resende,119,0.126
+Rua Lima Júnior,119,0.126
+Rua Actor João Guedes,119,0.126
+Praça do Conde de Samodães,119,0.126
+Rua de São Jorge,118,0.126
+Rua Doutor António Cupertino de Miranda,118,0.126
+Rua de São Gonçalo,117,0.125
+Rua Particular de Justino Teixeira,117,0.125
+Rua de Rodrigues Lobo,117,0.125
+Rua Dom Nicolau Monteiro,117,0.125
+Rua de Gabriel Soares de Sousa,116,0.125
+Praceta Francisco Borges,116,0.125
+Rua Elísio de Melo,116,0.125
+Rua do Engenheiro António de Almeida,115,0.125
+Largo do Actor Dias,115,0.125
+Rua António Arroio,114,0.125
+Rua Doutor Aires Borges,114,0.125
+Rua de Fernando Pessoa,113,0.124
+Rua Alberto José Guimarães,113,0.124
+Largo Doutor Tito Fontes,113,0.124
+Rua José Augusto de Castro,113,0.124
+Praça de Teixeira Lopes,113,0.124
+Rua Padre Manuel da Nóbrega,112,0.124
+Rua de Ricardo Jorge,111,0.124
+Rua Gonçalo Pires Bandeira,111,0.124
+Rua de São José,111,0.124
+Rua Doutor Carteado Mena,110,0.124
+Rua de São Dionísio,109,0.123
+Rua Rui Lourenço de Távora,109,0.123
+Rua Oliveira Santos,108,0.123
+Rua Artur Oliveira Valença,107,0.123
+Praça de Gomes Teixeira,107,0.123
+Rua Particular de Novais da Cunha,106,0.123
+Rua do Doutor Alfredo Magalhães,106,0.123
+Praceta Egito Gonçalves,105,0.123
+Rua Professor Abel Salazar,105,0.123
+Rua Henrique Alegria,105,0.123
+Rua do Doutor Deniz Jacinto,104,0.122
+Rua Doutor Paulo Pombo,103,0.122
+Travessa de Santo Amaro,103,0.122
+Travessa de São Victor,103,0.122
+Rua Carlos Graça,102,0.122
+Rua de Ramalho Ortigão,102,0.122
+Praceta de João Augusto Ribeiro,102,0.122
+Rua de João Paulo Freire,102,0.122
+Rua Diogo Brandão,101,0.122
+Rua Pereira de Novais,101,0.122
+Rua Professor Abílio Cardoso,99,0.121
+Rua Martim Moniz,99,0.121
+Rua Fernando de Bulhões,99,0.121
+Praça Guilherme Gomes Fernandes,99,0.121
+Beco de São Macário,98,0.121
+Rua Particular de Santo Isidro,98,0.121
+Travessa de Oliveira Martins,98,0.121
+Rotunda Manuel Pinto de Azevedo Júnior,97,0.121
+Rua de Mem de Sá,97,0.121
+Travessa de São Bartolomeu,97,0.121
+Rua Professor Jaime Rios de Sousa,97,0.121
+Rua de Dom João I,96,0.12
+Rua do Sargento Abílio,96,0.12
+Rua Cunha Espinheira,95,0.12
+Calçada do Rêgo Lameiro,95,0.12
+Praça de Teixeira de Pascoais,94,0.12
+Rua Júlio Ramos,94,0.12
+Rua de António Pedro,93,0.12
+Rua de Joaquim Vitorino Ribeiro,92,0.119
+Viela do José da Mestra,92,0.119
+Avenida de Vímara Peres,92,0.119
+Rua de Sarmento de Beires,91,0.119
+Rua de Fernão Lopes de Castanheda,91,0.119
+Rua Firmino Pereira,90,0.119
+Rua de São João Novo,90,0.119
+Rua de César Abbott,90,0.119
+Rua Emílio Biel,90,0.119
+Rua de Artur de Paiva,89,0.119
+Rua do Professor Carlos Alberto Ferreira de Almeida,89,0.119
+Rua do Doutor Jacinto Nunes,89,0.119
+Rotunda Acácio Silva Gomes,89,0.119
+Rua de São Francisco Xavier,89,0.119
+Atalho Rua Alfredo Keil - Rua Henrrique Lopes de Mendonça,88,0.119
+Rua Paulo Sarmento,88,0.119
+Rua de Santo António das Antas,88,0.119
+Travessa de Luis Cruz,88,0.119
+Largo Padre Inácio Gomes,87,0.118
+Rua Benjamim Gouveia,86,0.118
+Rua Amândio Galhano,86,0.118
+Rua de Daniel Filipe,86,0.118
+Rotunda Artur Cupertino de Miranda,85,0.118
+Rua do Estêvão,85,0.118
+Rua do Doutor Alfredo de Magalhães,85,0.118
+Rua de Silva Pereira,85,0.118
+Rua Alberto Carlos Correia da Silva,84,0.118
+Travessa de Luz Soriano,84,0.118
+Rua de Artur Napoleão,83,0.117
+Rua Luis Ferreira,83,0.117
+Rua do Engenheiro Mem Verdial,83,0.117
+Rua Guilherme da Costa Carvalho,81,0.117
+Rua Doutor Pedro Dias,80,0.117
+Rua Doutor Pedro Augusto Ferreira,80,0.117
+Travessa Doutor Barros,79,0.116
+Rua do Doutor Santana Dionísio,79,0.116
+Praceta João Glama,78,0.116
+Rua de São Salvador,78,0.116
+Rua Professor Ernesto de Morais,77,0.116
+Travessa de São Carlos,77,0.116
+Rua Manuel Lopes Martins,76,0.116
+Travessa de Passos Manuel,76,0.116
+Rua do Doutor Ângelo das Neves,75,0.115
+Rua de Rui Barbosa,75,0.115
+Rua de Tomás Soller,75,0.115
+Praceta Ribeiro Sanches,75,0.115
+Travessa de Alferes Malheiro,73,0.115
+Largo de Chaves de Oliveira,72,0.115
+Travessa São Nicolau,71,0.115
+Avenida Escritor Costa Barreto,71,0.115
+Parque de São Bartolomeu,71,0.115
+Rua Tenente Mário Grilo,70,0.114
+Rua Padre Leonardo Nunes,70,0.114
+Rua de São Martinho,70,0.114
+Rua de Estevão Gomes,70,0.114
+Jardim Antero de Figueiredo,70,0.114
+Rua Eduardo Allen,70,0.114
+Praceta do Maestro Afonso Valentim,69,0.114
+Rua Rodrigues Sampaio,68,0.114
+Rua Doutor Artur Magalhães Basto,67,0.114
+Rua Arquitecto Nicolau Nasoni,67,0.114
+Rua São Frei Gil,67,0.114
+Calçada do Monte de São João,66,0.113
+Travessa de Pinto Bessa,66,0.113
+Rua Pedro Veiga,66,0.113
+Rua de Arnaldo Gama,65,0.113
+Rua do Doutor Alberto Sousa Costa,65,0.113
+Rua de Santo Antão,64,0.113
+Rua do Professor Carlos Teixeira,64,0.113
+Praça General Humberto Delgado,64,0.113
+Rua de João de Queirós,63,0.113
+Largo de José Moreira da Silva,63,0.113
+Rua Padre Domingos de Azevedo,63,0.113
+Rua de José Maria Pedroto,62,0.112
+Rua de António Augusto Pinto Félix,62,0.112
+Travessa de São Sebastião,62,0.112
+Travessa de Augusto Lessa,62,0.112
+Rua Luís Neves Real,61,0.112
+Travessa Faria Guimarães,60,0.112
+Rua do Doutor António Ramos de Almeida,60,0.112
+Rua Padre Rebelo de Sousa,59,0.112
+Rua de Rodrigues Sampaio,58,0.111
+Rua de Santo André,58,0.111
+Rua Trindade Coelho,56,0.111
+Travessa de São José,55,0.111
+Rua José Saraiva,55,0.111
+Praceta José Serra,54,0.111
+Roa Dom Jerónimo de Azevedo,54,0.111
+Rua de Tomás Gonzaga,53,0.11
+Rua João Lúcio de Azevedo,53,0.11
+Rua Duarte de Almeida,52,0.11
+Rua do Tenente Vidal Pinheiro,52,0.11
+Largo do Engenheiro António de Almeida,51,0.11
+Largo de São Pedro de Miragaia,51,0.11
+Largo do Duque da Ribeira,51,0.11
+Beco Passos Manuel,51,0.11
+Rua do Doutor Correia Pinto,50,0.11
+Rua António Pinheiro Caldas,50,0.11
+Calçada Marques Marinho,49,0.109
+Rua Doutor António E. Magalhães,48,0.109
+Bairro Dom António Barroso,47,0.109
+Largo Alexandre Sá Pinto,47,0.109
+Rua do Bom Jesus,47,0.109
+Rua Caldas Xavier,47,0.109
+Praceta de Augusto Gomes,47,0.109
+Praça Gomes Teixeira,47,0.109
+Travessa de Felizardo de Lima,47,0.109
+Rua de Coelho Lousada,46,0.109
+Rua São Nicolau,46,0.109
+Rua de José da Silva,46,0.109
+Rua Alfredo Nunes de Matos,46,0.109
+Rua Abade António da Costa,45,0.108
+Viela do Bairro Herculano,44,0.108
+Calçada João do Carmo,44,0.108
+Largo do Padre Américo,44,0.108
+Rua Alberto Pimentel,44,0.108
+Rua Professor Henrique David,43,0.108
+Beco São Marçal,42,0.108
+Rua de Afonso Martins Alho,42,0.108
+Rua do Doutor Joaquim Costa,42,0.108
+Rua Luís de Camões,41,0.108
+Travessa de São Marcos,40,0.107
+Praceta Manuel Gonçalves Moreira,40,0.107
+Largo de São Dinis,39,0.107
+Rua São Francisco de Borja,38,0.107
+Rua Mestre Mendes da Silva,38,0.107
+Rua Pintor Arpad Szenes,37,0.107
+Praceta Luís António Verney,36,0.106
+Avenida Henrique Lopes de Mendonça,35,0.106
+Largo do Professor João Baptista,35,0.106
+Largo de São João Novo,35,0.106
+Largo de Pinto Correia,32,0.105
+Rua Sá da Bandeira,32,0.105
+Viela de São Brás,32,0.105
+Travessa de São João da Foz,31,0.105
+Rua de Santo Antonino,31,0.105
+Rua Professor Armando de Castro,29,0.105
+Viela de São Pedro,27,0.104
+Rua de São Pedro de Miragaia,26,0.104
+Rua do Doutor André das Neves,23,0.103
+Calçada de Dom Pedro Pitões,19,0.102
+Rua de Joaquim Urbano,15,0.101
+Rua Santo António das Antas,13,0.101
+Largo do Leal,12,0.101
+Travessa São Francisco de Borja,11,0.1
+Pátio de São Dionísio,10,0.1
+Rua Carlos Carneiro,9,0.1

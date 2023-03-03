@@ -1,0 +1,49 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@types/chart.js": "^2.9.35",
+    "@types/d3": "^7.1.0",
+    "@types/geojson": "^7946.0.8",
+    "@types/mapbox-gl": "^2.6.1",
+    "@vercel/analytics": "^0.1.6",
+    "babel-eslint": "^10.1.0",
+    "chart.js": "^3.7.1",
+    "d3": "^7.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "geojson": "^0.5.0",
+    "gsap": "^3.9.1",
+    "mapbox-gl": "^2.7.0",
+    "next": "12.1.0",
+    "postcss-scss": "^4.0.3",
+    "prettier": "^2.5.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-scrollama": "^2.3.0",
+    "sass": "^1.49.9",
+    "stylelint": "^14.5.3",
+    "stylelint-prettier": "^2.0.0",
+    "stylelint-scss": "^4.1.0",
+    "swr": "^1.2.2",
+    "worker-loader": "^3.0.8"
+  },
+  "devDependencies": {
+    "@netlify/plugin-nextjs": "^4.2.7",
+    "@types/node": "17.0.21",
+    "@types/react": "17.0.39",
+    "@typescript-eslint/eslint-plugin": "^5.12.1",
+    "@typescript-eslint/parser": "^5.12.1",
+    "eslint": "^8.10.0",
+    "eslint-config-next": "12.1.0",
+    "eslint-config-prettier": "^8.5.0",
+    "typescript": "^4.5.5"
+  }
+}
