@@ -13,7 +13,8 @@ mapboxgl.accessToken =
 
 const Map = () => {
   const { data } = useSWR<FeatureCollection<Geometry, GeoJsonProperties>>(
-    './static/data/al.v1.json',
+    // './static/data/al.json',
+    './static/data/hotels.json',
     fetcher,
   )
 
@@ -48,13 +49,36 @@ const Map = () => {
 
         // streets with gender: 'NA' are loaded on the map
         map.current?.addLayer({
-          id: 'porto-al',
-          type: 'circle',
+          id: 'porto-al1',
+          type: 'line',
           source: 'porto',
           paint: {
-            'circle-color': '#20c3aa',
+            'line-color': 'red',
+            'line-width': 1,
           },
-          // filter: ['==', 'gender', 'M'],
+          filter: ['==', 'h', 2],
+        })
+
+        map.current?.addLayer({
+          id: 'porto-al2',
+          type: 'line',
+          source: 'porto',
+          paint: {
+            'line-color': 'red',
+            'line-width': 3,
+          },
+          filter: ['==', 'h', 3],
+        })
+
+        map.current?.addLayer({
+          id: 'porto-al3',
+          type: 'line',
+          source: 'porto',
+          paint: {
+            'line-color': 'red',
+            'line-width': 5,
+          },
+          filter: ['==', 'h', 4],
         })
 
         // // streets with gender: 'F' are loaded on the map
