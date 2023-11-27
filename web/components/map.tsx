@@ -20,6 +20,11 @@ const Map = () => {
   const mapContainer = React.useRef(null!)
   const map = useRef<mapboxgl.Map | null>(null)
 
+   const popup = new mapboxgl.Popup({
+          closeButton: false,
+          closeOnClick: false
+        });
+
   useEffect(() => {
     document.body.style.overflow = !map.current
       ? 'hidden'
@@ -29,6 +34,7 @@ const Map = () => {
 
     if (alData && freguesiaData && seccaoData) {
       if (map.current) return // initialize map only once
+
 
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
@@ -152,6 +158,18 @@ const Map = () => {
             'fill-opacity': 1,
           },
         })
+
+        map.current.on('mousemove', 'porto-seccao', (e) => {
+          // Change the cursor style as a UI indicator.
+          map.current.getCanvas().style.cursor = 'pointer';
+           
+          popup.setLngLat(e.lngLat).setHTML('<p><b>ALs: </b>' + e.features[0].properties.als + '</p><p><b>Habitantes: </b>' + e.features[0].properties.individuos + '</p><p><b>propAL: </b>' + e.features[0].properties.propAL + '%</p>').addTo(map.current);
+        });
+
+        map.current.on('mouseleave', 'porto-seccao', () => {
+          map.current.getCanvas().style.cursor = '';
+          popup.remove();
+        });
 
         map.current?.moveLayer('porto-seccao', layerIds[0])
       })
