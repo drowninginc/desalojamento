@@ -2,7 +2,6 @@ import useSWR from 'swr'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import fetcher from '../libs/fetcher'
-import type { FeatureCollection, Geometry, GeoJsonProperties } from 'geojson'
 import React, { useRef, useEffect } from 'react'
 
 // @ts-ignore
@@ -11,12 +10,12 @@ mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worke
 mapboxgl.accessToken =
   'pk.eyJ1IjoiY2xhdWRpb2xlbW9zIiwiYSI6ImNsMDV4NXBxajBzMWkzYm9ndXhzbTk5ZHkifQ.85n9mjZbTDUpyQZrrJTBwA'
 
+const useData = (path: string) => useSWR<any>(`./static/data/${path}`, fetcher)
+
 const Map = () => {
-  const { data } = useSWR<FeatureCollection<Geometry, GeoJsonProperties>>(
-    // './static/data/al.json',
-    './static/data/hotels.json',
-    fetcher,
-  )
+  const { data: alData } = useData('al.json')
+  const { data: freguesiaData } = useData('censos_freguesia.json')
+  const { data: seccaoData } = useData('censos_seccao.json')
 
   const mapContainer = React.useRef(null!)
   const map = useRef<mapboxgl.Map | null>(null)
@@ -28,7 +27,7 @@ const Map = () => {
       ? 'scroll'
       : 'hidden'
 
-    if (data) {
+    if (alData && freguesiaData && seccaoData) {
       if (map.current) return // initialize map only once
 
       map.current = new mapboxgl.Map({
@@ -42,74 +41,119 @@ const Map = () => {
       map.current.on('load', () => {
         document.body.style.overflow = 'scroll'
 
-        map.current?.addSource('porto', {
+        const layers = map.current?.getStyle().layers
+        const layerIds = []
+        for (const layer of layers) {
+          if (layer.type === 'symbol' || layer.type === 'line') layerIds.push(layer.id)
+        }
+
+        map.current?.addSource('porto-al', {
           type: 'geojson',
-          data: data,
+          data: alData,
         })
 
-        // streets with gender: 'NA' are loaded on the map
-        map.current?.addLayer({
-          id: 'porto-al1',
-          type: 'line',
-          source: 'porto',
-          paint: {
-            'line-color': 'red',
-            'line-width': 1,
-          },
-          filter: ['==', 'h', 2],
+        map.current?.addSource('porto-freguesia', {
+          type: 'geojson',
+          data: freguesiaData,
         })
 
-        map.current?.addLayer({
-          id: 'porto-al2',
-          type: 'line',
-          source: 'porto',
-          paint: {
-            'line-color': 'red',
-            'line-width': 3,
-          },
-          filter: ['==', 'h', 3],
+        map.current?.addSource('porto-seccao', {
+          type: 'geojson',
+          data: seccaoData,
         })
 
-        map.current?.addLayer({
-          id: 'porto-al3',
-          type: 'line',
-          source: 'porto',
-          paint: {
-            'line-color': 'red',
-            'line-width': 5,
-          },
-          filter: ['==', 'h', 4],
-        })
+        // PORTO AL (FIRST MAP)
 
-        // // streets with gender: 'F' are loaded on the map
         // map.current?.addLayer({
-        //   id: 'porto-f',
-        //   type: 'line',
-        //   source: 'porto',
+        //   id: 'porto-al',
+        //   type: 'circle',
+        //   source: 'porto-al',
         //   paint: {
-        //     'line-color': '#8724f6',
-        //     'line-width': ['interpolate', ['linear'], ['zoom'], 12, 1, 16, 5],
-        //     'line-opacity': ['interpolate', ['linear'], ['zoom'], 12, 1, 16, 0.4],
-        //     'line-color-transition': {
-        //       duration: 750,
-        //     },
+        //     'circle-radius': [
+        //       'interpolate',
+        //       ['linear'],
+        //       ['zoom'],
+        //       12, // minimum zoom level to start interpolation
+        //       ['interpolate', ['linear'], ['get', 'weight'], 0, 2, 1, 6], // at zoom level 10
+        //       16, // maximum zoom level to end interpolation
+        //       ['interpolate', ['linear'], ['get', 'weight'], 0, 4, 1, 20], // at zoom level 15
+        //     ],
+        //     'circle-color': '#007cbf',
         //   },
-        //   filter: ['==', 'gender', 'F'],
         // })
 
-        // // streets with gender: 'NA' are loaded on the map
-        // map.current?.addLayer({
-        //   id: 'porto-na',
-        //   type: 'line',
-        //   source: 'porto',
-        //   paint: {
-        //     'line-color': '#bababa',
-        //     'line-color-transition': {
-        //       duration: 750,
+        // PORTO FREGUESIAS (SECOND MAP)
+
+        //   map.current?.addLayer({
+        //     id: 'porto-freguesia',
+        //     type: 'fill',
+        //     source: 'porto-freguesia',
+        //     layout: {},
+        //     paint: {
+        //       'fill-color': [
+        //         'interpolate',
+        //         ['linear'],
+        //         ['zoom'],
+        //         10,
+        //         '#007cbf', // blue at zoom level 12
+        //         13,
+        //         [
+        //           'interpolate',
+        //           ['linear'],
+        //           ['get', 'propAL'], // assuming 'propAL' is the property in your data
+        //           0,
+        //           '#ADD8E6', // light blue for propAL = 0
+        //           100,
+        //           '#00008B', // dark blue for propAL = 100
+        //         ],
+        //       ],
+        //       'fill-opacity': 1,
         //     },
-        //   },
-        //   filter: ['==', 'gender', 'NA'],
-        // })
+        //   })
+
+        //   map.current?.moveLayer('porto-freguesia', layerIds[0])
+
+        //   map.current?.addLayer({
+        //     id: 'porto-freguesia-outline',
+        //     type: 'line',
+        //     source: 'porto-freguesia',
+        //     layout: {},
+        //     paint: {
+        //       'line-color': '#007cbf',
+        //       'line-width': 2,
+        //     },
+        //   })
+
+        // PORTO SECCOES (THIRD MAP)
+
+        map.current?.addLayer({
+          id: 'porto-seccao',
+          type: 'fill',
+          source: 'porto-seccao',
+          layout: {},
+          paint: {
+            'fill-color': [
+              'interpolate',
+              ['linear'],
+              ['zoom'],
+              10,
+              '#007cbf', // blue at zoom level 12
+              13,
+              [
+                'interpolate',
+                ['linear'],
+                ['get', 'propAL'], // assuming 'propAL' is the property in your data
+                0,
+                '#ADD8E6', // light blue for propAL = 0
+                100,
+                '#00008B', // dark blue for propAL = 100
+              ],
+            ],
+            'fill-opacity': 1,
+          },
+        })
+
+        map.current?.moveLayer('porto-seccao', layerIds[0])
       })
     }
   })
