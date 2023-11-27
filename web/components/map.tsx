@@ -50,7 +50,7 @@ const Map = () => {
         const layers = map.current?.getStyle().layers
         const layerIds = []
         for (const layer of layers) {
-          if (layer.type === 'symbol' || layer.type === 'line') layerIds.push(layer.id)
+          //if (layer.type === 'symbol' || layer.type === 'line') layerIds.push(layer.id)
         }
 
         map.current?.addSource('porto-al', {
@@ -68,25 +68,39 @@ const Map = () => {
           data: seccaoData,
         })
 
-        // PORTO AL (FIRST MAP)
 
-        // map.current?.addLayer({
-        //   id: 'porto-al',
-        //   type: 'circle',
-        //   source: 'porto-al',
-        //   paint: {
-        //     'circle-radius': [
-        //       'interpolate',
-        //       ['linear'],
-        //       ['zoom'],
-        //       12, // minimum zoom level to start interpolation
-        //       ['interpolate', ['linear'], ['get', 'weight'], 0, 2, 1, 6], // at zoom level 10
-        //       16, // maximum zoom level to end interpolation
-        //       ['interpolate', ['linear'], ['get', 'weight'], 0, 4, 1, 20], // at zoom level 15
-        //     ],
-        //     'circle-color': '#007cbf',
-        //   },
-        // })
+        // PORTO AL (FIRST MAP)
+      /*
+        map.current?.addLayer({
+          id: 'porto-al',
+          type: 'circle',
+          source: 'porto-al',
+          paint: {
+            'circle-radius': [
+              'interpolate',
+              ['linear'],
+              ['zoom'],
+              12, // minimum zoom level to start interpolation
+              ['interpolate', ['linear'], ['get', 'weight'], 0, 2, 1, 6], // at zoom level 10
+              16, // maximum zoom level to end interpolation
+              ['interpolate', ['linear'], ['get', 'weight'], 0, 4, 1, 20], // at zoom level 15
+            ],
+            'circle-color': '#007cbf',
+          },
+        })
+
+        map.current.on('mouseenter', 'porto-al', (e) => {
+          // Change the cursor style as a UI indicator.
+          map.current.getCanvas().style.cursor = 'pointer';
+          console.log(e.features[0].properties.endereco)
+           
+          popup.setLngLat(e.lngLat).setHTML('<p><b>Entradas repetidas: </b>' + e.features[0].properties.entradas_repetidas + '</p><p><b>Endereço: </b>' + e.features[0].properties.endereco + '</p>').addTo(map.current);
+        });
+
+        map.current.on('mouseleave', 'porto-al', () => {
+          map.current.getCanvas().style.cursor = '';
+          popup.remove();
+        });*/
 
         // PORTO FREGUESIAS (SECOND MAP)
 
@@ -155,15 +169,18 @@ const Map = () => {
                 '#00008B', // dark blue for propAL = 100
               ],
             ],
-            'fill-opacity': 1,
+            'fill-opacity': 0.8,
+            'fill-outline-color': '#00008C'
           },
         })
+
+        
 
         map.current.on('mousemove', 'porto-seccao', (e) => {
           // Change the cursor style as a UI indicator.
           map.current.getCanvas().style.cursor = 'pointer';
            
-          popup.setLngLat(e.lngLat).setHTML('<p><b>ALs: </b>' + e.features[0].properties.als + '</p><p><b>Habitantes: </b>' + e.features[0].properties.individuos + '</p><p><b>propAL: </b>' + e.features[0].properties.propAL + '%</p>').addTo(map.current);
+          popup.setLngLat(e.lngLat).setHTML('<p><b>ALs: </b>' + e.features[0].properties.als + '</p><p><b>Alojamentos: </b>' + e.features[0].properties.alojamentos + '</p><p><b>Habitantes: </b>' + e.features[0].properties.individuos + '</p><p><b>propAL: </b>' + e.features[0].properties.propAL + '%</p>').addTo(map.current);
         });
 
         map.current.on('mouseleave', 'porto-seccao', () => {
