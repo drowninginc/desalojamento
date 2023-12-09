@@ -143,3 +143,26 @@ a.button {
     background-color: darken($color-pink, 10%);
   }
 }
+
+.scroll-bar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  background-color: #f0f0f0; /* Light grey background */
+}
+
+.scroll-bar {
+  height: 5px;
+  background-color: #007cbf; /* Blue color for the scroll bar */
+  width: 0%; /* Initial width set to 0% */
+  transition: width 0.25s ease-out; /* Smooth transition for the bar width */
+}
+
+.scroll-text {
+  text-align: center;
+  color: #000; /* Black color for the text */
+  font-size: 14px; /* Adjust the font size as needed */
+  padding: 5px 0; /* Padding above and below the text */
+}

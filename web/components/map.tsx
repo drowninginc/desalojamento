@@ -3,6 +3,8 @@ import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import fetcher from '../libs/fetcher'
 import React, { useRef, useEffect } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 
 // @ts-ignore
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default
@@ -17,13 +19,26 @@ const Map = () => {
   const { data: freguesiaData } = useData('censos_freguesia.json')
   const { data: seccaoData } = useData('censos_seccao.json')
 
+  const [normalizedDate, setNormalizedDate] = React.useState(0)
+  const [barWidth, setBarWidth] = React.useState('0%')
+
+  const formatDate = value => {
+    const startDate = new Date('2014-01-01')
+    const endDate = new Date('2023-09-30')
+    const timeRange = endDate - startDate
+    const date = new Date(startDate.getTime() + value * timeRange)
+    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long' })
+  }
+
   const mapContainer = React.useRef(null!)
   const map = useRef<mapboxgl.Map | null>(null)
 
-   const popup = new mapboxgl.Popup({
-          closeButton: false,
-          closeOnClick: false
-        });
+  const popup = new mapboxgl.Popup({
+    closeButton: false,
+    closeOnClick: false,
+  })
+
+  gsap.registerPlugin(ScrollTrigger)
 
   useEffect(() => {
     document.body.style.overflow = !map.current
@@ -35,13 +50,31 @@ const Map = () => {
     if (alData && freguesiaData && seccaoData) {
       if (map.current) return // initialize map only once
 
+      ScrollTrigger.create({
+        trigger: mapContainer.current,
+        markers: true,
+        pin: true,
+        start: 'top top', // when the top of the trigger hits the top of the viewport
+        end: () => `+=500`, // when the bottom of the trigger hits the bottom of the viewport
+        onEnter: () => setNormalizedDate(0),
+        onUpdate: self => {
+          const scrollProgress = self.progress // Value from 0 to 1
+          const dateValue = gsap.utils.clamp(0, 1, scrollProgress)
+          setNormalizedDate(dateValue)
+          setBarWidth(`${scrollProgress * 100}%`)
+
+          if (map.current) {
+            map.current.setFilter('porto-al', ['<=', ['get', 'normalized_date'], dateValue])
+          }
+        },
+      })
 
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/light-v10?optimize=true',
         center: [-8.623, 41.162],
         zoom: 12,
-        // interactive: false,
+        interactive: false,
       })
 
       map.current.on('load', () => {
@@ -68,9 +101,8 @@ const Map = () => {
           data: seccaoData,
         })
 
-
         // PORTO AL (FIRST MAP)
-      /*
+
         map.current?.addLayer({
           id: 'porto-al',
           type: 'circle',
@@ -89,18 +121,29 @@ const Map = () => {
           },
         })
 
-        map.current.on('mouseenter', 'porto-al', (e) => {
+        map.current.setFilter('porto-al', ['<=', ['get', 'normalized_date'], 0])
+
+        map.current.on('mouseenter', 'porto-al', e => {
           // Change the cursor style as a UI indicator.
-          map.current.getCanvas().style.cursor = 'pointer';
+          map.current.getCanvas().style.cursor = 'pointer'
           console.log(e.features[0].properties.endereco)
-           
-          popup.setLngLat(e.lngLat).setHTML('<p><b>Entradas repetidas: </b>' + e.features[0].properties.entradas_repetidas + '</p><p><b>Endereço: </b>' + e.features[0].properties.endereco + '</p>').addTo(map.current);
-        });
+
+          popup
+            .setLngLat(e.lngLat)
+            .setHTML(
+              '<p><b>Entradas repetidas: </b>' +
+                e.features[0].properties.entradas_repetidas +
+                '</p><p><b>Endereço: </b>' +
+                e.features[0].properties.endereco +
+                '</p>',
+            )
+            .addTo(map.current)
+        })
 
         map.current.on('mouseleave', 'porto-al', () => {
-          map.current.getCanvas().style.cursor = '';
-          popup.remove();
-        });*/
+          map.current.getCanvas().style.cursor = ''
+          popup.remove()
+        })
 
         // PORTO FREGUESIAS (SECOND MAP)
 
@@ -146,56 +189,79 @@ const Map = () => {
 
         // PORTO SECCOES (THIRD MAP)
 
-        map.current?.addLayer({
-          id: 'porto-seccao',
-          type: 'fill',
-          source: 'porto-seccao',
-          layout: {},
-          paint: {
-            'fill-color': [
-              'interpolate',
-              ['linear'],
-              ['zoom'],
-              10,
-              '#007cbf', // blue at zoom level 12
-              13,
-              [
-                'interpolate',
-                ['linear'],
-                ['get', 'propAL'], // assuming 'propAL' is the property in your data
-                0,
-                '#ADD8E6', // light blue for propAL = 0
-                100,
-                '#00008B', // dark blue for propAL = 100
-              ],
-            ],
-            'fill-opacity': 0.8,
-            'fill-outline-color': '#00008C'
-          },
+        // map.current?.addLayer({
+        //   id: 'porto-seccao',
+        //   type: 'fill',
+        //   source: 'porto-seccao',
+        //   layout: {},
+        //   paint: {
+        //     'fill-color': [
+        //       'interpolate',
+        //       ['linear'],
+        //       ['zoom'],
+        //       10,
+        //       '#007cbf', // blue at zoom level 12
+        //       13,
+        //       [
+        //         'interpolate',
+        //         ['linear'],
+        //         ['get', 'propAL'], // assuming 'propAL' is the property in your data
+        //         0,
+        //         '#ADD8E6', // light blue for propAL = 0
+        //         100,
+        //         '#00008B', // dark blue for propAL = 100
+        //       ],
+        //     ],
+        //     'fill-opacity': 0.8,
+        //     'fill-outline-color': '#00008C'
+        //   },
+        // })
+
+        map.current.on('mousemove', 'porto-seccao', e => {
+          // Change the cursor style as a UI indicator.
+          map.current.getCanvas().style.cursor = 'pointer'
+
+          popup
+            .setLngLat(e.lngLat)
+            .setHTML(
+              '<p><b>ALs: </b>' +
+                e.features[0].properties.als +
+                '</p><p><b>Alojamentos: </b>' +
+                e.features[0].properties.alojamentos +
+                '</p><p><b>Habitantes: </b>' +
+                e.features[0].properties.individuos +
+                '</p><p><b>propAL: </b>' +
+                e.features[0].properties.propAL +
+                '%</p>',
+            )
+            .addTo(map.current)
         })
 
-        
-
-        map.current.on('mousemove', 'porto-seccao', (e) => {
-          // Change the cursor style as a UI indicator.
-          map.current.getCanvas().style.cursor = 'pointer';
-           
-          popup.setLngLat(e.lngLat).setHTML('<p><b>ALs: </b>' + e.features[0].properties.als + '</p><p><b>Alojamentos: </b>' + e.features[0].properties.alojamentos + '</p><p><b>Habitantes: </b>' + e.features[0].properties.individuos + '</p><p><b>propAL: </b>' + e.features[0].properties.propAL + '%</p>').addTo(map.current);
-        });
-
         map.current.on('mouseleave', 'porto-seccao', () => {
-          map.current.getCanvas().style.cursor = '';
-          popup.remove();
-        });
+          map.current.getCanvas().style.cursor = ''
+          popup.remove()
+        })
 
         map.current?.moveLayer('porto-seccao', layerIds[0])
       })
     }
-  })
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+    }
+  }, [alData, freguesiaData, seccaoData])
 
   return (
     <>
       <div className="whole-container">
+        <div
+          className="scroll-bar-container"
+          style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 10 }}>
+          <div className="scroll-bar" style={{ height: '5px', width: barWidth }} />
+          <div className="scroll-text" style={{ textAlign: 'center' }}>
+            {formatDate(normalizedDate)}
+          </div>
+        </div>
         <div className="map-content">
           <div ref={mapContainer} className="map-container" />
         </div>
