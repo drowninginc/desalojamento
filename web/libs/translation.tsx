@@ -28,29 +28,11 @@ export default function (section: string, language: string): React.ReactNode {
     case 'intro':
       return language == 'en' ? (
         <>
-          Cities are living organisms in constant transformation, historical products of social and
-          cultural influences. They are also representations of power relations. Inspired by Sara
-          Barros Leitão's work{' '}
-          <a
-            href="https://sarabarrosleitao.pt/todos-os-dias-me-sujo-de-coisas-eternas"
-            target="_blank">
-            <i>Todos os Dias me Sujo de Coisas Eternas</i>
-          </a>{' '}
-          (Everyday I Get Dirty with Eternal Things), we focus on the city of Porto and its
-          toponymy, as a way that these representations can take.
+          TODO
         </>
       ) : (
         <>
-          As cidades são organismos vivos e em constante transformação, produtos históricos de
-          influências sociais e culturais. Desse modo, são também representações de relações de
-          poder. Inspirados pela peça{' '}
-          <a
-            href="https://sarabarrosleitao.pt/todos-os-dias-me-sujo-de-coisas-eternas"
-            target="_blank">
-            <i>Todos os Dias me Sujo de Coisas Eternas</i>
-          </a>{' '}
-          da Sara Barros Leitão, debruçamo-nos sobre a cidade do Porto e a sua toponímia, como uma
-          forma que essas representações podem tomar.
+Nas cidades portuguesas vive-se uma crise de habitação sem precedentes nas últimas décadas. Esta crise gerou uma forte contestação social, que foi capaz de trazer para o centro do debate políticas relacionadas com a intervenção do Estado no mercado de arrendamento e com a regulação do turismo, em particular o <mark>alojamento local (AL)</mark>. O governo, perante o agigantar da crise, anunciou o programa Mais Habitação que pretendia responder parcialmente a estas questões, colocando algumas restrições à atividade deste tipo de alojamento turístico. Face a este clima político, os defensores do Alojamento Local têm-se organizado, promovendo o AL como uma importante atividade económica e como fonte de sustento para muitas famílias.
         </>
       )
     case 'map1':

@@ -24,10 +24,10 @@ const Map = () => {
 
   const formatDate = value => {
     const startDate = new Date('2014-01-01')
-    const endDate = new Date('2023-09-30')
-    const timeRange = endDate - startDate
+    const endDate = new Date('2023-11-15')
+    const timeRange = endDate.valueOf() - startDate.valueOf()
     const date = new Date(startDate.getTime() + value * timeRange)
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long' })
+    return date.toLocaleDateString('pt-pt', { year: 'numeric', month: 'long' })
   }
 
   const mapContainer = React.useRef(null!)
@@ -55,7 +55,7 @@ const Map = () => {
         markers: true,
         pin: true,
         start: 'top top', // when the top of the trigger hits the top of the viewport
-        end: () => `+=500`, // when the bottom of the trigger hits the bottom of the viewport
+        end: () => `+=2000`, // when the bottom of the trigger hits the bottom of the viewport
         onEnter: () => setNormalizedDate(0),
         onUpdate: self => {
           const scrollProgress = self.progress // Value from 0 to 1
@@ -117,7 +117,7 @@ const Map = () => {
               16, // maximum zoom level to end interpolation
               ['interpolate', ['linear'], ['get', 'weight'], 0, 4, 1, 20], // at zoom level 15
             ],
-            'circle-color': '#007cbf',
+            'circle-color': '#012169',
           },
         })
 
@@ -256,10 +256,11 @@ const Map = () => {
       <div className="whole-container">
         <div
           className="scroll-bar-container"
-          style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 10 }}>
-          <div className="scroll-bar" style={{ height: '5px', width: barWidth }} />
-          <div className="scroll-text" style={{ textAlign: 'center' }}>
+          style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 10}}>
+          <div className="scroll-bar" style={{width: barWidth}}>
+          <span className="scroll-text">
             {formatDate(normalizedDate)}
+          </span>
           </div>
         </div>
         <div className="map-content">

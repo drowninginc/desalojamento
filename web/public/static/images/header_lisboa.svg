@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Camada_1" data-name="Camada 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1270 460">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: 0em;
+      }
+
+      .cls-2 {
+        font-size: 220px;
+      }
+
+      .cls-2, .cls-3 {
+        fill: #012169;
+        font-family: Rubik-SemiBold, Rubik;
+        font-variation-settings: 'wght' 600;
+        font-weight: 600;
+      }
+
+      .cls-2, .cls-3, .cls-4 {
+        isolation: isolate;
+      }
+
+      .cls-3 {
+        font-size: 120px;
+      }
+
+      .cls-5 {
+        letter-spacing: 0em;
+      }
+
+      .cls-6 {
+        letter-spacing: 0em;
+      }
+
+      .cls-7 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-8 {
+        fill: #fdfdfd;
+        fill-rule: evenodd;
+        stroke: #012169;
+        stroke-width: 5px;
+      }
+
+      .cls-9 {
+        letter-spacing: -.02em;
+      }
+    </style>
+  </defs>
+  <path class="cls-8" d="m40,46.56h927v272.9H40V46.56Z"/>
+  <path class="cls-8" d="m392.85,184.47h851.15v231H392.85v-231Z"/>
+  <g class="cls-4">
+    <text class="cls-3" transform="translate(63.58 152.26)"><tspan x="0" y="0">Desalojame</tspan><tspan class="cls-5" x="678.71" y="0">n</tspan><tspan x="753.95" y="0">to</tspan></text>
+    <text class="cls-3" transform="translate(63.58 296.26)"><tspan class="cls-6" x="0" y="0">L</tspan><tspan class="cls-1" x="69.84" y="0">ocal</tspan></text>
+  </g>
+  <g class="cls-4">
+    <text class="cls-2" transform="translate(413.99 378.26)"><tspan x="0" y="0">LISB</tspan><tspan class="cls-9" x="494.11" y="0">O</tspan><tspan class="cls-7" x="645.47" y="0">A</tspan></text>
+  </g>
+</svg>

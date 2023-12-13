@@ -133,14 +133,14 @@ a.mapboxgl-ctrl-logo {
 a.button {
   appearance: button;
   text-decoration: none;
-  background-color: $color-pink;
+  background-color: $color-blue-al;
   color: $color-beige;
   padding: $global-spacing-xs;
   margin: 0 auto;
   border-radius: $global-spacing-md;
 
   &:hover {
-    background-color: darken($color-pink, 10%);
+    background-color: ($color-blue-al, 10%);
   }
 }
 
@@ -150,19 +150,24 @@ a.button {
   left: 0;
   width: 100%;
   z-index: 10;
-  background-color: #f0f0f0; /* Light grey background */
+  background-color: #fff;
+  border: 2px solid $color-blue-al;
+ /* Light grey background */
 }
 
 .scroll-bar {
-  height: 5px;
-  background-color: #007cbf; /* Blue color for the scroll bar */
+  height: 100%;
+  background-color: $color-blue-al; /* Blue color for the scroll bar */
   width: 0%; /* Initial width set to 0% */
   transition: width 0.25s ease-out; /* Smooth transition for the bar width */
+  padding: 3px 0px 0 10px;
 }
 
 .scroll-text {
-  text-align: center;
-  color: #000; /* Black color for the text */
+  display: inline-block;
+  text-align: left;
+  color: #fff; /* Black color for the text */
   font-size: 14px; /* Adjust the font size as needed */
-  padding: 5px 0; /* Padding above and below the text */
+  white-space: nowrap;
+  overflow: hidden;
 }
