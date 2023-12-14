@@ -254,15 +254,13 @@ const Map = () => {
   return (
     <>
       <div className="whole-container">
-        <div
-          className="scroll-bar-container"
-          style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 10}}>
-          <div className="scroll-bar" style={{width: barWidth}}>
-          <span className="scroll-text">
-            {formatDate(normalizedDate)}
-          </span>
+        <div className="progress-bar">
+          <div className="progress-fill" style={{width: barWidth }}>
+            <div className="progress-fill-text" style={{width: barWidth }}>{formatDate(normalizedDate)}</div>
           </div>
+          {formatDate(normalizedDate)}
         </div>
+
         <div className="map-content">
           <div ref={mapContainer} className="map-container" />
         </div>

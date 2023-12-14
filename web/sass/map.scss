@@ -144,30 +144,36 @@ a.button {
   }
 }
 
-.scroll-bar-container {
+
+.progress-bar {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  background:#fff;
+  background-color:#fff;
+  padding:10px 0;
+  width:100%;
+  text-align:left;
   z-index: 10;
-  background-color: #fff;
-  border: 2px solid $color-blue-al;
- /* Light grey background */
-}
-
-.scroll-bar {
-  height: 100%;
-  background-color: $color-blue-al; /* Blue color for the scroll bar */
-  width: 0%; /* Initial width set to 0% */
-  transition: width 0.25s ease-out; /* Smooth transition for the bar width */
-  padding: 3px 0px 0 10px;
-}
-
-.scroll-text {
-  display: inline-block;
-  text-align: left;
-  color: #fff; /* Black color for the text */
-  font-size: 14px; /* Adjust the font size as needed */
   white-space: nowrap;
   overflow: hidden;
+  transition: width 0.25s ease-out; /* Smooth transition for the bar width */
+  padding-left:   20px;
+  margin-bottom: 10px;
+  border: $color-blue-al 2px solid;
+}
+
+.progress-fill {
+  background:$color-blue-al;
+  color:#fff;
+  padding:10px 0;
+  position:absolute;
+  left:0;
+  top:0;
+  overflow:hidden;
+  transition: width 0.25s ease-out; /* Smooth transition for the bar width */
+}
+
+.progress-fill-text{
+  padding-left: 20px;
 }
