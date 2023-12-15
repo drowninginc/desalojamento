@@ -22,6 +22,11 @@ const Map = () => {
   const [normalizedDate, setNormalizedDate] = React.useState(0)
   const [barWidth, setBarWidth] = React.useState('0%')
 
+  const getOpacity = (index: number) => {
+    const progress = parseFloat(barWidth) / 100
+    return Math.abs(progress - (index + 0.5) / 3) < 1 / 6 ? 1 : 0
+  }
+
   const formatDate = value => {
     const startDate = new Date('2014-01-01')
     const endDate = new Date('2023-11-15')
@@ -255,14 +260,32 @@ const Map = () => {
     <>
       <div className="whole-container">
         <div className="progress-bar">
-          <div className="progress-fill" style={{width: barWidth }}>
-            <div className="progress-fill-text" style={{width: barWidth }}>{formatDate(normalizedDate)}</div>
+          <div className="progress-fill" style={{ width: barWidth }}>
+            <div className="progress-fill-text" style={{ width: barWidth }}>
+              {formatDate(normalizedDate)}
+            </div>
           </div>
           {formatDate(normalizedDate)}
         </div>
 
         <div className="map-content">
           <div ref={mapContainer} className="map-container" />
+        </div>
+
+        <div className="text-boxes-container">
+          <div className="text-box" style={{ opacity: getOpacity(0) }}>
+            A figura do alojamento local foi introduzido em 2008, mas só em 2014 passou o seu
+            registo a ser obrigatório, passando os alojamentos deste tipo que já operavam antes a
+            estar integrados nesta designação.
+          </div>
+          <div className="text-box" style={{ opacity: getOpacity(1) }}>
+            Desde essa altura, a oferta deste tipo de alojamentos não tem parado de crescer. O
+            tamanho dos pontos representa a quantidade de ALs num mesmo número de porta.
+          </div>
+          <div className="text-box" style={{ opacity: getOpacity(2) }}>
+            À data de novembro de 2023, foram atribuídas no total 10463 licenças de alojamento
+            local* na cidade do Porto.
+          </div>
         </div>
       </div>
     </>

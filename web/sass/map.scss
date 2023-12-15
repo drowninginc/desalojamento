@@ -144,36 +144,54 @@ a.button {
   }
 }
 
-
 .progress-bar {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
-  background:#fff;
-  background-color:#fff;
-  padding:10px 0;
-  width:100%;
-  text-align:left;
+  background: #fff;
+  background-color: #fff;
+  padding: 10px 0;
+  width: 100%;
+  text-align: left;
   z-index: 10;
   white-space: nowrap;
   overflow: hidden;
   transition: width 0.25s ease-out; /* Smooth transition for the bar width */
-  padding-left:   20px;
-  margin-bottom: 10px;
+  padding-left: 20px;
   border: $color-blue-al 2px solid;
 }
 
 .progress-fill {
-  background:$color-blue-al;
-  color:#fff;
-  padding:10px 0;
-  position:absolute;
-  left:0;
-  top:0;
-  overflow:hidden;
+  background: $color-blue-al;
+  color: #fff;
+  padding: 10px 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: hidden;
   transition: width 0.25s ease-out; /* Smooth transition for the bar width */
 }
 
-.progress-fill-text{
+.progress-fill-text {
   padding-left: 20px;
+}
+
+.text-boxes-container {
+  position: absolute;
+  top: 0;
+}
+
+.text-box {
+  padding: $global-spacing-md;
+  background-color: rgba($color-beige, 0.85);
+  margin: 50vh $global-spacing-sm 0 $global-spacing-sm;
+  font-size: $font-size-h4;
+
+  @include screen-tablet-portrait-and-bigger {
+    width: 350px;
+    margin: 50vh $global-spacing-xlg 0 $global-spacing-xlg;
+    background-color: rgba($color-beige, 1);
+  }
+
+  transition: opacity 0.5s ease-in-out;
 }
