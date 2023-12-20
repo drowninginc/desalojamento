@@ -133,13 +133,65 @@ a.mapboxgl-ctrl-logo {
 a.button {
   appearance: button;
   text-decoration: none;
-  background-color: $color-pink;
+  background-color: $color-blue-al;
   color: $color-beige;
   padding: $global-spacing-xs;
   margin: 0 auto;
   border-radius: $global-spacing-md;
 
   &:hover {
-    background-color: darken($color-pink, 10%);
+    background-color: ($color-blue-al, 10%);
   }
+}
+
+.progress-bar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  background: #fff;
+  background-color: #fff;
+  padding: 10px 0;
+  width: 100%;
+  text-align: left;
+  z-index: 10;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: width 0.25s ease-out; /* Smooth transition for the bar width */
+  padding-left: 20px;
+  border: $color-blue-al 2px solid;
+}
+
+.progress-fill {
+  background: $color-blue-al;
+  color: #fff;
+  padding: 10px 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  transition: width 0.25s ease-out; /* Smooth transition for the bar width */
+}
+
+.progress-fill-text {
+  padding-left: 20px;
+}
+
+.text-boxes-container {
+  position: absolute;
+  top: 0;
+}
+
+.text-box {
+  padding: $global-spacing-md;
+  background-color: rgba($color-beige, 0.85);
+  margin: 50vh $global-spacing-sm 0 $global-spacing-sm;
+  font-size: $font-size-h4;
+
+  @include screen-tablet-portrait-and-bigger {
+    width: 350px;
+    margin: 50vh $global-spacing-xlg 0 $global-spacing-xlg;
+    background-color: rgba($color-beige, 1);
+  }
+
+  transition: opacity 0.5s ease-in-out;
 }

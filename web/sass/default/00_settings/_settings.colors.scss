@@ -4,6 +4,21 @@
 
 // Color palette
 
+$color-blue-al:#012169;
+
+$color-light-blue: #88d8dd;
+$color-lighter-blue: #eaeaf4;
+$color-green: #26603a;
+$color-magenta: #ff1654;
+
+$color-grey-1: #bababa;
+$color-grey-2: #989898;
+$color-grey-3: #594a4e;
+$color-grey-4: #33272a;
+
+
+// Ruas do Género colors
+
 $color-beige: #faeee7;
 $color-blue: #064cfb;
 $color-navy: #0d5e97;
@@ -13,21 +28,16 @@ $color-purple-lighter: #c981f6;
 $color-turquoise: #20c3aa;
 $color-turquoise-lighter: #c3f0ca;
 
-$color-grey-1: #bababa;
-$color-grey-2: #989898;
-$color-grey-3: #594a4e;
-$color-grey-4: #33272a;
-
-$color-primary: $color-navy;
-$color-secondary: $color-pink;
+$color-primary: $color-blue-al;
+$color-secondary: $color-green;
 
 // Core color settings
 
-$color-background-html: $color-beige;
-$color-text: $color-grey-3;
-$color-selection: $color-pink;
+$color-background-html: #fff;
+$color-text: $color-grey-4;
+$color-selection: $color-blue-al;
 
 ::selection {
   background-color: $color-selection;
-  color: $color-beige;
+  color: #fff ;
 }
