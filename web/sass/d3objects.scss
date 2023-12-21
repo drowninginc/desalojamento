@@ -1,0 +1,26 @@
+.histogram-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.histogram-title {
+  // Add styles for the title here
+}
+
+.histogram-svg {
+  width: 600px;
+  height: 350px;
+}
+
+.histogram-rect {
+  fill: $color-blue-al;
+}
+
+.histogram-text {
+  fill: #000;
+  font-size: 12px;
+  // Add other styles for the text
+}

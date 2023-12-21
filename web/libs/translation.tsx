@@ -133,28 +133,11 @@ Nas cidades portuguesas vive-se uma crise de habitação sem precedentes nas úl
     case 'paragraph1':
       return language == 'en' ? (
         <>
-          The oppression of women has always had a territorial component. In ancient Greece, public
-          space and citizen participation in the <i>Polis</i> was reserved for men. Women and slaves
-          were consigned to the sphere of the home and production, and their access to various parts
-          of the city was prohibited. From the 19th century onwards, and as more economically
-          developed societies became industrialised, the concept of "separate spheres" was
-          reinforced. According to this socially constructed conception, men were responsible for
-          providing economic resources for their families, through paid work that required them to
-          move around the public sphere. Women were responsible for caring for the home and
-          children, and their activity was restricted to the domestic sphere.
+
         </>
       ) : (
         <>
-          A opressão das mulheres assume desde sempre uma componente territorial. Na Grécia antiga,
-          o espaço público e a participação cidadã na <i>Polis</i> era reservada aos homens. Às
-          mulheres e aos os escravos era consagrada a esfera do lar e da produção, e o seu acesso a
-          várias partes da cidade era proibida. A partir do século XIX, e à medida que as sociedades
-          mais economicamente desenvolvidas se foram industrializando, reforçou-se o conceito das
-          "esferas separadas". Segundo esta concepção socialmente construida, aos homens cabia a
-          responsabilidade de providenciar os recursos economicos à sua família, através do trabalho
-          assalariado que obrigava à deslocação pela esfera pública. Às mulheres, cabia a
-          responsabilidade dos cuidados da casa e dos filhos, ficando a sua atividade restrita à
-          esfera doméstica.
+          O ritmo de novas licenças tem estado quase sempre em crescimento, com exceção dos anos da COVID-19. Cada novo ano tem batido recordes de novos alojamentos, sendo que só em 2022 foram registados <mark>1914 novas licenças</mark>, representando 20% das licenças até à data.
         </>
       )
     case 'paragraph2':
