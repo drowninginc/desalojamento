@@ -5,9 +5,7 @@
   align-items: center;
   height: 100vh;
 }
-
 .histogram-title {
-  // Add styles for the title here
 }
 
 .histogram-svg {
@@ -22,5 +20,44 @@
 .histogram-text {
   fill: #000;
   font-size: 12px;
-  // Add other styles for the text
 }
+
+
+.graph-line{
+  fill: none;
+  stroke-width: 10;
+}
+
+.line-habitacao{
+  stroke: $color-green;
+  z-index: 10;
+}
+
+.line-al{
+  stroke: $color-blue-al;
+}
+
+.circle-habitacao{
+  fill:$color-green
+}
+
+.circle-al{
+  fill:$color-blue-al
+}
+
+.graph-label{
+  text-anchor: middle;
+  font-size: 15px;
+}
+
+.label-habitacao{
+  fill:$color-green
+
+}
+
+.label-al{
+  fill:$color-blue-al
+}
+
+
+
