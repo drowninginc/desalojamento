@@ -16,8 +16,6 @@ const useData = (path: string) => useSWR<any>(`./static/data/${path}`, fetcher)
 
 const Map = () => {
   const { data: alData } = useData('al.json')
-  const { data: freguesiaData } = useData('censos_freguesia.json')
-  const { data: seccaoData } = useData('censos_seccao.json')
 
   const [normalizedDate, setNormalizedDate] = React.useState(0)
   const [barWidth, setBarWidth] = React.useState('0%')
@@ -52,7 +50,7 @@ const Map = () => {
       ? 'scroll'
       : 'hidden'
 
-    if (alData && freguesiaData && seccaoData) {
+    if (alData) {
       if (map.current) return // initialize map only once
 
       ScrollTrigger.create({
@@ -94,16 +92,6 @@ const Map = () => {
         map.current?.addSource('porto-al', {
           type: 'geojson',
           data: alData,
-        })
-
-        map.current?.addSource('porto-freguesia', {
-          type: 'geojson',
-          data: freguesiaData,
-        })
-
-        map.current?.addSource('porto-seccao', {
-          type: 'geojson',
-          data: seccaoData,
         })
 
         // PORTO AL (FIRST MAP)
@@ -150,78 +138,6 @@ const Map = () => {
           popup.remove()
         })
 
-        // PORTO FREGUESIAS (SECOND MAP)
-
-        //   map.current?.addLayer({
-        //     id: 'porto-freguesia',
-        //     type: 'fill',
-        //     source: 'porto-freguesia',
-        //     layout: {},
-        //     paint: {
-        //       'fill-color': [
-        //         'interpolate',
-        //         ['linear'],
-        //         ['zoom'],
-        //         10,
-        //         '#007cbf', // blue at zoom level 12
-        //         13,
-        //         [
-        //           'interpolate',
-        //           ['linear'],
-        //           ['get', 'propAL'], // assuming 'propAL' is the property in your data
-        //           0,
-        //           '#ADD8E6', // light blue for propAL = 0
-        //           100,
-        //           '#00008B', // dark blue for propAL = 100
-        //         ],
-        //       ],
-        //       'fill-opacity': 1,
-        //     },
-        //   })
-
-        //   map.current?.moveLayer('porto-freguesia', layerIds[0])
-
-        //   map.current?.addLayer({
-        //     id: 'porto-freguesia-outline',
-        //     type: 'line',
-        //     source: 'porto-freguesia',
-        //     layout: {},
-        //     paint: {
-        //       'line-color': '#007cbf',
-        //       'line-width': 2,
-        //     },
-        //   })
-
-        // PORTO SECCOES (THIRD MAP)
-
-        // map.current?.addLayer({
-        //   id: 'porto-seccao',
-        //   type: 'fill',
-        //   source: 'porto-seccao',
-        //   layout: {},
-        //   paint: {
-        //     'fill-color': [
-        //       'interpolate',
-        //       ['linear'],
-        //       ['zoom'],
-        //       10,
-        //       '#007cbf', // blue at zoom level 12
-        //       13,
-        //       [
-        //         'interpolate',
-        //         ['linear'],
-        //         ['get', 'propAL'], // assuming 'propAL' is the property in your data
-        //         0,
-        //         '#ADD8E6', // light blue for propAL = 0
-        //         100,
-        //         '#00008B', // dark blue for propAL = 100
-        //       ],
-        //     ],
-        //     'fill-opacity': 0.8,
-        //     'fill-outline-color': '#00008C'
-        //   },
-        // })
-
         map.current.on('mousemove', 'porto-seccao', e => {
           // Change the cursor style as a UI indicator.
           map.current.getCanvas().style.cursor = 'pointer'
@@ -254,7 +170,7 @@ const Map = () => {
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill())
     }
-  }, [alData, freguesiaData, seccaoData])
+  }, [alData])
 
   return (
     <>
