@@ -14,11 +14,11 @@ const Index = () => {
   return (
     <>
       <Layout language={language} setLanguage={setLanguage}>
-        <Map2 />
-        {/* <Linechart language={language} />
+        {/* <Linechart language={language} /> */}
         <Map />
         <Paragraph>{translation('paragraph1', language)}</Paragraph>
-        <Histogram language={language} /> */}
+        <Map2 />
+        <Histogram language={language} />
       </Layout>
     </>
   )

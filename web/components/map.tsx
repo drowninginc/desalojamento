@@ -17,6 +17,21 @@ const useData = (path: string) => useSWR<any>(`./static/data/${path}`, fetcher)
 const Map = () => {
   const { data: alData } = useData('al.json')
 
+  const divTrigger = React.useRef(null!)
+  const mapPin = React.useRef(null!)
+
+  const mapContainer = React.useRef(null!)
+  const map = useRef<mapboxgl.Map | null>(null)
+
+  const action1 = React.useRef(null!)
+  const action2 = React.useRef(null!)
+  const action3 = React.useRef(null!)
+  const action4 = React.useRef(null!)
+  const action5 = React.useRef(null!)
+  const action6 = React.useRef(null!)
+  const action7 = React.useRef(null!)
+  const action8 = React.useRef(null!)
+
   const [normalizedDate, setNormalizedDate] = React.useState(0)
   const [barWidth, setBarWidth] = React.useState('0%')
 
@@ -33,14 +48,6 @@ const Map = () => {
     return date.toLocaleDateString('pt-pt', { year: 'numeric', month: 'long' })
   }
 
-  const mapContainer = React.useRef(null!)
-  const map = useRef<mapboxgl.Map | null>(null)
-
-  const popup = new mapboxgl.Popup({
-    closeButton: false,
-    closeOnClick: false,
-  })
-
   gsap.registerPlugin(ScrollTrigger)
 
   useEffect(() => {
@@ -53,25 +60,6 @@ const Map = () => {
     if (alData) {
       if (map.current) return // initialize map only once
 
-      ScrollTrigger.create({
-        trigger: mapContainer.current,
-        markers: true,
-        pin: true,
-        start: 'top top', // when the top of the trigger hits the top of the viewport
-        end: () => `+=2000`, // when the bottom of the trigger hits the bottom of the viewport
-        onEnter: () => setNormalizedDate(0),
-        onUpdate: self => {
-          const scrollProgress = self.progress // Value from 0 to 1
-          const dateValue = gsap.utils.clamp(0, 1, scrollProgress)
-          setNormalizedDate(dateValue)
-          setBarWidth(`${scrollProgress * 100}%`)
-
-          if (map.current) {
-            map.current.setFilter('porto-al', ['<=', ['get', 'normalized_date'], dateValue])
-          }
-        },
-      })
-
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/light-v10?optimize=true',
@@ -83,18 +71,56 @@ const Map = () => {
       map.current.on('load', () => {
         document.body.style.overflow = 'scroll'
 
-        const layers = map.current?.getStyle().layers
-        const layerIds = []
-        for (const layer of layers) {
-          //if (layer.type === 'symbol' || layer.type === 'line') layerIds.push(layer.id)
-        }
+        ScrollTrigger.create({
+          id: 'map-pin',
+          trigger: divTrigger.current,
+          start: 'top top',
+          end: 'bottom top',
+          pin: mapPin.current,
+          onEnter: () => {
+            ScrollTrigger.getAll().forEach(trigger => trigger.refresh())
+          },
+          onEnterBack: () => {
+            ScrollTrigger.getAll().forEach(trigger => trigger.refresh())
+          },
+        })
+
+        ScrollTrigger.create({
+          id: 'progress-bar',
+          trigger: divTrigger.current,
+          start: 'top top', // divTrigger top hits the bottom of the screen
+          endTrigger: action4.current, // end when action4 bottom hits the bottom of the screen
+          end: 'bottom bottom',
+          onUpdate: self => {
+            const scrollProgress = self.progress // Value from 0 to 1
+            const dateValue = gsap.utils.clamp(0, 1, scrollProgress)
+            setNormalizedDate(dateValue)
+            setBarWidth(`${scrollProgress * 100}%`)
+
+            if (map.current) {
+              map.current.setFilter('porto-al', ['<=', ['get', 'normalized_date'], dateValue])
+            }
+          },
+          onLeave: () => gsap.to('.progress-bar', { opacity: 0, duration: 0.5 }),
+          onEnterBack: () => gsap.to('.progress-bar', { opacity: 1, duration: 0.5 }),
+        })
+
+        ScrollTrigger.create({
+          id: 'plot-full-screen',
+          trigger: action4.current,
+          start: 'top middle', // divTrigger top hits the bottom of the screen
+          endTrigger: action5.current, // end when action4 bottom hits the bottom of the screen
+          end: 'bottom bottom',
+          onEnter: () => gsap.to('.plot-full-screen', { opacity: 1, duration: 0.5 }),
+          onLeave: () => gsap.to('.plot-full-screen', { opacity: 0, duration: 0.5 }),
+          onEnterBack: () => gsap.to('.plot-full-screen', { opacity: 1, duration: 0.5 }),
+          onLeaveBack: () => gsap.to('.plot-full-screen', { opacity: 0, duration: 0.5 }),
+        })
 
         map.current?.addSource('porto-al', {
           type: 'geojson',
           data: alData,
         })
-
-        // PORTO AL (FIRST MAP)
 
         map.current?.addLayer({
           id: 'porto-al',
@@ -115,55 +141,6 @@ const Map = () => {
         })
 
         map.current.setFilter('porto-al', ['<=', ['get', 'normalized_date'], 0])
-
-        map.current.on('mouseenter', 'porto-al', e => {
-          // Change the cursor style as a UI indicator.
-          map.current.getCanvas().style.cursor = 'pointer'
-          console.log(e.features[0].properties.endereco)
-
-          popup
-            .setLngLat(e.lngLat)
-            .setHTML(
-              '<p><b>Entradas repetidas: </b>' +
-                e.features[0].properties.entradas_repetidas +
-                '</p><p><b>Endereço: </b>' +
-                e.features[0].properties.endereco +
-                '</p>',
-            )
-            .addTo(map.current)
-        })
-
-        map.current.on('mouseleave', 'porto-al', () => {
-          map.current.getCanvas().style.cursor = ''
-          popup.remove()
-        })
-
-        map.current.on('mousemove', 'porto-seccao', e => {
-          // Change the cursor style as a UI indicator.
-          map.current.getCanvas().style.cursor = 'pointer'
-
-          popup
-            .setLngLat(e.lngLat)
-            .setHTML(
-              '<p><b>ALs: </b>' +
-                e.features[0].properties.als +
-                '</p><p><b>Alojamentos: </b>' +
-                e.features[0].properties.alojamentos +
-                '</p><p><b>Habitantes: </b>' +
-                e.features[0].properties.individuos +
-                '</p><p><b>propAL: </b>' +
-                e.features[0].properties.propAL +
-                '%</p>',
-            )
-            .addTo(map.current)
-        })
-
-        map.current.on('mouseleave', 'porto-seccao', () => {
-          map.current.getCanvas().style.cursor = ''
-          popup.remove()
-        })
-
-        map.current?.moveLayer('porto-seccao', layerIds[0])
       })
     }
 
@@ -184,23 +161,40 @@ const Map = () => {
           {formatDate(normalizedDate)}
         </div>
 
-        <div className="map-content">
+        <div className="plot-full-screen"></div>
+
+        <div ref={mapPin} className="map-content">
           <div ref={mapContainer} className="map-container" />
         </div>
 
-        <div className="text-boxes-container">
-          <div className="text-box" style={{ opacity: getOpacity(0) }}>
+        <div ref={divTrigger} className="text-boxes-container">
+          <div ref={action1} className="text-box">
             A figura do alojamento local foi introduzido em 2008, mas só em 2014 passou o seu
             registo a ser obrigatório, passando os alojamentos deste tipo que já operavam antes a
             estar integrados nesta designação.
           </div>
-          <div className="text-box" style={{ opacity: getOpacity(1) }}>
+          <div ref={action2} className="text-box">
             Desde essa altura, a oferta deste tipo de alojamentos não tem parado de crescer. O
             tamanho dos pontos representa a quantidade de ALs num mesmo número de porta.
           </div>
-          <div className="text-box" style={{ opacity: getOpacity(2) }}>
+          <div ref={action3} className="text-box">
             À data de novembro de 2023, foram atribuídas no total 10463 licenças de alojamento
             local* na cidade do Porto.
+          </div>
+          <div ref={action4} className="text-box">
+            text1
+          </div>
+          <div ref={action5} className="text-box">
+            text1
+          </div>
+          <div ref={action6} className="text-box">
+            text1
+          </div>
+          <div ref={action7} className="text-box">
+            text1
+          </div>
+          <div ref={action8} className="text-box">
+            text1
           </div>
         </div>
       </div>
