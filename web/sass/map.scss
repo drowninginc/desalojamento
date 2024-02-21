@@ -184,14 +184,25 @@ a.button {
 .text-box {
   padding: $global-spacing-md;
   background-color: rgba($color-beige, 0.85);
-  margin: 50vh $global-spacing-sm 0 $global-spacing-sm;
+  margin: 100vh $global-spacing-sm 0 $global-spacing-sm;
   font-size: $font-size-h4;
 
   @include screen-tablet-portrait-and-bigger {
     width: 350px;
-    margin: 50vh $global-spacing-xlg 0 $global-spacing-xlg;
+    margin: 100vh $global-spacing-xlg 0 $global-spacing-xlg;
     background-color: rgba($color-beige, 1);
   }
+}
 
-  transition: opacity 0.5s ease-in-out;
+.plot-full-screen {
+  background-color: white;
+  opacity: 0; /* Start with the div hidden */
+  transition: opacity 0.5s; /* Smooth transition for the opacity */
+  /* Ensure the div is full screen and above the map */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
 }

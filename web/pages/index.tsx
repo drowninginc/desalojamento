@@ -1,5 +1,6 @@
 import Layout from '../components/layout'
 import Map from '../components/map'
+import Map2 from '../components/map2'
 import Paragraph from '../components/paragraph'
 import Histogram from '../components/histogram'
 import Linechart from '../components/linechart'
@@ -13,10 +14,11 @@ const Index = () => {
   return (
     <>
       <Layout language={language} setLanguage={setLanguage}>
+        {/* <Linechart language={language} /> */}
         <Map />
         <Paragraph>{translation('paragraph1', language)}</Paragraph>
+        <Map2 />
         <Histogram language={language} />
-        <Linechart language={language} />
       </Layout>
     </>
   )
