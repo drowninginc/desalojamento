@@ -5,11 +5,15 @@ type Props = {
   language: string
 }
 
+interface Data {
+  Abertura: Record<string, number>
+}
+
 const Histogram = ({ language }: Props) => {
   const svg = useRef(null)
 
   useEffect(() => {
-    d3.json('./static/data/datas_abertura_cummulative.json').then(function (data) {
+    d3.json<Data>('./static/data/datas_abertura_cummulative.json').then(function (data) {
       const dates = Object.entries(data.Abertura).map(([key, value]) => ({
         year: key,
         value: value,
