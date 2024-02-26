@@ -11,8 +11,8 @@ type Props = {
 const Layout = ({ children, language, setLanguage }: Props) => {
   return (
     <>
-    <Meta />
-    <Header language={language} setLanguage={setLanguage} />
+      <Meta />
+      <Header language={language} setLanguage={setLanguage} />
       <main>{children}</main>
     </>
   )

@@ -13,6 +13,10 @@ type Props = {
   language: string
 }
 
+interface Data {
+  Abertura: Record<string, number>
+}
+
 const Histogram = ({ language }: Props) => {
   const [data, setData] = useState<Datum[]>([])
 
@@ -27,6 +31,7 @@ const Histogram = ({ language }: Props) => {
         setData(dates)
       })
   }, [])
+
 
   // Define the graph dimensions and margins
   const width = 600

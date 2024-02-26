@@ -1,8 +1,8 @@
 {
   "eslint.validate": ["javascript", "vue", "typescript"],
-  "css.validate": false,
-  "less.validate": false,
-  "scss.validate": false,
+  "css.validate": true,
+  "less.validate": true,
+  "scss.validate": true,
   "stylelint.enable": true,
   "stylelint.validate": ["css", "scss"],
   "eslint.nodePath": "./web/node_modules",
@@ -28,20 +28,21 @@
   },
   "[scss]": {
     "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "never",
-      "source.fixAll.stylelint": "explicit"
+      "source.fixAll.eslint": true,
+      "source.fixAll.stylelint": true
     }
   },
   "[html]": {
     "editor.defaultFormatter": null,
     "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "never"
+    "source.fixAll.eslint": true
+
     }
   },
   "json.format.enable": true,
   "[javascript][typescript]": {
     "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit"
+     "source.fixAll.eslint": true
     }
   }
 }

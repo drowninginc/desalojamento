@@ -6,6 +6,7 @@ import { scaleLinear } from '@visx/scale'
 import { Group } from '@visx/group'
 import { useSpring, animated } from 'react-spring'
 
+
 type Props = {
   language: string
 }
@@ -14,7 +15,7 @@ const AnimatedLinePath = animated(LinePath)
 const AnimatedImage = animated.image
 
 const Linechart = ({ language }: Props) => {
-  const [data, setData] = useState({ Habitacao: [], AL: [] })
+const [data, setData] = useState({ Habitacao: [], AL: [] })
 
   useEffect(() => {
     const fetchData = async () => {
