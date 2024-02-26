@@ -1,134 +1,266 @@
-import React, { useEffect, useRef } from 'react'
-import * as d3 from 'd3'
-import { json } from 'd3-fetch'
+import React, { useEffect, useState } from 'react'
+import Image from 'next/image'
+import { curveLinear } from '@visx/curve'
+import { LinePath } from '@visx/shape'
+import { scaleLinear } from '@visx/scale'
+import { Group } from '@visx/group'
+import { useSpring, animated } from 'react-spring'
 
-type Data = {
-  Habitacao: Record<string, number>
-  AL: Record<string, number>
-}
 
 type Props = {
   language: string
 }
 
+const AnimatedLinePath = animated(LinePath)
+const AnimatedImage = animated.image
+
 const Linechart = ({ language }: Props) => {
-  const svgRef = useRef<SVGSVGElement>(null)
+const [data, setData] = useState({ Habitacao: [], AL: [] })
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await json<Data>('/static/data/habitacao.json')
-
-      if (!response) {
-        return
-      }
-
-      const margin = { top: 20, right: 30, bottom: 40, left: 50 }
-      const width = 460 - margin.left - margin.right
-      const height = 400 - margin.top - margin.bottom
-
-      const svgElement = d3
-        .select(svgRef.current)
-        .attr('width', width + margin.left + margin.right)
-        .attr('height', height + margin.top + margin.bottom)
-        .append('g')
-        .attr('transform', `translate(${margin.left},${margin.top})`)
-
-      const xScale = d3
-        .scaleLinear()
-        .domain(d3.extent(Object.keys(response.Habitacao)) as [number, number])
-        .range([0, width])
-      const yScale = d3
-        .scaleLinear()
-        .domain([
-          0,
-          d3.max([...Object.values(response.Habitacao), ...Object.values(response.AL)]) as number,
-        ])
-        .range([height, 0])
-
-      // Define the lines
-      const lineHabitacao = d3
-        .line<number>()
-        .x((d, i) => xScale(Number(Object.keys(response.Habitacao)[i])))
-        .y(d => yScale(d))
-      const lineAL = d3
-        .line<number>()
-        .x((d, i) => xScale(Number(Object.keys(response.AL)[i])))
-        .y(d => yScale(d))
-
-      // Draw the lines
-      const pathHab = svgElement
-        .append('path')
-        .datum(Object.values(response.Habitacao))
-        .attr('class', 'graph-line line-habitacao')
-        .attr('fill', 'none')
-        .attr('d', lineHabitacao)
-
-      const pathLength = pathHab.node()!.getTotalLength()
-
-      const transitionPath = d3.transition().ease(d3.easeSin).duration(5000)
-
-      pathHab
-        .attr('stroke-dashoffset', pathLength)
-        .attr('stroke-dasharray', pathLength)
-        .transition(transitionPath)
-        .attr('stroke-dashoffset', 0)
-
-      const radius = 8
-
-      svgElement
-        .selectAll('.circle-habitacao')
-        .data(Object.entries(response.Habitacao))
-        .enter()
-        .append('circle')
-        .attr('class', 'graph-circle circle-habitacao')
-        .attr('cx', d => xScale(Number(d[0])))
-        .attr('cy', d => yScale(d[1]))
-        .attr('r', radius)
-
-      svgElement
-        .selectAll('.circle-al')
-        .data(Object.entries(response.AL).slice(4))
-        .enter()
-        .append('circle')
-        .attr('class', 'graph-circle circle-al')
-        .attr('cx', d => xScale(Number(d[0])))
-        .attr('cy', d => yScale(d[1]))
-        .attr('r', radius)
-
-      // Add a label with the value
-      svgElement
-        .selectAll('.label-habitacao')
-        .data(Object.entries(response.Habitacao))
-        .enter()
-        .append('text')
-        .attr('class', 'graph-label label-habitacao')
-        .attr('x', d => xScale(Number(d[0])))
-        .attr('y', d => yScale(d[1]) - 10)
-        .text(d => d[1].toString())
-
-      svgElement
-        .selectAll('.label-al')
-        .data(Object.entries(response.AL))
-        .enter()
-        .append('text')
-        .attr('class', 'graph-label label-al')
-        .attr('x', d => xScale(Number(d[0])))
-        .attr('y', d => yScale(d[1]) - 10)
-        .text(d => d[1].toString())
-
-      svgElement
-        .append('g')
-        .attr('transform', `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(xScale))
+      const response = await fetch('/static/data/habitacao.json')
+      const newData = await response.json()
+      setData(newData)
     }
 
     fetchData()
   }, [language])
 
+  const width = 700
+  const height = 450
+  const margin = { top: 20, right: 80, bottom: 60, left: 50 }
+
+  // Accessors
+  const getX = d => d[0]
+  const getY = d => d[1]
+
+  // Scales
+  const xScale = scaleLinear({
+    domain: [
+      Math.min(...Object.keys(data.Habitacao).map(Number)),
+      Math.max(...Object.keys(data.Habitacao).map(Number)),
+    ],
+    range: [margin.left, width - margin.right],
+  })
+
+  const yScale = scaleLinear({
+    domain: [90000, 150000],
+    range: [height - margin.bottom, margin.top],
+  })
+
+  const lineLength = width
+  const animationProps = useSpring({
+    from: { strokeDashoffset: lineLength, imageOpacity: 0 },
+    to: { strokeDashoffset: 0, imageOpacity: 1 },
+    config: { duration: 10000 }, // Adjust the duration as needed
+    delay: 500, // Delay the start of the animation as needed
+    reset: true, // Add this if you want the animation to reset when the data changes
+    onRest: () => {
+      // This callback is called when the animation comes to a still-stand
+      // You can use this if you want to chain animations or trigger a state update
+    },
+  })
+
+  const properOffset = (lineLength * 3) / 4
+
+  const animationPropsFirstPath = useSpring({
+    from: { strokeDashoffset: lineLength / 4 },
+    to: {
+      strokeDashoffset: animationProps.strokeDashoffset.to(offset =>
+        offset === properOffset ? 0 : lineLength / 4,
+      ),
+    },
+    config: { duration: 10000 },
+    delay: 500,
+    reset: true,
+  })
+
   return (
     <div className="histogram-container">
       <h1 className="histogram-title">Habitação e ALs no Porto</h1>
-      <svg ref={svgRef} className="histogram-svg"></svg>
+      <svg width={width} height={height}>
+        <Group left={margin.left} top={margin.top}>
+          <AnimatedLinePath
+            data={Object.entries(data.AL)}
+            curve={curveLinear}
+            x={d => xScale(getX(d))}
+            y={d => yScale(getY(d))}
+            stroke={'#012169'}
+            strokeWidth={4}
+            strokeDasharray={lineLength}
+            style={animationProps}
+          />
+          <AnimatedLinePath
+            data={Object.entries(data.Habitacao)}
+            curve={curveLinear}
+            x={d => xScale(getX(d))}
+            y={d => yScale(getY(d))}
+            stroke="#26603a"
+            strokeWidth={4}
+            strokeDasharray={lineLength}
+            style={animationProps}
+          />
+
+          {Object.entries(data.Habitacao).map((d, i) => (
+            <React.Fragment key={`habitacao-fragment-${i}`}>
+              <AnimatedImage
+                key={`habitacao-image-${i}`}
+                href={'/static/images/casa_verde.png'}
+                x={xScale(getX(d)) - 20}
+                y={yScale(getY(d)) - 20}
+                width="40"
+                height="40"
+                style={{
+                  opacity: animationProps.strokeDashoffset.to(offset => {
+                    const currentLength = lineLength - offset // Current drawn length of the line
+                    const pointPosition = xScale(getX(d)) // X position of the data point
+                    // Calculate the difference between the point position and the current length of the line
+                    const diff = pointPosition - currentLength
+                    // If the line has reached the point, start increasing opacity
+                    if (diff <= 0) {
+                      return 1 // Fully visible if the line has passed the point
+                    }
+                    // If the line is about to reach the point, increase opacity based on proximity
+                    const fadeInDistance = 10 // Adjust this value to control the "speed" of the fade-in
+                    if (diff < fadeInDistance) {
+                      return 1 - diff / fadeInDistance // Calculate opacity based on how close the line is to the point
+                    }
+                    return 0 // Fully transparent if the line is not close to the point yet
+                  }),
+                }}
+              />
+              <animated.text
+                key={`habitacao-label-${i}`}
+                x={xScale(getX(d))}
+                y={yScale(getY(d)) + 30} // Adjust the y position to place the label above the image
+                textAnchor="middle" // Centers the text horizontally around (x, y)
+                fill="black" // Text color
+                fontSize="14" // Text size
+                style={{
+                  opacity: animationProps.strokeDashoffset.to(offset => {
+                    const currentLength = lineLength - offset
+                    const pointPosition = xScale(getX(d))
+                    const diff = pointPosition - currentLength
+                    if (diff <= 0) {
+                      return 1
+                    }
+                    const fadeInDistance = 10
+                    if (diff < fadeInDistance) {
+                      return 1 - diff / fadeInDistance
+                    }
+                    return 0
+                  }),
+                }}>
+                {getY(d)}
+              </animated.text>
+            </React.Fragment>
+          ))}
+          {Object.entries(data.AL)
+            .slice(4)
+            .map((d, i) => (
+              <React.Fragment key={`AL-fragment-${i}`}>
+                <AnimatedImage
+                  key={`al-point-${i + 1}`}
+                  href={'/static/images/casa_azul_verde.png'}
+                  x={xScale(getX(d)) - 20} // Adjust the x position to center the image on the data point
+                  y={yScale(getY(d)) - 20} // Adjust the y position to center the image on the data point
+                  width="40" // Set the width of the image
+                  height="40" // Set the height of the image
+                  style={{
+                    opacity: animationProps.strokeDashoffset.to(offset => {
+                      const currentLength = lineLength - offset // Current drawn length of the line
+                      const pointPosition = xScale(getX(d)) // X position of the data point
+                      // Calculate the difference between the point position and the current length of the line
+                      const diff = pointPosition - currentLength
+                      // If the line has reached the point, start increasing opacity
+                      if (diff <= 0) {
+                        return 1 // Fully visible if the line has passed the point
+                      }
+                      // If the line is about to reach the point, increase opacity based on proximity
+                      const fadeInDistance = 10 // Adjust this value to control the "speed" of the fade-in
+                      if (diff < fadeInDistance) {
+                        return 1 - diff / fadeInDistance // Calculate opacity based on how close the line is to the point
+                      }
+                      return 0 // Fully transparent if the line is not close to the point yet
+                    }),
+                  }}
+                />
+                <animated.text
+                  key={`habitacao-label-${i}`}
+                  x={xScale(getX(d))}
+                  y={yScale(getY(d)) - 22} // Adjust the y position to place the label above the image
+                  textAnchor="middle" // Centers the text horizontally around (x, y)
+                  fill="black" // Text color
+                  fontSize="14" // Text size
+                  style={{
+                    opacity: animationProps.strokeDashoffset.to(offset => {
+                      const currentLength = lineLength - offset
+                      const pointPosition = xScale(getX(d))
+                      const diff = pointPosition - currentLength
+                      if (diff <= 0) {
+                        return 1
+                      }
+                      const fadeInDistance = 10
+                      if (diff < fadeInDistance) {
+                        return 1 - diff / fadeInDistance
+                      }
+                      return 0
+                    }),
+                  }}>
+                  {getY(d)}
+                </animated.text>
+              </React.Fragment>
+            ))}
+          {Object.entries(data.Habitacao).map((d, i) => (
+            <animated.text
+              key={`label-${d}`}
+              x={xScale(getX(d))}
+              y={height - 50} // Position the labels at the bottom of the chart
+              textAnchor="middle"
+              fontSize="20" // Adjust font size as needed
+              fill="black" // Adjust the fill color as needed
+              fontWeight="bold"
+              style={{
+                opacity: animationProps.strokeDashoffset.to(offset => {
+                  const currentLength = lineLength - offset
+                  const pointPosition = xScale(getX(d))
+                  const diff = pointPosition - currentLength
+                  if (diff <= 0) {
+                    return 1
+                  }
+                  const fadeInDistance = 10
+                  if (diff < fadeInDistance) {
+                    return 1 - diff / fadeInDistance
+                  }
+                  return 0
+                }),
+              }}>
+              {d[0]}
+            </animated.text>
+          ))}
+        </Group>
+      </svg>
+      <div className="chart-legend">
+        <div className="legend-item">
+          <Image
+            src="/static/images/casa_verde.png"
+            alt="Número de alojamentos"
+            width="50.5"
+            height="39"
+          />
+          <span className="legend-text">Número de Alojamentos</span>
+        </div>
+        <div className="legend-item">
+          <Image
+            src="/static/images/casa_azul_verde.png"
+            alt="Número de alojamentos + AL"
+            width="50.5"
+            height="39"
+          />
+          <span className="legend-text">Número de Alojamentos + AL</span>
+        </div>
+      </div>
     </div>
   )
 }

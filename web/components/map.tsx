@@ -126,8 +126,21 @@ const seccaoPaint: mapboxgl.FillPaint = {
 
 const Map = () => {
   const { data: alData } = useData('al.json')
-  const { data: freguesiaData } = useData('censos_freguesia.json')
-  const { data: seccaoData } = useData('censos_seccao.json')
+
+  const divTrigger = React.useRef(null!)
+  const mapPin = React.useRef(null!)
+
+  const mapContainer = React.useRef(null!)
+  const map = useRef<mapboxgl.Map | null>(null)
+
+  const action1 = React.useRef(null!)
+  const action2 = React.useRef(null!)
+  const action3 = React.useRef(null!)
+  const action4 = React.useRef(null!)
+  const action5 = React.useRef(null!)
+  const action6 = React.useRef(null!)
+  const action7 = React.useRef(null!)
+  const action8 = React.useRef(null!)
 
   const divTrigger = React.useRef(null!)
   const mapPin = React.useRef(null!)
@@ -176,10 +189,6 @@ const Map = () => {
 
       map.current.on('load', () => {
         document.body.style.overflow = 'scroll'
-
-        // SCROLL TRIGGERS
-
-        // Trigger 1: pins map and progress bar to the top of the screen
 
         ScrollTrigger.create({
           id: 'map-pin',
@@ -304,24 +313,42 @@ const Map = () => {
 
         // MAPBOX SOURCES
 
+        ScrollTrigger.create({
+          id: 'progress-bar',
+          trigger: divTrigger.current,
+          start: 'top top', // divTrigger top hits the bottom of the screen
+          endTrigger: action4.current, // end when action4 bottom hits the bottom of the screen
+          end: 'bottom bottom',
+          onUpdate: self => {
+            const scrollProgress = self.progress // Value from 0 to 1
+            const dateValue = gsap.utils.clamp(0, 1, scrollProgress)
+            setNormalizedDate(dateValue)
+            setBarWidth(`${scrollProgress * 100}%`)
+
+            if (map.current) {
+              map.current.setFilter('porto-al', ['<=', ['get', 'normalized_date'], dateValue])
+            }
+          },
+          onLeave: () => gsap.to('.progress-bar', { opacity: 0, duration: 0.5 }),
+          onEnterBack: () => gsap.to('.progress-bar', { opacity: 1, duration: 0.5 }),
+        })
+
+        ScrollTrigger.create({
+          id: 'plot-full-screen',
+          trigger: action4.current,
+          start: 'top middle', // divTrigger top hits the bottom of the screen
+          endTrigger: action5.current, // end when action4 bottom hits the bottom of the screen
+          end: 'bottom bottom',
+          onEnter: () => gsap.to('.plot-full-screen', { opacity: 1, duration: 0.5 }),
+          onLeave: () => gsap.to('.plot-full-screen', { opacity: 0, duration: 0.5 }),
+          onEnterBack: () => gsap.to('.plot-full-screen', { opacity: 1, duration: 0.5 }),
+          onLeaveBack: () => gsap.to('.plot-full-screen', { opacity: 0, duration: 0.5 }),
+        })
+
         map.current?.addSource('porto-al', {
           type: 'geojson',
           data: alData,
         })
-
-        map.current?.addSource('porto-freguesia', {
-          type: 'geojson',
-          data: freguesiaData,
-        })
-
-        map.current?.addSource('porto-seccao', {
-          type: 'geojson',
-          data: seccaoData,
-        })
-
-        // MAPBOX LAYERS
-
-        // Map 1
 
         map.current?.addLayer({
           id: 'porto-al',
@@ -436,3 +463,4 @@ const Map = () => {
 }
 
 export default Map
+ 
