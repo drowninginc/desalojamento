@@ -32,7 +32,6 @@ const Histogram = ({ language }: Props) => {
       })
   }, [])
 
-
   // Define the graph dimensions and margins
   const width = 600
   const height = 300

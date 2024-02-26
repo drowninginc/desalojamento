@@ -1,6 +1,4 @@
 .ipynb_checkpoints
 **/.DS_Store
-*.lockb
-*.lockb
-*.json
+
 .vscode/settings.json

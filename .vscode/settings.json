@@ -35,14 +35,13 @@
   "[html]": {
     "editor.defaultFormatter": null,
     "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-
+      "source.fixAll.eslint": true
     }
   },
   "json.format.enable": true,
   "[javascript][typescript]": {
     "editor.codeActionsOnSave": {
-     "source.fixAll.eslint": true
+      "source.fixAll.eslint": true
     }
   }
 }
