@@ -23,10 +23,10 @@ const Histogram = ({ language }: Props) => {
   useEffect(() => {
     fetch('./static/data/datas_abertura_cummulative.json')
       .then(response => response.json())
-      .then(jsonData => {
+      .then((jsonData: Data) => {
         const dates = Object.entries(jsonData.Abertura).map(([key, value]) => ({
           year: key,
-          value: value,
+          value: Number(value), // Ensure value is a number
         }))
         setData(dates)
       })

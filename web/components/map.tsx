@@ -46,10 +46,13 @@ const freguesiaPaint: mapboxgl.FillPaint = {
     ['linear'],
     ['get', 'propAL'], // assuming 'propAL' is the property in your data
     0,
-    '#ADD8E6', // light blue for propAL = 0
+    'rgba(173, 216, 230, 0.2)', // light blue with 100% transparency for propAL = 0
+    40,
+    'rgba(0, 0, 139, 1)',
+    50,
+    'rgba(0, 0, 139, 1)',
     100,
-    '#00008B', // dark blue for propAL = 100
-    // ],
+    'rgba(0, 0, 139, 1)', // dark blue with 20% transparency for propAL = 100
   ],
   'fill-opacity': 1,
   'fill-color-transition': { duration: 500 },
@@ -352,7 +355,7 @@ const Map = () => {
           },
           paint: {
             'line-color': '#007cbf',
-            'line-width': 2,
+            'line-width': 1,
           },
         })
 
