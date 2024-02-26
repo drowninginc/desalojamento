@@ -3,3 +3,4 @@
 *.lockb
 *.lockb
 *.json
+.vscode/settings.json

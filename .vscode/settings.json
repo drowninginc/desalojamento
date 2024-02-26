@@ -28,15 +28,20 @@
   },
   "[scss]": {
     "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": false,
-      "source.fixAll.stylelint": true
+      "source.fixAll.eslint": "never",
+      "source.fixAll.stylelint": "explicit"
     }
   },
   "[html]": {
     "editor.defaultFormatter": null,
     "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": false
+      "source.fixAll.eslint": "never"
     }
   },
-  "json.format.enable": true
+  "json.format.enable": true,
+  "[javascript][typescript]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  }
 }
