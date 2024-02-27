@@ -31,6 +31,24 @@ const alPaint: mapboxgl.CirclePaint = {
   'circle-color': '#012169',
 }
 
+const alPaintMegaHost: mapboxgl.CirclePaint = {
+  'circle-radius': [
+    'interpolate',
+    ['linear'],
+    ['zoom'],
+    12, // minimum zoom level to start interpolation
+    ['interpolate', ['linear'], ['get', 'weight'], 0, 2, 1, 6], // at zoom level 10
+    16, // maximum zoom level to end interpolation
+    ['interpolate', ['linear'], ['get', 'weight'], 0, 4, 1, 20], // at zoom level 15
+  ],
+  'circle-color': [
+    'case',
+    ['==', ['get', 'mega_host_2'], 'True'],
+    '#ff1654', // Red color for mega hosts
+    '#012169', // Default blue color for others
+  ],
+}
+
 // Map 2
 
 const freguesiaPaint: mapboxgl.FillPaint = {
@@ -271,7 +289,7 @@ const Map = () => {
           },
         })
 
-        // TRIgger 6:
+        // TRIgger 5:
 
         ScrollTrigger.create({
           trigger: action5.current,
@@ -288,20 +306,18 @@ const Map = () => {
           },
         })
 
-        // TRIgger 6:
-
         ScrollTrigger.create({
-          trigger: action5.current,
+          trigger: action6.current,
           start: 'top bottom',
           end: 'bottom top',
           onEnter: () => {
             gsap.to('.plot-full-screen', { opacity: 0, duration: 0.5 })
-            map.current?.setLayoutProperty('porto-freguesia', 'visibility', 'none')
-            map.current?.setLayoutProperty('porto-seccao', 'visibility', 'visible')
+            map.current?.setLayoutProperty('porto-seccao', 'visibility', 'none')
+            map.current?.setLayoutProperty('porto-al-megahosts', 'visibility', 'visible')
           },
           onLeaveBack: () => {
-            map.current?.setLayoutProperty('porto-freguesia', 'visibility', 'visible')
-            map.current?.setLayoutProperty('porto-seccao', 'visibility', 'none')
+            map.current?.setLayoutProperty('porto-seccao', 'visibility', 'visible')
+            map.current?.setLayoutProperty('porto-al-megahosts', 'visibility', 'none')
           },
         })
 
@@ -369,6 +385,18 @@ const Map = () => {
             visibility: 'none',
           },
           paint: seccaoPaint,
+        })
+
+        // Map 4
+
+        map.current?.addLayer({
+          id: 'porto-al-megahosts',
+          type: 'circle',
+          source: 'porto-al',
+          layout: {
+            visibility: 'none',
+          },
+          paint: alPaintMegaHost,
         })
       })
     }
