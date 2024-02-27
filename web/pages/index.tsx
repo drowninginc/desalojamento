@@ -10,15 +10,16 @@ import translation from '../libs/translation'
 
 const Index = () => {
   const [language, setLanguage] = useState('pt')
+  const city = 'Porto'
   const label = '82%'
 
   return (
     <>
-      <Layout language={language} setLanguage={setLanguage}>
-        <Map />
-        <Paragraph>{translation('paragraph1', language)}</Paragraph>
-        <Histogram language={language} />
-        <Linechart language={language} />
+      <Layout language={language} setLanguage={setLanguage} city={city}>
+        <Map city={city} />
+        <Paragraph>{translation('paragraph1', language, city)}</Paragraph>
+        <Histogram language={language} city={city} />
+        <Linechart language={language} city={city} />
         <Casas label={label} />
       </Layout>
     </>

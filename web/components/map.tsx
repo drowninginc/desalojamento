@@ -145,10 +145,22 @@ const seccaoPaint: mapboxgl.FillPaint = {
   'fill-color-transition': { duration: 500 },
 }
 
-const Map = () => {
-  const { data: alData } = useData('al.json')
-  const { data: freguesiaData } = useData('censos_freguesia.json')
-  const { data: seccaoData } = useData('censos_seccao.json')
+type Props = {
+  city: string
+}
+
+const Map = ({ city }: Props) => {
+  let alData, freguesiaData, seccaoData
+
+  if (city === 'Porto' || city === 'Lisbon') {
+    const alResponse = useData('al.json')
+    const freguesiaResponse = useData('censos_freguesia.json')
+    const seccaoResponse = useData('censos_seccao.json')
+
+    alData = alResponse.data
+    freguesiaData = freguesiaResponse.data
+    seccaoData = seccaoResponse.data
+  }
 
   const divTrigger = React.useRef(null!)
   const mapPin = React.useRef(null!)

@@ -1,4 +1,4 @@
-export default function (section: string, language: string): React.ReactNode {
+export default function (section: string, language: string, city: string): React.ReactNode {
   switch (section) {
     case 'authors':
       return language == 'en' ? (
@@ -26,13 +26,35 @@ export default function (section: string, language: string): React.ReactNode {
         </>
       )
     case 'intro':
-      return language == 'en' ? (
+      if (language === 'en') {
+        if (city === 'Porto') {
+          return <>TODO: English content for Porto</>
+        } else if (city === 'Lisbon') {
+          return <>TODO: English content for Lisbon</>
+        }
+      } else if (language === 'pt') {
+        if (city === 'Porto') {
+          return (
+            <>
+              Nas cidades portuguesas vive-se uma crise de habitação sem precedentes nas últimas
+              décadas. Esta crise gerou uma forte contestação social, que foi capaz de trazer para o
+              centro do debate políticas relacionadas com a intervenção do Estado no mercado de
+              arrendamento e com a regulação do turismo, em particular o{' '}
+              <mark>alojamento local (AL)</mark>. O governo, perante o agigantar da crise, anunciou
+              o programa Mais Habitação que pretendia responder parcialmente a estas questões,
+              colocando algumas restrições à atividade deste tipo de alojamento turístico. Face a
+              este clima político, os defensores do Alojamento Local têm-se organizado, promovendo o
+              AL como uma importante atividade económica e como fonte de sustento para muitas
+              famílias.
+            </>
+          )
+        } else if (city === 'Lisbon') {
+          return <>TODO: Portuguese content for Lisbon</>
+        }
+      }
+      return (
         <>
-          TODO
-        </>
-      ) : (
-        <>
-Nas cidades portuguesas vive-se uma crise de habitação sem precedentes nas últimas décadas. Esta crise gerou uma forte contestação social, que foi capaz de trazer para o centro do debate políticas relacionadas com a intervenção do Estado no mercado de arrendamento e com a regulação do turismo, em particular o <mark>alojamento local (AL)</mark>. O governo, perante o agigantar da crise, anunciou o programa Mais Habitação que pretendia responder parcialmente a estas questões, colocando algumas restrições à atividade deste tipo de alojamento turístico. Face a este clima político, os defensores do Alojamento Local têm-se organizado, promovendo o AL como uma importante atividade económica e como fonte de sustento para muitas famílias.
+          Invalid language: {language} or city: {city}
         </>
       )
     case 'map1':
@@ -132,12 +154,13 @@ Nas cidades portuguesas vive-se uma crise de habitação sem precedentes nas úl
       )
     case 'paragraph1':
       return language == 'en' ? (
-        <>
-
-        </>
+        <></>
       ) : (
         <>
-          O ritmo de novas licenças tem estado quase sempre em crescimento, com exceção dos anos da COVID-19. Cada novo ano tem batido recordes de novos alojamentos, sendo que só em 2022 foram registados <mark>1914 novas licenças</mark>, representando 20% das licenças até à data.
+          O ritmo de novas licenças tem estado quase sempre em crescimento, com exceção dos anos da
+          COVID-19. Cada novo ano tem batido recordes de novos alojamentos, sendo que só em 2022
+          foram registados <mark>1914 novas licenças</mark>, representando 20% das licenças até à
+          data.
         </>
       )
     case 'paragraph2':

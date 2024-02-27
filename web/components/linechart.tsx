@@ -8,17 +8,24 @@ import { useSpring, animated } from 'react-spring'
 
 type Props = {
   language: string
+  city: string
 }
 
 const AnimatedLinePath = animated(LinePath)
 const AnimatedImage = animated.image
 
-const Linechart = ({ language }: Props) => {
+const Linechart = ({ language, city }: Props) => {
   const [data, setData] = useState({ Habitacao: [], AL: [] })
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('/static/data/habitacao.json')
+      let url = ''
+      if (city === 'Porto') {
+        url = '/static/data/habitacao.json'
+      } else if (city === 'Lisbon') {
+        url = '/static/data/habitacao.json'
+      }
+      const response = await fetch(url)
       const newData = await response.json()
       setData(newData)
     }
@@ -59,20 +66,6 @@ const Linechart = ({ language }: Props) => {
       // This callback is called when the animation comes to a still-stand
       // You can use this if you want to chain animations or trigger a state update
     },
-  })
-
-  const properOffset = (lineLength * 3) / 4
-
-  const animationPropsFirstPath = useSpring({
-    from: { strokeDashoffset: lineLength / 4 },
-    to: {
-      strokeDashoffset: animationProps.strokeDashoffset.to(offset =>
-        offset === properOffset ? 0 : lineLength / 4,
-      ),
-    },
-    config: { duration: 10000 },
-    delay: 500,
-    reset: true,
   })
 
   return (
@@ -248,7 +241,8 @@ const Linechart = ({ language }: Props) => {
             width="50.5"
             height="39"
           />
-          <span className="legend-text">Número de Alojamentos</span>
+          {language === 'en' && <span className="legend-text">Number of Housing Units</span>}
+          {language !== 'en' && <span className="legend-text">Número de Alojamentos</span>}
         </div>
         <div className="legend-item">
           <Image
@@ -257,7 +251,10 @@ const Linechart = ({ language }: Props) => {
             width="50.5"
             height="39"
           />
-          <span className="legend-text">Número de Alojamentos + AL</span>
+          {language === 'en' && (
+            <span className="legend-text">Number of Housing Units + Local Accomodations</span>
+          )}
+          {language !== 'en' && <span className="legend-text">Número de Alojamentos + AL</span>}
         </div>
       </div>
     </div>

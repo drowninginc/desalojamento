@@ -6,13 +6,14 @@ type Props = {
   children: React.ReactNode
   language: string
   setLanguage: any
+  city: string
 }
 
-const Layout = ({ children, language, setLanguage }: Props) => {
+const Layout = ({ children, language, setLanguage, city }: Props) => {
   return (
     <>
       <Meta />
-      <Header language={language} setLanguage={setLanguage} />
+      <Header language={language} setLanguage={setLanguage} city={city} />
       <main>{children}</main>
     </>
   )

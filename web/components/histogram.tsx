@@ -11,17 +11,25 @@ type Datum = {
 
 type Props = {
   language: string
+  city: string
 }
 
 interface Data {
   Abertura: Record<string, number>
 }
 
-const Histogram = ({ language }: Props) => {
+const Histogram = ({ language, city }: Props) => {
   const [data, setData] = useState<Datum[]>([])
 
+  let url = ''
+  if (city === 'Porto') {
+    url = './static/data/datas_abertura_cummulative.json'
+  } else if (city === 'Lisbon') {
+    url = './static/data/datas_abertura_cummulative.json'
+  }
+
   useEffect(() => {
-    fetch('./static/data/datas_abertura_cummulative.json')
+    fetch(url)
       .then(response => response.json())
       .then((jsonData: Data) => {
         const dates = Object.entries(jsonData.Abertura).map(([key, value]) => ({
@@ -65,7 +73,18 @@ const Histogram = ({ language }: Props) => {
 
   return (
     <div className="histogram-container">
-      <h1 className="histogram-title">ALs no Porto, por ano</h1>
+      {language === 'en' && city === 'Porto' && (
+        <h1 className="histogram-title">Local Accommodations in Porto, by year</h1>
+      )}
+      {language === 'pt' && city === 'Porto' && (
+        <h1 className="histogram-title">ALs no Porto, por ano</h1>
+      )}
+      {language === 'en' && city === 'Lisbon' && (
+        <h1 className="histogram-title">Local Accommodations in Lisbon, by year</h1>
+      )}
+      {language === 'pt' && city === 'Lisbon' && (
+        <h1 className="histogram-title">ALs em Lisboa, por ano</h1>
+      )}
       <svg width={width} height={height}>
         <Group left={margin.left} top={margin.top}>
           {data.map((d, i) => {
