@@ -11,7 +11,6 @@ import translation from '../libs/translation'
 const Index = () => {
   const [language, setLanguage] = useState('pt')
   const city = 'Porto'
-  const label = '82%'
 
   return (
     <>
@@ -20,7 +19,7 @@ const Index = () => {
         <Paragraph>{translation('paragraph1', language, city)}</Paragraph>
         <Histogram language={language} city={city} />
         <Linechart language={language} city={city} />
-        <Casas label={label} />
+        <Casas city={city} />
       </Layout>
     </>
   )

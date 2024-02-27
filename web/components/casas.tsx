@@ -1,11 +1,17 @@
-import Container from './container'
 import Image from 'next/image'
 
 interface CasasProps {
-  label: string
+  city: string
 }
 
-const Casas = ({ label }: CasasProps) => {
+const Casas = ({ city }: CasasProps) => {
+  let label = ''
+  if (city === 'Porto') {
+    label = '82%'
+  } else if (city === 'Lisbon') {
+    label = '82%'
+  }
+
   const clipPathValue = `inset(0 0 0 ${label})`
   const dynamicAfterStyle = `
   .casas-container::after {
