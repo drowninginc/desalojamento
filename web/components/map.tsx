@@ -150,16 +150,20 @@ type Props = {
 }
 
 const Map = ({ city }: Props) => {
-  let alData, freguesiaData, seccaoData
+  let alData, freguesiaData, seccaoData, mapCenter
 
   if (city === 'Porto') {
     alData = useData('al.json').data
     freguesiaData = useData('censos_freguesia.json').data
     seccaoData = useData('censos_seccao.json').data
+
+    mapCenter = [-8.623, 41.162]
   } else {
     alData = useData('al-lisboa.json').data
     freguesiaData = useData('censos_freguesia_lisboa.json').data
     seccaoData = useData('censos_seccao_lisboa.json').data
+
+    mapCenter = [-9.146, 38.735]
   }
 
   const divTrigger = React.useRef(null!)
@@ -202,7 +206,7 @@ const Map = ({ city }: Props) => {
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/light-v10?optimize=true',
-        center: [-8.623, 41.162],
+        center: mapCenter,
         zoom: 12,
         interactive: false,
       })
