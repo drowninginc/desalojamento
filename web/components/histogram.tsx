@@ -25,7 +25,7 @@ const Histogram = ({ language, city }: Props) => {
   if (city === 'Porto') {
     url = './static/data/datas_abertura_cummulative.json'
   } else if (city === 'Lisbon') {
-    url = './static/data/datas_abertura_cummulative.json'
+    url = './static/data/datas_abertura_cummulative.json' //TODO
   }
 
   useEffect(() => {

@@ -9,7 +9,7 @@ const Casas = ({ city }: CasasProps) => {
   if (city === 'Porto') {
     label = '82%'
   } else if (city === 'Lisbon') {
-    label = '82%'
+    label = '68%'
   }
 
   const clipPathValue = `inset(0 0 0 ${label})`

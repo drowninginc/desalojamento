@@ -152,14 +152,14 @@ type Props = {
 const Map = ({ city }: Props) => {
   let alData, freguesiaData, seccaoData
 
-  if (city === 'Porto' || city === 'Lisbon') {
-    const alResponse = useData('al.json')
-    const freguesiaResponse = useData('censos_freguesia.json')
-    const seccaoResponse = useData('censos_seccao.json')
-
-    alData = alResponse.data
-    freguesiaData = freguesiaResponse.data
-    seccaoData = seccaoResponse.data
+  if (city === 'Porto') {
+    alData = useData('al.json').data
+    freguesiaData = useData('censos_freguesia.json').data
+    seccaoData = useData('censos_seccao.json').data
+  } else {
+    alData = useData('al-lisboa.json').data
+    freguesiaData = useData('censos_freguesia_lisboa.json').data
+    seccaoData = useData('censos_seccao_lisboa.json').data
   }
 
   const divTrigger = React.useRef(null!)

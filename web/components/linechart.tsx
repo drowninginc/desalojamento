@@ -23,7 +23,7 @@ const Linechart = ({ language, city }: Props) => {
       if (city === 'Porto') {
         url = '/static/data/habitacao.json'
       } else if (city === 'Lisbon') {
-        url = '/static/data/habitacao.json'
+        url = '/static/data/habitacao_lisboa.json'
       }
       const response = await fetch(url)
       const newData = await response.json()
