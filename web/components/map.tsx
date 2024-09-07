@@ -1,10 +1,18 @@
-import useSWR from 'swr'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import fetcher from '../libs/fetcher'
 import React, { useRef, useEffect } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
+import { debounce } from 'lodash'
+import {
+  cityDefinitions,
+  alPaint,
+  alPaintMegaHost,
+  freguesiaPaint,
+  seccaoPaint,
+} from './extras/mapStyles'
+import { getCityData, getMinMax } from './extras/helpers'
+import { createScrollTriggers } from './extras/triggers'
 
 // @ts-ignore
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default
@@ -12,173 +20,25 @@ mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worke
 mapboxgl.accessToken =
   'pk.eyJ1IjoiY2xhdWRpb2xlbW9zIiwiYSI6ImNsMDV4NXBxajBzMWkzYm9ndXhzbTk5ZHkifQ.85n9mjZbTDUpyQZrrJTBwA'
 
-const useData = (path: string) => useSWR<any>(`./static/data/${path}`, fetcher)
-
-// MAP PAINT PROPERTIES
-
-// Map 1
-
-const alPaint: mapboxgl.CirclePaint = {
-  'circle-radius': [
-    'interpolate',
-    ['linear'],
-    ['zoom'],
-    12, // minimum zoom level to start interpolation
-    ['interpolate', ['linear'], ['get', 'weight'], 0, 2, 1, 6], // at zoom level 10
-    16, // maximum zoom level to end interpolation
-    ['interpolate', ['linear'], ['get', 'weight'], 0, 4, 1, 20], // at zoom level 15
-  ],
-  'circle-color': '#012169',
-}
-
-const alPaintMegaHost: mapboxgl.CirclePaint = {
-  'circle-radius': [
-    'interpolate',
-    ['linear'],
-    ['zoom'],
-    12, // minimum zoom level to start interpolation
-    ['interpolate', ['linear'], ['get', 'weight'], 0, 2, 1, 6], // at zoom level 10
-    16, // maximum zoom level to end interpolation
-    ['interpolate', ['linear'], ['get', 'weight'], 0, 4, 1, 20], // at zoom level 15
-  ],
-  'circle-color': [
-    'case',
-    ['==', ['get', 'mega_host_2'], 'True'],
-    '#ff1654', // Red color for mega hosts
-    '#012169', // Default blue color for others
-  ],
-}
-
-// Map 2
-
-const freguesiaPaint: mapboxgl.FillPaint = {
-  'fill-color': [
-    // 'interpolate',
-    // ['linear'],
-    // ['zoom'],
-    // 10,
-    // '#007cbf', // blue at zoom level 12
-    // 13,
-    // [
-    'interpolate',
-    ['linear'],
-    ['get', 'propAL'], // assuming 'propAL' is the property in your data
-    0,
-    'rgba(173, 216, 230, 0.2)', // light blue with 100% transparency for propAL = 0
-    40,
-    'rgba(0, 0, 139, 1)',
-    50,
-    'rgba(0, 0, 139, 1)',
-    100,
-    'rgba(0, 0, 139, 1)', // dark blue with 20% transparency for propAL = 100
-  ],
-  'fill-opacity': 1,
-  'fill-color-transition': { duration: 500 },
-}
-
-const freguesiaPaintPop: mapboxgl.FillPaint = {
-  'fill-color': [
-    // 'interpolate',
-    // ['linear'],
-    // ['zoom'],
-    // 10,
-    // '#007cbf', // blue at zoom level 12
-    // 13,
-    // [
-    'interpolate',
-    ['linear'],
-    ['get', 'diff_pop_2011'], // assuming 'propAL' is the property in your data
-    0,
-    '#FFA07A', // light blue for propAL = 0
-    100,
-    '#8B0000', // dark blue for propAL = 100
-    // ],
-  ],
-  'fill-opacity': 1,
-  'fill-color-transition': { duration: 500 },
-}
-
-const freguesiaPaintAL: mapboxgl.FillPaint = {
-  'fill-color': [
-    // 'interpolate',
-    // ['linear'],
-    // ['zoom'],
-    // 10,
-    // '#007cbf', // blue at zoom level 12
-    // 13,
-    // [
-    'interpolate',
-    ['linear'],
-    ['get', 'diff_alojamentos_2011'], // assuming 'propAL' is the property in your data
-    0,
-    '#98FB98', // light blue for propAL = 0
-    100,
-    '#006400', // dark blue for propAL = 100
-    // ],
-  ],
-  'fill-opacity': 1,
-  'fill-color-transition': { duration: 500 },
-}
-
-// Map 3
-
-const seccaoPaint: mapboxgl.FillPaint = {
-  'fill-color': [
-    // 'interpolate',
-    // ['linear'],
-    // ['zoom'],
-    // 10,
-    // '#007cbf', // blue at zoom level 12
-    // 13,
-    // [
-    'interpolate',
-    ['linear'],
-    ['get', 'propAL'], // assuming 'propAL' is the property in your data
-    0,
-    '#ADD8E6', // light blue for propAL = 0
-    100,
-    '#00008B', // dark blue for propAL = 100
-    // ],
-  ],
-  'fill-opacity': 0.8,
-  'fill-outline-color': '#00008C',
-  'fill-color-transition': { duration: 500 },
-}
-
 type Props = {
   city: string
 }
 
 const Map = ({ city }: Props) => {
-  let alData, freguesiaData, seccaoData, mapCenter
-
-  if (city === 'Porto') {
-    alData = useData('al.json').data
-    freguesiaData = useData('censos_freguesia.json').data
-    seccaoData = useData('censos_seccao.json').data
-
-    mapCenter = [-8.623, 41.162]
-  } else {
-    alData = useData('al-lisboa.json').data
-    freguesiaData = useData('censos_freguesia_lisboa.json').data
-    seccaoData = useData('censos_seccao_lisboa.json').data
-
-    mapCenter = [-9.146, 38.735]
-  }
+  const { alData, freguesiaData, seccaoData } = getCityData(city)
 
   const divTrigger = React.useRef(null!)
   const mapPin = React.useRef(null!)
-
   const mapContainer = React.useRef(null!)
   const progressBar = React.useRef(null!)
   const map = useRef<mapboxgl.Map | null>(null)
 
-  const action1 = React.useRef(null!)
-  const action2 = React.useRef(null!)
-  const action3 = React.useRef(null!)
-  const action4 = React.useRef(null!)
-  const action5 = React.useRef(null!)
-  const action6 = React.useRef(null!)
+  const actionIntro = React.useRef(null!)
+  const actionFreguesia = React.useRef(null!)
+  const actionFreguesiaPop = React.useRef(null!)
+  const actionFreguesiaAL = React.useRef(null!)
+  const actionSeccao = React.useRef(null!)
+  const actionMegaHosts = React.useRef(null!)
 
   const [normalizedDate, setNormalizedDate] = React.useState(0)
   const [barWidth, setBarWidth] = React.useState('0%')
@@ -193,7 +53,12 @@ const Map = ({ city }: Props) => {
 
   gsap.registerPlugin(ScrollTrigger)
 
+  const debouncedSetFilter = debounce((map, dateValue) => {
+    map.setFilter('porto-al', ['<=', ['get', 'normalized_date'], dateValue])
+  }, 15)
+
   useEffect(() => {
+    console.log(freguesiaData)
     document.body.style.overflow = !map.current
       ? 'hidden'
       : map.current.loaded()
@@ -203,142 +68,50 @@ const Map = ({ city }: Props) => {
     if (alData && freguesiaData && seccaoData) {
       if (map.current) return
 
+      const [minPop, maxPop] = getMinMax(freguesiaData, 'diff_pop_2011')
+      const freguesiaPaintPop: mapboxgl.FillPaint = {
+        'fill-color': [
+          'interpolate',
+          ['linear'],
+          ['get', 'diff_pop_2011'],
+          minPop,
+          '#8B0000',
+          maxPop,
+          '#FFA07A',
+        ],
+        'fill-opacity': 1,
+        'fill-color-transition': { duration: 500 },
+      }
+
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: 'mapbox://styles/mapbox/light-v10?optimize=true',
-        center: mapCenter,
-        zoom: 12,
+        center: cityDefinitions[city].mapCenter,
+        zoom: cityDefinitions[city].zoom,
         interactive: false,
       })
 
       map.current.on('load', () => {
         document.body.style.overflow = 'scroll'
 
-        // SCROLL TRIGGERS
-
-        // Trigger 1: pins map and progress bar to the top of the screen
-
-        ScrollTrigger.create({
-          id: 'map-pin',
-          trigger: divTrigger.current,
-          start: 'top top',
-          end: 'bottom top',
-          pin: mapPin.current,
-        })
-
-        ScrollTrigger.create({
-          id: 'progress-bar-pin',
-          trigger: divTrigger.current,
-          start: 'top top',
-          end: 'bottom top',
-          pin: progressBar.current,
-        })
-
-        // Trigger 2: makes progress bar fill up and updates map
-
-        ScrollTrigger.create({
-          id: 'progress-bar',
-          trigger: divTrigger.current,
-          start: 'top top',
-          endTrigger: action1.current,
-          end: 'center center',
-          onUpdate: self => {
-            const scrollProgress = self.progress
-            const dateValue = gsap.utils.clamp(0, 1, scrollProgress)
-            setNormalizedDate(dateValue)
-            setBarWidth(`${scrollProgress * 100}%`)
-            map.current?.setFilter('porto-al', ['<=', ['get', 'normalized_date'], dateValue])
-          },
-          onLeave: () => gsap.to('.progress-bar', { opacity: 0, duration: 0.5 }),
-          onEnterBack: () => gsap.to('.progress-bar', { opacity: 1, duration: 0.5 }),
-        })
-
-        // Trigger 3: makes next section appear on top of the map
-
-        ScrollTrigger.create({
-          id: 'plot-full-screen',
-          trigger: action1.current,
-          start: 'top middle',
-          endTrigger: action2.current,
-          end: 'bottom bottom',
-          onEnter: () => gsap.to('.plot-full-screen', { opacity: 1, duration: 0.5 }),
-          onLeave: () => {
-            gsap.to('.plot-full-screen', { opacity: 0, duration: 0.5 })
-            map.current?.setLayoutProperty('porto-al', 'visibility', 'none')
-            map.current?.setLayoutProperty('porto-freguesia', 'visibility', 'visible')
-          },
-          onEnterBack: () => {
-            gsap.to('.plot-full-screen', { opacity: 1, duration: 0.5 })
-            map.current?.setLayoutProperty('porto-al', 'visibility', 'visible')
-            map.current?.setLayoutProperty('porto-freguesia', 'visibility', 'none')
-          },
-          onLeaveBack: () => gsap.to('.plot-full-screen', { opacity: 0, duration: 0.5 }),
-        })
-
-        // Trigger 4:
-
-        ScrollTrigger.create({
-          trigger: action3.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          onEnter: () => {
-            map.current?.setPaintProperty(
-              'porto-freguesia',
-              'fill-color',
-              freguesiaPaintPop['fill-color'],
-            )
-          },
-        })
-
-        // Trigger 5:
-
-        ScrollTrigger.create({
-          trigger: action4.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          onEnter: () => {
-            map.current?.setPaintProperty(
-              'porto-freguesia',
-              'fill-color',
-              freguesiaPaintAL['fill-color'],
-            )
-          },
-        })
-
-        // TRIgger 5:
-
-        ScrollTrigger.create({
-          trigger: action5.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          onEnter: () => {
-            gsap.to('.plot-full-screen', { opacity: 0, duration: 0.5 })
-            map.current?.setLayoutProperty('porto-freguesia', 'visibility', 'none')
-            map.current?.setLayoutProperty('porto-seccao', 'visibility', 'visible')
-          },
-          onLeaveBack: () => {
-            map.current?.setLayoutProperty('porto-freguesia', 'visibility', 'visible')
-            map.current?.setLayoutProperty('porto-seccao', 'visibility', 'none')
-          },
-        })
-
-        ScrollTrigger.create({
-          trigger: action6.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          onEnter: () => {
-            gsap.to('.plot-full-screen', { opacity: 0, duration: 0.5 })
-            map.current?.setLayoutProperty('porto-seccao', 'visibility', 'none')
-            map.current?.setLayoutProperty('porto-al-megahosts', 'visibility', 'visible')
-          },
-          onLeaveBack: () => {
-            map.current?.setLayoutProperty('porto-seccao', 'visibility', 'visible')
-            map.current?.setLayoutProperty('porto-al-megahosts', 'visibility', 'none')
-          },
-        })
+        createScrollTriggers(
+          map,
+          divTrigger,
+          mapPin,
+          progressBar,
+          actionIntro,
+          actionFreguesia,
+          actionFreguesiaPop,
+          actionFreguesiaAL,
+          actionSeccao,
+          actionMegaHosts,
+          setNormalizedDate,
+          setBarWidth,
+          debouncedSetFilter,
+          freguesiaPaintPop,
+        )
 
         // MAPBOX SOURCES
-
         map.current?.addSource('porto-al', {
           type: 'geojson',
           data: alData,
@@ -357,7 +130,6 @@ const Map = ({ city }: Props) => {
         // MAPBOX LAYERS
 
         // Map 1
-
         map.current?.addLayer({
           id: 'porto-al',
           type: 'circle',
@@ -367,7 +139,6 @@ const Map = ({ city }: Props) => {
         })
 
         // Map 2
-
         map.current?.addLayer({
           id: 'porto-freguesia',
           type: 'fill',
@@ -392,7 +163,6 @@ const Map = ({ city }: Props) => {
         })
 
         // Map 3
-
         map.current?.addLayer({
           id: 'porto-seccao',
           type: 'fill',
@@ -404,7 +174,6 @@ const Map = ({ city }: Props) => {
         })
 
         // Map 4
-
         map.current?.addLayer({
           id: 'porto-al-megahosts',
           type: 'circle',
@@ -447,34 +216,37 @@ const Map = ({ city }: Props) => {
             estar integrados nesta designação.
           </div>
           <div className="text-box">
-            Desde essa altura, a oferta deste tipo de alojamentos não tem parado de crescer. O
-            tamanho dos pontos representa a quantidade de ALs num mesmo número de porta.
-          </div>
-          <div ref={action1} className="text-box">
-            À data de novembro de 2023, foram atribuídas no total 10463 licenças de alojamento
-            local* na cidade do Porto.
-          </div>
-          <div className="text-box">text1</div>
-          <div ref={action2} className="text-box">
-            text1
+            A figura do alojamento local foi introduzido em 2008, mas só em 2014 passou o seu
+            registo a ser obrigatório, passando os alojamentos deste tipo que já operavam antes a
+            estar integrados nesta designação.
           </div>
           <div className="text-box">
-            Obviamente, a cidade não é afetada pelo alojamento local da mesma forma em todo o lado.
-            As freguesias do Centro Histórico são as mais afetadas.
+            A figura do alojamento local foi introduzido em 2008, mas só em 2014 passou o seu
+            registo a ser obrigatório, passando os alojamentos deste tipo que já operavam antes a
+            estar integrados nesta designação.
           </div>
-          <div ref={action3} className="text-box">
-            São precisamente as freguesias onde os ALs são mais incidentes que também mais população
-            perderam na última década.
+          <div className="text-box">
+            A figura do alojamento local foi introduzido em 2008, mas só em 2014 passou o seu
+            registo a ser obrigatório, passando os alojamentos deste tipo que já operavam antes a
+            estar integrados nesta designação.
           </div>
-          <div ref={action4} className="text-box">
-            E também as que mais alojamentos de habitação perderam.
+          <div ref={actionIntro} className="text-box">
+            actionIntro
           </div>
-          <div ref={action5} className="text-box">
-            O mapa por quarteirões permite perceber melhor a concentração de ALs em alguns locais da
-            cidade, que se transformaram numa verdadeira monocultura do turismo.
+          <div ref={actionFreguesia} className="text-box">
+            actionFreguesia
           </div>
-          <div ref={action6} className="text-box">
-            Existem até vários quarteirões que já não têm habitantes, apenas alojamentos locais.
+          <div ref={actionFreguesiaPop} className="text-box">
+            actionFreguesiaPop
+          </div>
+          <div ref={actionFreguesiaAL} className="text-box">
+            actionFreguesiaAL
+          </div>
+          <div ref={actionSeccao} className="text-box">
+            actionSeccao
+          </div>
+          <div ref={actionMegaHosts} className="text-box">
+            actionMegaHosts
           </div>
         </div>
       </div>

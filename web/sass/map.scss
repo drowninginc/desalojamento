@@ -137,7 +137,7 @@ a.button {
 
   @include screen-tablet-portrait-and-bigger {
     width: 350px;
-    margin: 50vh $global-spacing-xlg 0 $global-spacing-xlg;
+    margin: 80vh $global-spacing-xlg 0 $global-spacing-xlg;
     background-color: rgba($color-beige, 1);
   }
 
