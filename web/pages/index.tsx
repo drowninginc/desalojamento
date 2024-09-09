@@ -10,7 +10,7 @@ import translation from '../libs/translation'
 
 const Index = () => {
   const [language, setLanguage] = useState('pt')
-  const city = 'Porto'
+  const city = 'Lisbon'
 
   return (
     <>

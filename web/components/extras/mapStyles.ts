@@ -5,7 +5,7 @@ export const cityDefinitions = {
     mapCenter: [-8.653, 41.162],
     zoom: 12.3,
   },
-  Lisboa: {
+  Lisbon: {
     mapCenter: [-9.146, 38.735],
     zoom: 12.3,
   },
