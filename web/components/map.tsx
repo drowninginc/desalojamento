@@ -54,7 +54,7 @@ const Map = ({ city }: Props) => {
   gsap.registerPlugin(ScrollTrigger)
 
   const debouncedSetFilter = debounce((map, dateValue) => {
-    map.setFilter('porto-al', ['<=', ['get', 'normalized_date'], dateValue])
+    map.setFilter(`${city}-al`, ['<=', ['get', 'normalized_date'], dateValue])
   }, 15)
 
   useEffect(() => {
@@ -89,6 +89,7 @@ const Map = ({ city }: Props) => {
         document.body.style.overflow = 'scroll'
 
         createScrollTriggers(
+          city,
           map,
           divTrigger,
           mapPin,
@@ -106,6 +107,7 @@ const Map = ({ city }: Props) => {
         )
 
         addSourcesAndLayers(
+          city,
           map.current,
           alData,
           freguesiaData,

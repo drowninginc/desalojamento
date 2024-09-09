@@ -28,6 +28,7 @@ export const createMap = (container, city, cityDefinitions) => {
 }
 
 export const addSourcesAndLayers = (
+  city,
   map,
   alData,
   freguesiaData,
@@ -38,33 +39,33 @@ export const addSourcesAndLayers = (
   alPaintMegaHost,
   freguesiaPaintPop,
 ) => {
-  map.addSource('porto-al', {
+  map.addSource(`${city}-al`, {
     type: 'geojson',
     data: alData,
   })
 
-  map.addSource('porto-freguesia', {
+  map.addSource(`${city}-freguesia`, {
     type: 'geojson',
     data: freguesiaData,
   })
 
-  map.addSource('porto-seccao', {
+  map.addSource(`${city}-seccao`, {
     type: 'geojson',
     data: seccaoData,
   })
 
   map.addLayer({
-    id: 'porto-al',
+    id: `${city}-al`,
     type: 'circle',
-    source: 'porto-al',
+    source: `${city}-al`,
     paint: alPaint,
     filter: ['<=', ['get', 'normalized_date'], 0],
   })
 
   map.addLayer({
-    id: 'porto-freguesia',
+    id: `${city}-freguesia`,
     type: 'fill',
-    source: 'porto-freguesia',
+    source: `${city}-freguesia`,
     layout: {
       visibility: 'none',
     },
@@ -72,9 +73,9 @@ export const addSourcesAndLayers = (
   })
 
   map.addLayer({
-    id: 'porto-freguesia-outline',
+    id: `${city}-freguesia-outline`,
     type: 'line',
-    source: 'porto-freguesia',
+    source: `${city}-freguesia`,
     layout: {
       visibility: 'none',
     },
@@ -85,9 +86,9 @@ export const addSourcesAndLayers = (
   })
 
   map.addLayer({
-    id: 'porto-seccao',
+    id: `${city}-seccao`,
     type: 'fill',
-    source: 'porto-seccao',
+    source: `${city}-seccao`,
     layout: {
       visibility: 'none',
     },
@@ -95,9 +96,9 @@ export const addSourcesAndLayers = (
   })
 
   map.addLayer({
-    id: 'porto-al-megahosts',
+    id: `${city}-al-megahosts`,
     type: 'circle',
-    source: 'porto-al',
+    source: `${city}-al`,
     layout: {
       visibility: 'none',
     },

@@ -4,32 +4,34 @@ import { freguesiaPaint, seccaoPaint, alPaintMegaHost, freguesiaPaintAL } from '
 gsap.registerPlugin(ScrollTrigger)
 
 const setLayerVisibility = (
+  city: string,
   map: mapboxgl.Map,
   visibleLayerId: string | null,
   paintProperty?: any,
 ) => {
-  const layers = ['porto-al', 'porto-freguesia', 'porto-seccao', 'porto-al-megahosts']
+  const layers = [`${city}-al`, `${city}-freguesia`, `${city}-seccao`, `${city}-al-megahosts`]
   layers.forEach(layerId => {
     const visibility = layerId === visibleLayerId ? 'visible' : 'none'
     map.setLayoutProperty(layerId, 'visibility', visibility)
 
-    if (layerId === 'porto-freguesia' && visibility === 'visible') {
+    if (layerId === `${city}-freguesia` && visibility === 'visible') {
       map.setPaintProperty(layerId, 'fill-color', paintProperty || freguesiaPaint['fill-color'])
-    } else if (layerId === 'porto-seccao' && visibility === 'visible') {
+    } else if (layerId === `${city}-seccao` && visibility === 'visible') {
       map.setPaintProperty(layerId, 'fill-color', seccaoPaint['fill-color'])
-    } else if (layerId === 'porto-al-megahosts' && visibility === 'visible') {
+    } else if (layerId === `${city}-al-megahosts` && visibility === 'visible') {
       map.setPaintProperty(layerId, 'circle-color', alPaintMegaHost['circle-color'])
     }
   })
 
-  if (visibleLayerId != 'porto-al-megahosts') {
-    map.setLayoutProperty('porto-al', 'visibility', 'visible')
-    map.setPaintProperty('porto-al', 'circle-opacity', visibleLayerId === 'porto-al' ? 1 : 0.2)
-    map.moveLayer('porto-al')
+  if (visibleLayerId != `${city}-al-megahosts`) {
+    map.setLayoutProperty(`${city}-al`, 'visibility', 'visible')
+    map.setPaintProperty(`${city}-al`, 'circle-opacity', visibleLayerId === `${city}-al` ? 1 : 0.2)
+    map.moveLayer(`${city}-al`)
   }
 }
 
 export const createScrollTriggers = (
+  city,
   map,
   divTrigger,
   mapPin,
@@ -88,7 +90,7 @@ export const createScrollTriggers = (
     onEnter: () => gsap.to('.plot-full-screen', { opacity: 1, duration: 0.5 }),
     onEnterBack: () => {
       gsap.to('.plot-full-screen', { opacity: 1, duration: 0.5 })
-      setLayerVisibility(map.current, 'porto-al')
+      setLayerVisibility(city, map.current, `${city}-al`)
     },
   })
 
@@ -98,10 +100,10 @@ export const createScrollTriggers = (
     end: 'top 20%',
     onEnter: () => {
       gsap.to('.plot-full-screen', { opacity: 0, duration: 0.5 })
-      setLayerVisibility(map.current, 'porto-freguesia')
+      setLayerVisibility(city, map.current, `${city}-freguesia`)
     },
     onEnterBack: () => {
-      setLayerVisibility(map.current, 'porto-freguesia')
+      setLayerVisibility(city, map.current, `${city}-freguesia`)
     },
   })
 
@@ -110,10 +112,10 @@ export const createScrollTriggers = (
     start: 'top 70%',
     end: 'top 20%',
     onEnter: () => {
-      setLayerVisibility(map.current, 'porto-freguesia', freguesiaPaintPop['fill-color'])
+      setLayerVisibility(city, map.current, `${city}-freguesia`, freguesiaPaintPop['fill-color'])
     },
     onEnterBack: () => {
-      setLayerVisibility(map.current, 'porto-freguesia', freguesiaPaintPop['fill-color'])
+      setLayerVisibility(city, map.current, `${city}-freguesia`, freguesiaPaintPop['fill-color'])
     },
   })
 
@@ -122,10 +124,10 @@ export const createScrollTriggers = (
     start: 'top 70%',
     end: 'top 20%',
     onEnter: () => {
-      setLayerVisibility(map.current, 'porto-freguesia', freguesiaPaintAL['fill-color'])
+      setLayerVisibility(city, map.current, `${city}-freguesia`, freguesiaPaintAL['fill-color'])
     },
     onEnterBack: () => {
-      setLayerVisibility(map.current, 'porto-freguesia', freguesiaPaintAL['fill-color'])
+      setLayerVisibility(city, map.current, `${city}-freguesia`, freguesiaPaintAL['fill-color'])
     },
   })
 
@@ -134,10 +136,10 @@ export const createScrollTriggers = (
     start: 'top 70%',
     end: 'top 20%',
     onEnter: () => {
-      setLayerVisibility(map.current, 'porto-seccao')
+      setLayerVisibility(city, map.current, `${city}-seccao`)
     },
     onEnterBack: () => {
-      setLayerVisibility(map.current, 'porto-seccao')
+      setLayerVisibility(city, map.current, `${city}-seccao`)
     },
   })
 
@@ -146,10 +148,10 @@ export const createScrollTriggers = (
     start: 'top 70%',
     end: 'top 20%',
     onEnter: () => {
-      setLayerVisibility(map.current, 'porto-al-megahosts')
+      setLayerVisibility(city, map.current, `${city}-al-megahosts`)
     },
     onEnterBack: () => {
-      setLayerVisibility(map.current, 'porto-al-megahosts')
+      setLayerVisibility(city, map.current, `${city}-al-megahosts`)
     },
   })
 }
