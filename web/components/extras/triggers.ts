@@ -76,8 +76,8 @@ export const createScrollTriggers = (
         debouncedSetFilter(map.current, dateValue)
       }
     },
-    onLeave: () => gsap.to('.progress-bar', { opacity: 0, duration: 0.5, delay: 0.5 }),
-    onEnterBack: () => gsap.to('.progress-bar', { opacity: 1, duration: 0.5, delay: 0.5 }),
+    onLeave: () => gsap.to('.progress-bar', { opacity: 0, duration: 0.5, delay: 0.2 }),
+    onEnterBack: () => gsap.to('.progress-bar', { opacity: 1, duration: 0.2 }),
   })
 
   ScrollTrigger.create({

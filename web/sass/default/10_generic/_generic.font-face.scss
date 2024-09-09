@@ -21,3 +21,23 @@
   src: url('/static/fonts/SangBleu%20Sunrise.ttf') format('truetype');
   font-weight: normal;
 }
+@font-face {
+  font-family: 'Rubik';
+  src: url('https://fonts.googleapis.com/css2?family=Rubik:wght@400&display=swap')
+    format('truetype');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap')
+    format('truetype');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('https://fonts.googleapis.com/css2?family=Rubik:wght@700&display=swap')
+    format('truetype');
+  font-weight: bold;
+}

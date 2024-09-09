@@ -11,7 +11,7 @@ import {
   freguesiaPaint,
   seccaoPaint,
 } from './extras/mapStyles'
-import { getCityData, getMinMax } from './extras/helpers'
+import { getCityData, getMinMax, createMap, addSourcesAndLayers } from './extras/helpers'
 import { createScrollTriggers } from './extras/triggers'
 
 // @ts-ignore
@@ -83,13 +83,7 @@ const Map = ({ city }: Props) => {
         'fill-color-transition': { duration: 500 },
       }
 
-      map.current = new mapboxgl.Map({
-        container: mapContainer.current,
-        style: 'mapbox://styles/mapbox/light-v10?optimize=true',
-        center: cityDefinitions[city].mapCenter,
-        zoom: cityDefinitions[city].zoom,
-        interactive: false,
-      })
+      map.current = createMap(mapContainer.current, city, cityDefinitions)
 
       map.current.on('load', () => {
         document.body.style.overflow = 'scroll'
@@ -111,78 +105,17 @@ const Map = ({ city }: Props) => {
           freguesiaPaintPop,
         )
 
-        // MAPBOX SOURCES
-        map.current?.addSource('porto-al', {
-          type: 'geojson',
-          data: alData,
-        })
-
-        map.current?.addSource('porto-freguesia', {
-          type: 'geojson',
-          data: freguesiaData,
-        })
-
-        map.current?.addSource('porto-seccao', {
-          type: 'geojson',
-          data: seccaoData,
-        })
-
-        // MAPBOX LAYERS
-
-        // Map 1
-        map.current?.addLayer({
-          id: 'porto-al',
-          type: 'circle',
-          source: 'porto-al',
-          paint: alPaint,
-          filter: ['<=', ['get', 'normalized_date'], 0],
-        })
-
-        // Map 2
-        map.current?.addLayer({
-          id: 'porto-freguesia',
-          type: 'fill',
-          source: 'porto-freguesia',
-          layout: {
-            visibility: 'none',
-          },
-          paint: freguesiaPaint,
-        })
-
-        map.current?.addLayer({
-          id: 'porto-freguesia-outline',
-          type: 'line',
-          source: 'porto-freguesia',
-          layout: {
-            visibility: 'none',
-          },
-          paint: {
-            'line-color': '#007cbf',
-            'line-width': 1,
-          },
-        })
-
-        // Map 3
-        map.current?.addLayer({
-          id: 'porto-seccao',
-          type: 'fill',
-          source: 'porto-seccao',
-          layout: {
-            visibility: 'none',
-          },
-          paint: seccaoPaint,
-        })
-
-        // Map 4
-        map.current?.addLayer({
-          id: 'porto-al-megahosts',
-          type: 'circle',
-          source: 'porto-al',
-          layout: {
-            visibility: 'none',
-          },
-          paint: alPaintMegaHost,
-        })
+        addSourcesAndLayers(
+          map.current,
+          alData,
+          freguesiaData,
+          seccaoData,
+          alPaint,
+          freguesiaPaint,
+          seccaoPaint,
+          alPaintMegaHost,
+          freguesiaPaintPop,
+        )
       })
     }
 
