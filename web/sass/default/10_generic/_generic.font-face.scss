@@ -1,4 +1,43 @@
 @font-face {
+  font-family: 'Cooper';
+  src: url('/static/fonts/cooperb.ttf') format('truetype');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'Cooper';
+  src: url('/static/fonts/cooperbi.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Cooper';
+  src: url('/static/fonts/cooperl.ttf') format('truetype');
+  font-weight: light;
+}
+
+@font-face {
+  font-family: 'Cooper';
+  src: url('/static/fonts/cooperli.ttf') format('truetype');
+  font-weight: light;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Cooper';
+  src: url('/static/fonts/cooperm.ttf') format('truetype');
+  font-weight: medium;
+}
+
+@font-face {
+  font-family: 'Cooper';
+  src: url('/static/fonts/coopermi.ttf') format('truetype');
+  font-weight: medium;
+  font-style: italic;
+}
+
+@font-face {
   font-family: 'Euclid';
   src: url('/static/fonts/Euclid%20Circular%20A%20Regular.ttf') format('truetype');
   font-weight: normal;

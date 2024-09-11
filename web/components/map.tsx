@@ -145,42 +145,42 @@ const Map = ({ city }: Props) => {
         </div>
 
         <div ref={divTrigger} className="text-boxes-container">
-          <div className="text-box">
+          <div className="text-box glassy">
             A figura do alojamento local foi introduzido em 2008, mas só em 2014 passou o seu
             registo a ser obrigatório, passando os alojamentos deste tipo que já operavam antes a
             estar integrados nesta designação.
           </div>
-          <div className="text-box">
+          <div className="text-box glassy">
             A figura do alojamento local foi introduzido em 2008, mas só em 2014 passou o seu
             registo a ser obrigatório, passando os alojamentos deste tipo que já operavam antes a
             estar integrados nesta designação.
           </div>
-          <div className="text-box">
+          <div className="text-box glassy">
             A figura do alojamento local foi introduzido em 2008, mas só em 2014 passou o seu
             registo a ser obrigatório, passando os alojamentos deste tipo que já operavam antes a
             estar integrados nesta designação.
           </div>
-          <div className="text-box">
+          <div className="text-box glassy">
             A figura do alojamento local foi introduzido em 2008, mas só em 2014 passou o seu
             registo a ser obrigatório, passando os alojamentos deste tipo que já operavam antes a
             estar integrados nesta designação.
           </div>
-          <div ref={actionIntro} className="text-box">
+          <div ref={actionIntro} className="text-box glassy">
             actionIntro
           </div>
-          <div ref={actionFreguesia} className="text-box">
+          <div ref={actionFreguesia} className="text-box glassy">
             actionFreguesia
           </div>
-          <div ref={actionFreguesiaPop} className="text-box">
+          <div ref={actionFreguesiaPop} className="text-box glassy">
             actionFreguesiaPop
           </div>
-          <div ref={actionFreguesiaAL} className="text-box">
+          <div ref={actionFreguesiaAL} className="text-box glassy">
             actionFreguesiaAL
           </div>
-          <div ref={actionSeccao} className="text-box">
+          <div ref={actionSeccao} className="text-box glassy">
             actionSeccao
           </div>
-          <div ref={actionMegaHosts} className="text-box">
+          <div ref={actionMegaHosts} className="text-box glassy">
             actionMegaHosts
           </div>
         </div>

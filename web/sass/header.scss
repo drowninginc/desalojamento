@@ -2,16 +2,8 @@ header {
   margin: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: $global-spacing-xs;
+  justify-content: start;
   min-height: 100vh;
-}
-
-.pudding {
-  font-size: 1.25rem;
-  text-align: center;
-  margin: 0 auto;
-  padding: $global-spacing-xs 0;
 }
 
 .language-selector {
@@ -88,4 +80,60 @@ header {
       }
     }
   }
+}
+
+.image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  height: 60vh; /* 50% of the viewport height */
+  overflow: hidden;
+  position: relative;
+  margin: auto;
+}
+
+.full-width-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image covers the container */
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.logo {
+  position: absolute;
+  top: 3vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+}
+
+.foreground {
+  margin-top: 300px;
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 300px; /* Adjust height as needed */
+    background: linear-gradient(to bottom, transparent, white);
+  }
+}
+
+.paragraph {
+  position: relative;
+  z-index: 1;
+  margin-top: 20px;
+  background-color: white;
 }

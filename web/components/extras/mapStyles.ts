@@ -23,7 +23,7 @@ export const alPaint: mapboxgl.CirclePaint = {
     ['interpolate', ['linear'], ['get', 'weight'], 0, 4, 1, 20],
   ],
   'circle-color': '#012169',
-  'circle-opacity': 1, // Ensure default opacity is set to 1
+  'circle-opacity': 1,
 }
 
 export const alPaintMegaHost: mapboxgl.CirclePaint = {
