@@ -1,4 +1,10 @@
 @font-face {
+  font-family: 'Cooper Lt';
+  src: url('/static/fonts/cooperl.ttf') format('truetype');
+  font-weight: light;
+}
+
+@font-face {
   font-family: 'Cooper';
   src: url('/static/fonts/cooperb.ttf') format('truetype');
   font-weight: bold;
@@ -13,19 +19,13 @@
 
 @font-face {
   font-family: 'Cooper';
-  src: url('/static/fonts/cooperl.ttf') format('truetype');
-  font-weight: light;
-}
-
-@font-face {
-  font-family: 'Cooper';
   src: url('/static/fonts/cooperli.ttf') format('truetype');
   font-weight: light;
   font-style: italic;
 }
 
 @font-face {
-  font-family: 'Cooper';
+  font-family: 'Cooper Md';
   src: url('/static/fonts/cooperm.ttf') format('truetype');
   font-weight: medium;
 }

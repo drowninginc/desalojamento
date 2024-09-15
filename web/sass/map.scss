@@ -124,7 +124,7 @@ a.button {
   hyphens: none;
 
   @include screen-tablet-portrait-and-bigger {
-    width: 350px;
+    width: 600px;
     margin: 80vh $global-spacing-xlg 0 $global-spacing-xlg;
   }
 }

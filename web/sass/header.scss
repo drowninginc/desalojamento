@@ -24,41 +24,80 @@ header {
   }
 }
 
-.title-image {
-  max-width: 1000px;
-  margin: $global-spacing-md auto $global-spacing-xs auto;
-  display: flex;
-  flex-direction: column;
-  align-self: center;
-  justify-content: center;
+.parallaxWrapper {
+  position: relative;
+  top: 0;
+  left: 0;
+}
 
-  & > * {
-    align-self: center;
-  }
+.parallaxLayer {
+  width: 100%;
+  will-change: transform;
+  transform: translate3d(0, 0rem, 0);
+}
 
-  @include screen-tablet-portrait-and-bigger {
-    margin-top: 0;
+#layer1 {
+  background-image: url('/static/images/sky.png');
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  background-size: cover;
+}
+
+#layer2 {
+  width: 70vw;
+  margin: 10vh auto 0 auto;
+  margin-bottom: 20vh;
+}
+
+#layer3 {
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px; /* Adjust height as needed */
+    background: linear-gradient(to bottom, transparent, white);
   }
 }
 
-.english {
-  color: $color-grey-1;
-  text-align: center;
-  font-size: 1.25rem;
-  margin-bottom: 0;
+.paragraphWrapper {
+  position: relative;
+  z-index: 1;
+  margin-top: 0;
+  width: 100%;
+  background-color: white;
+  padding-bottom: $global-spacing-sm;
 }
 
-.authors-description {
-  font-family: $font-stack-secondary;
-  color: $color-grey-1;
-  text-align: center;
-  margin-top: $global-spacing-xs;
+.paragraphIntro {
+  margin: $global-spacing-sm auto;
+  text-align: justify;
+  font-family: $font-stack-primary;
+  line-height: 2;
+}
+
+.logo {
+  padding: 0 30px;
+}
+
+.logoLegend {
+  text-align: right;
+  font-family: 'Cooper Lt';
+  font-weight: light;
+  font-size: large;
+  color: $color-blue-al;
+  margin-top: -50px;
 
   a {
-    color: $color-grey-2;
     text-decoration: none;
+    font-family: 'Cooper Md';
     position: relative;
     overflow: hidden;
+    cursor: pointer;
 
     &::after {
       content: '';
@@ -82,58 +121,32 @@ header {
   }
 }
 
-.image-container {
+.author {
+}
+.citySelector {
   display: flex;
-  align-items: center;
+  gap: 2vw;
   justify-content: center;
-  width: 50%;
-  height: 60vh; /* 50% of the viewport height */
-  overflow: hidden;
-  position: relative;
-  margin: auto;
-}
-
-.full-width-image {
-  width: 100%;
+  align-items: center;
+  width: 10vw;
   height: 100%;
-  object-fit: cover; /* Ensures the image covers the container */
+  pointer-events: auto;
+  margin: 0 auto;
+  transform: rotate(-10deg);
 }
 
-.background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -1;
+.unselected {
+  filter: grayscale(100%);
 }
 
-.logo {
-  position: absolute;
-  top: 3vh;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60%;
+.selected {
+  filter: grayscale(0%);
+  transform: rotate(5deg);
+  cursor: pointer;
 }
 
-.foreground {
-  margin-top: 300px;
-  position: relative;
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 300px; /* Adjust height as needed */
-    background: linear-gradient(to bottom, transparent, white);
-  }
-}
-
-.paragraph {
-  position: relative;
-  z-index: 1;
-  margin-top: 20px;
-  background-color: white;
+.citySelector > img:hover {
+  filter: grayscale(0%);
+  transform: rotate(5deg);
+  cursor: pointer;
 }

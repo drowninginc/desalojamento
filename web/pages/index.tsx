@@ -17,9 +17,6 @@ const Index = () => {
       <Layout language={language} setLanguage={setLanguage} city={city}>
         <Map city={city} />
         <Paragraph>{translation('paragraph1', language, city)}</Paragraph>
-        <Histogram language={language} city={city} />
-        <Linechart language={language} city={city} />
-        <Casas city={city} />
       </Layout>
     </>
   )
