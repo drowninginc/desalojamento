@@ -1,5 +1,5 @@
 import useSWR from 'swr'
-import fetcher from '/libs/fetcher'
+import fetcher from '../../libs/fetcher'
 import mapboxgl from 'mapbox-gl'
 import * as turf from '@turf/turf'
 
@@ -116,7 +116,9 @@ export const addCentroidMarkers = (map, city, freguesiaData) => {
     markerElement.className = 'centroid-marker'
     markerElement.innerText = `${propAL}%`
 
-    const marker = new mapboxgl.Marker({ element: markerElement }).setLngLat(centroid).addTo(map)
+    const marker = new mapboxgl.Marker({ element: markerElement })
+      .setLngLat([centroid[0], centroid[1]])
+      .addTo(map)
     marker.getElement().style.display = 'none'
     markers.push(marker)
   })

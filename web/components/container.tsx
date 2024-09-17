@@ -5,7 +5,7 @@ type Props = {
   className?: string
 }
 
-const Container: FunctionComponent<{ className?: string }> = ({ children, className }: Props) => {
+const Container: FunctionComponent<Props> = ({ children, className }) => {
   return <div className={className ? `o-container ${className}` : 'o-container'}>{children}</div>
 }
 

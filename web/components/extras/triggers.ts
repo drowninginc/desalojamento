@@ -109,13 +109,19 @@ export const createScrollTriggers = (
       gsap.to('.plot-full-screen', { opacity: 0, duration: 0.5 })
       setLayerVisibility(city, map.current, `${city}-freguesia`)
       markers.forEach(marker => (marker.getElement().style.display = 'block'))
-      map.current?.flyTo({ center: map.current.getCenter(), zoom: cityDefinitions[city].zoom })
+      map.current?.flyTo({
+        center: cityDefinitions[city].mapCenter,
+        zoom: cityDefinitions[city].zoom,
+      })
     },
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-freguesia`)
       markers.forEach(marker => (marker.getElement().style.display = 'block'))
       updateMarkerValues(markers, freguesiaData, 'propAL')
-      map.current?.flyTo({ center: map.current.getCenter(), zoom: cityDefinitions[city].zoom })
+      map.current?.flyTo({
+        center: cityDefinitions[city].mapCenter,
+        zoom: cityDefinitions[city].zoom,
+      })
     },
   })
 
