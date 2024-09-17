@@ -1,7 +1,9 @@
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
-import { freguesiaPaint, seccaoPaint, alPaintMegaHost, freguesiaPaintAL } from './mapStyles'
+import { cityDefinitions, freguesiaPaint, seccaoPaint, alPaintMegaHost } from './mapStyles'
 gsap.registerPlugin(ScrollTrigger)
+
+import { updateMarkerValues } from './helpers'
 
 const setLayerVisibility = (
   city: string,
@@ -38,6 +40,7 @@ export const createScrollTriggers = (
   progressBar,
   actionIntro,
   actionFreguesia,
+  actionFreguesiaZoom,
   actionFreguesiaPop,
   actionFreguesiaAL,
   actionSeccao,
@@ -46,6 +49,9 @@ export const createScrollTriggers = (
   setBarWidth,
   debouncedSetFilter,
   freguesiaPaintPop,
+  freguesiaPaintAL,
+  markers,
+  freguesiaData,
 ) => {
   ScrollTrigger.create({
     id: 'map-pin',
@@ -91,6 +97,7 @@ export const createScrollTriggers = (
     onEnterBack: () => {
       gsap.to('.plot-full-screen', { opacity: 1, duration: 0.5 })
       setLayerVisibility(city, map.current, `${city}-al`)
+      markers.forEach(marker => (marker.getElement().style.display = 'none'))
     },
   })
 
@@ -101,9 +108,32 @@ export const createScrollTriggers = (
     onEnter: () => {
       gsap.to('.plot-full-screen', { opacity: 0, duration: 0.5 })
       setLayerVisibility(city, map.current, `${city}-freguesia`)
+      markers.forEach(marker => (marker.getElement().style.display = 'block'))
+      map.current?.flyTo({ center: map.current.getCenter(), zoom: cityDefinitions[city].zoom })
     },
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-freguesia`)
+      markers.forEach(marker => (marker.getElement().style.display = 'block'))
+      updateMarkerValues(markers, freguesiaData, 'propAL')
+      map.current?.flyTo({ center: map.current.getCenter(), zoom: cityDefinitions[city].zoom })
+    },
+  })
+
+  ScrollTrigger.create({
+    trigger: actionFreguesiaZoom.current,
+    start: 'top 70%',
+    end: 'top 20%',
+    onEnter: () => {
+      map.current?.flyTo({
+        center: cityDefinitions[city].center.mapCenter,
+        zoom: cityDefinitions[city].center.zoom,
+      })
+    },
+    onEnterBack: () => {
+      map.current?.flyTo({
+        center: cityDefinitions[city].center.mapCenter,
+        zoom: cityDefinitions[city].center.zoom,
+      })
     },
   })
 
@@ -113,9 +143,11 @@ export const createScrollTriggers = (
     end: 'top 20%',
     onEnter: () => {
       setLayerVisibility(city, map.current, `${city}-freguesia`, freguesiaPaintPop['fill-color'])
+      updateMarkerValues(markers, freguesiaData, 'diff_pop_2011')
     },
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-freguesia`, freguesiaPaintPop['fill-color'])
+      updateMarkerValues(markers, freguesiaData, 'diff_pop_2011')
     },
   })
 
@@ -125,9 +157,16 @@ export const createScrollTriggers = (
     end: 'top 20%',
     onEnter: () => {
       setLayerVisibility(city, map.current, `${city}-freguesia`, freguesiaPaintAL['fill-color'])
+      updateMarkerValues(markers, freguesiaData, 'diff_alojamentos_2011')
     },
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-freguesia`, freguesiaPaintAL['fill-color'])
+      markers.forEach(marker => (marker.getElement().style.display = 'block'))
+      updateMarkerValues(markers, freguesiaData, 'diff_alojamentos_2011')
+      map.current?.flyTo({
+        center: cityDefinitions[city].center.mapCenter,
+        zoom: cityDefinitions[city].center.zoom,
+      })
     },
   })
 
@@ -137,9 +176,13 @@ export const createScrollTriggers = (
     end: 'top 20%',
     onEnter: () => {
       setLayerVisibility(city, map.current, `${city}-seccao`)
+
+      markers.forEach(marker => (marker.getElement().style.display = 'none'))
     },
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-seccao`)
+
+      markers.forEach(marker => (marker.getElement().style.display = 'none'))
     },
   })
 
@@ -149,9 +192,17 @@ export const createScrollTriggers = (
     end: 'top 20%',
     onEnter: () => {
       setLayerVisibility(city, map.current, `${city}-al-megahosts`)
+      map.current?.flyTo({
+        center: cityDefinitions[city].mapCenter,
+        zoom: cityDefinitions[city].zoom,
+      })
     },
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-al-megahosts`)
+      map.current?.flyTo({
+        center: cityDefinitions[city].mapCenter,
+        zoom: cityDefinitions[city].zoom,
+      })
     },
   })
 }

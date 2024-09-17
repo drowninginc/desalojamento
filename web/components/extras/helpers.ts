@@ -1,6 +1,7 @@
 import useSWR from 'swr'
 import fetcher from '/libs/fetcher'
 import mapboxgl from 'mapbox-gl'
+import * as turf from '@turf/turf'
 
 export const useData = (path: string) => useSWR<any>(`./static/data/${path}`, fetcher)
 
@@ -37,7 +38,6 @@ export const addSourcesAndLayers = (
   freguesiaPaint,
   seccaoPaint,
   alPaintMegaHost,
-  freguesiaPaintPop,
 ) => {
   map.addSource(`${city}-al`, {
     type: 'geojson',
@@ -81,7 +81,7 @@ export const addSourcesAndLayers = (
     },
     paint: {
       'line-color': '#007cbf',
-      'line-width': 1,
+      'line-width': 3,
     },
   })
 
@@ -103,5 +103,29 @@ export const addSourcesAndLayers = (
       visibility: 'none',
     },
     paint: alPaintMegaHost,
+  })
+}
+
+export const addCentroidMarkers = (map, city, freguesiaData) => {
+  const markers = []
+  freguesiaData.features.forEach(feature => {
+    const centroid = turf.centroid(feature).geometry.coordinates
+    const propAL = feature.properties.propAL
+
+    const markerElement = document.createElement('div')
+    markerElement.className = 'centroid-marker'
+    markerElement.innerText = `${propAL}%`
+
+    const marker = new mapboxgl.Marker({ element: markerElement }).setLngLat(centroid).addTo(map)
+    marker.getElement().style.display = 'none'
+    markers.push(marker)
+  })
+  return markers
+}
+
+export const updateMarkerValues = (markers, data, property) => {
+  data.features.forEach((feature, index) => {
+    const value = feature.properties[property]
+    markers[index].getElement().innerText = `${value.toFixed(1)}%`
   })
 }

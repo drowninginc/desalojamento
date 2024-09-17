@@ -36,16 +36,19 @@ export default function (section: string, language: string, city: string): React
         if (city === 'Porto') {
           return (
             <>
-              Nas cidades portuguesas vive-se uma crise de habitação sem precedentes nas últimas
-              décadas. Esta crise gerou uma forte contestação social, que foi capaz de trazer para o
-              centro do debate políticas relacionadas com a intervenção do Estado no mercado de
-              arrendamento e com a regulação do turismo, em particular o{' '}
-              <mark>alojamento local (AL)</mark>. O governo, perante o agigantar da crise, anunciou
-              o programa Mais Habitação que pretendia responder parcialmente a estas questões,
-              colocando algumas restrições à atividade deste tipo de alojamento turístico. Face a
-              este clima político, os defensores do Alojamento Local têm-se organizado, promovendo o
-              AL como uma importante atividade económica e como fonte de sustento para muitas
-              famílias.
+              Nos últimos anos, as cidades portuguesas vivem uma crise de habitação sem precedentes.
+              Os processos de gentrificação acelerados têm gerado contestação social e trazido para
+              o centro do debate público propostas de intervenção do Estado no mercado de
+              arrendamento ou na regulação do <mark>alojamento local (AL)</mark>. O programa Mais
+              Habitação foi um conjunto de restrições ao AL implementado pelo anterior governo,
+              entretanto revogado. Embora as medidas deste programa fossem tímidas, teve um efeito
+              de revolta nos defensores do AL, que se organizaram para o promover como uma
+              importante atividade económica e fonte de sustento para muitas famílias. É notável a
+              forma como a proliferação deste tipo de alojamento e a ascensão de plataformas como a
+              Airbnb alteraram não só as dinâmicas do turismo mas também o setor da habitação e a
+              forma como se vive nas cidades. Neste ensaio visual pretendemos desfazer alguns mitos
+              sobre o AL, focando-nos nas cidades onde a crise da habitação mais se faz sentir:
+              Porto e Lisboa.
             </>
           )
         } else if (city === 'Lisbon') {

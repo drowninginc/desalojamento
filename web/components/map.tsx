@@ -11,7 +11,13 @@ import {
   freguesiaPaint,
   seccaoPaint,
 } from './extras/mapStyles'
-import { getCityData, getMinMax, createMap, addSourcesAndLayers } from './extras/helpers'
+import {
+  getCityData,
+  getMinMax,
+  createMap,
+  addSourcesAndLayers,
+  addCentroidMarkers,
+} from './extras/helpers'
 import { createScrollTriggers } from './extras/triggers'
 
 // @ts-ignore
@@ -35,6 +41,7 @@ const Map = ({ city }: Props) => {
 
   const actionIntro = React.useRef(null!)
   const actionFreguesia = React.useRef(null!)
+  const actionFreguesiaZoom = React.useRef(null!)
   const actionFreguesiaPop = React.useRef(null!)
   const actionFreguesiaAL = React.useRef(null!)
   const actionSeccao = React.useRef(null!)
@@ -69,17 +76,36 @@ const Map = ({ city }: Props) => {
       if (map.current) return
 
       const [minPop, maxPop] = getMinMax(freguesiaData, 'diff_pop_2011')
+      const [minAloj, maxAloj] = getMinMax(freguesiaData, 'diff_alojamentos_2011')
       const freguesiaPaintPop: mapboxgl.FillPaint = {
         'fill-color': [
           'interpolate',
           ['linear'],
           ['get', 'diff_pop_2011'],
           minPop,
-          '#8B0000',
+          '#b3589a', // Vivid red for the most negative values
+          0,
+          '#FFFFFF', // White for zero
           maxPop,
-          '#FFA07A',
+          '#006400', // Dark green for the most positive values
         ],
-        'fill-opacity': 1,
+        'fill-opacity': 0.1,
+        'fill-color-transition': { duration: 500 },
+      }
+
+      const freguesiaPaintAL: mapboxgl.FillPaint = {
+        'fill-color': [
+          'interpolate',
+          ['linear'],
+          ['get', 'diff_alojamentos_2011'],
+          minAloj,
+          '#b3589a', // Vivid red for the most negative values
+          0,
+          '#FFFFFF', // White for zero
+          maxAloj,
+          '#006400', // Dark green for the most positive values
+        ],
+        'fill-opacity': 0.1,
         'fill-color-transition': { duration: 500 },
       }
 
@@ -87,6 +113,8 @@ const Map = ({ city }: Props) => {
 
       map.current.on('load', () => {
         document.body.style.overflow = 'scroll'
+
+        const centroidMarkers = addCentroidMarkers(map.current, city, freguesiaData)
 
         createScrollTriggers(
           city,
@@ -96,6 +124,7 @@ const Map = ({ city }: Props) => {
           progressBar,
           actionIntro,
           actionFreguesia,
+          actionFreguesiaZoom,
           actionFreguesiaPop,
           actionFreguesiaAL,
           actionSeccao,
@@ -104,6 +133,9 @@ const Map = ({ city }: Props) => {
           setBarWidth,
           debouncedSetFilter,
           freguesiaPaintPop,
+          freguesiaPaintAL,
+          centroidMarkers,
+          freguesiaData,
         )
 
         addSourcesAndLayers(
@@ -116,8 +148,9 @@ const Map = ({ city }: Props) => {
           freguesiaPaint,
           seccaoPaint,
           alPaintMegaHost,
-          freguesiaPaintPop,
         )
+
+        addCentroidMarkers(map.current, city, freguesiaData)
       })
     }
 
@@ -146,39 +179,79 @@ const Map = ({ city }: Props) => {
 
         <div ref={divTrigger} className="text-boxes-container">
           <div className="text-box glassy">
-            A figura do alojamento local foi introduzido em 2008, mas só em 2014 passou o seu
-            registo a ser obrigatório, passando os alojamentos deste tipo que já operavam antes a
-            estar integrados nesta designação.
+            A figura jurídica do alojamento local foi introduzida em 2008. Só em 2014 passou a ser
+            obrigatório o seu registo, integrando-se na designação os alojamentos que já operavam.
           </div>
           <div className="text-box glassy">
-            A figura do alojamento local foi introduzido em 2008, mas só em 2014 passou o seu
-            registo a ser obrigatório, passando os alojamentos deste tipo que já operavam antes a
-            estar integrados nesta designação.
+            Desde então, a oferta de AL não tem parado de crescer.
+            <div className="text-box-note">
+              <div className="text-box-note-text">
+                O tamanho dos círculos é proporcional ao número de ALs por número de porta
+              </div>
+              <svg className="circle-legend-svg" width="22.66" height="21.66">
+                <circle className="circleBig" cx="11.33" cy="11.33" r="10.33" />
+                <circle className="circleSmall" cx="11.33" cy="16" r="5" />
+              </svg>
+            </div>
           </div>
           <div className="text-box glassy">
-            A figura do alojamento local foi introduzido em 2008, mas só em 2014 passou o seu
-            registo a ser obrigatório, passando os alojamentos deste tipo que já operavam antes a
-            estar integrados nesta designação.
+            Em novembro de 2023, já tinham sido atribuídas mais de 10 mil licenças de alojamento
+            local só na cidade do Porto.
           </div>
           <div className="text-box glassy">
-            A figura do alojamento local foi introduzido em 2008, mas só em 2014 passou o seu
-            registo a ser obrigatório, passando os alojamentos deste tipo que já operavam antes a
-            estar integrados nesta designação.
+            O ritmo de novas licenças tem estado quase sempre em crescimento, com exceção dos anos
+            da COVID-19. Cada novo ano tem batido recordes de novos alojamentos. Só em 2022, foram
+            registadas 1914 novas licenças, 20% do total das licenças até à data.
           </div>
           <div ref={actionIntro} className="text-box glassy">
             actionIntro
           </div>
           <div ref={actionFreguesia} className="text-box glassy">
-            actionFreguesia
+            Embora o fenómeno se espalhe até às cidades periféricas, nem todas as zonas da cidade
+            são afetadas da mesma forma.
+            <div className="heatmap-label">
+              <span className="label-center">rácio de alojamentos locais por habitação</span>
+              <div className="heatmap-rectangle heatmap-al"></div>
+              <div className="heatmap-labels">
+                <span className="label-left">menos AL</span>
+                <span className="label-right">mais AL</span>
+              </div>
+            </div>
+          </div>
+          <div ref={actionFreguesiaZoom} className="text-box glassy">
+            As freguesias do Centro Histórico são as mais afetadas.
           </div>
           <div ref={actionFreguesiaPop} className="text-box glassy">
-            actionFreguesiaPop
+            As freguesias com maior concentração de ALs são precisamente as que perderam mais
+            população na última década.
+            <div className="heatmap-label">
+              <span className="label-center">Evolução do número de habitantes (%) 2011-2021</span>
+              <div className="heatmap-rectangle heatmap-population"></div>
+              <div className="heatmap-labels">
+                <span className="label-left">menos habitantes</span>
+                <span className="label-right">mais habitantes</span>
+              </div>
+            </div>
           </div>
           <div ref={actionFreguesiaAL} className="text-box glassy">
-            actionFreguesiaAL
+            E também as que mais perderam alojamentos para habitação permanente.
+            <div className="heatmap-label">
+              <span className="label-center">
+                Evolução do número de alojamentos para habitação permanente (%) 2011-2021
+              </span>
+              <div className="heatmap-rectangle heatmap-population"></div>
+              <div className="heatmap-labels">
+                <span className="label-left">menos habitação</span>
+                <span className="label-right">mais habitação</span>
+              </div>
+            </div>
           </div>
           <div ref={actionSeccao} className="text-box glassy">
-            actionSeccao
+            O mapa por quarteirões permite perceber melhor a concentração de ALs em alguns locais da
+            cidade, que se tornaram verdadeiros oásis da monocultura do turismo.
+          </div>
+          <div className="text-box glassy">
+            Já existem vários quarteirões sem qualquer habitante , apenas alojamentos locais.
           </div>
           <div ref={actionMegaHosts} className="text-box glassy">
             actionMegaHosts

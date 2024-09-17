@@ -238,8 +238,8 @@ const Linechart = ({ language, city }: Props) => {
           <Image
             src="/static/images/casa_verde.png"
             alt="Número de alojamentos"
-            width="50.5"
-            height="39"
+            width={50.5}
+            height={39}
           />
           {language === 'en' && <span className="legend-text">Number of Housing Units</span>}
           {language !== 'en' && <span className="legend-text">Número de Alojamentos</span>}
@@ -248,8 +248,8 @@ const Linechart = ({ language, city }: Props) => {
           <Image
             src="/static/images/casa_azul_verde.png"
             alt="Número de alojamentos + AL"
-            width="50.5"
-            height="39"
+            width={50.5}
+            height={39}
           />
           {language === 'en' && (
             <span className="legend-text">Number of Housing Units + Local Accomodations</span>

@@ -4,6 +4,10 @@ export const cityDefinitions = {
   Porto: {
     mapCenter: [-8.653, 41.162],
     zoom: 12.3,
+    center: {
+      mapCenter: [-8.618, 41.153],
+      zoom: 14,
+    },
   },
   Lisbon: {
     mapCenter: [-9.146, 38.735],
@@ -19,8 +23,6 @@ export const alPaint: mapboxgl.CirclePaint = {
     ['zoom'],
     12,
     ['interpolate', ['linear'], ['get', 'weight'], 0, 2, 1, 6],
-    16,
-    ['interpolate', ['linear'], ['get', 'weight'], 0, 4, 1, 20],
   ],
   'circle-color': '#012169',
   'circle-opacity': 1,
@@ -33,8 +35,6 @@ export const alPaintMegaHost: mapboxgl.CirclePaint = {
     ['zoom'],
     12,
     ['interpolate', ['linear'], ['get', 'weight'], 0, 2, 1, 6],
-    16,
-    ['interpolate', ['linear'], ['get', 'weight'], 0, 4, 1, 20],
   ],
   'circle-color': ['case', ['==', ['get', 'mega_host_2'], 'True'], '#ff1654', '#012169'],
 }
@@ -47,28 +47,14 @@ export const freguesiaPaint: mapboxgl.FillPaint = {
     ['get', 'propAL'],
     0,
     'rgba(173, 216, 230, 0.2)',
-    40,
-    'rgba(0, 0, 139, 1)',
+    30,
+    'rgba(0, 0, 205, 0.8)',
     50,
     'rgba(0, 0, 139, 1)',
     100,
     'rgba(0, 0, 139, 1)',
   ],
-  'fill-opacity': 1,
-  'fill-color-transition': { duration: 500 },
-}
-
-export const freguesiaPaintAL: mapboxgl.FillPaint = {
-  'fill-color': [
-    'interpolate',
-    ['linear'],
-    ['get', 'diff_alojamentos_2011'],
-    0,
-    '#98FB98',
-    100,
-    '#006400',
-  ],
-  'fill-opacity': 1,
+  'fill-opacity': 0.7,
   'fill-color-transition': { duration: 500 },
 }
 
