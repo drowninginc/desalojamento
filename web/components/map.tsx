@@ -239,7 +239,12 @@ const Map = ({ city }: Props) => {
               <span className="label-center">
                 Evolução do número de alojamentos para habitação permanente (%) 2011-2021
               </span>
-              <div className="heatmap-rectangle heatmap-population"></div>
+              <div className="heatmap-rectangle heatmap-population">
+                <div className="category category-1"></div>
+                <div className="category category-2"></div>
+                <div className="category category-3"></div>
+                <div className="category category-4"></div>
+              </div>
               <div className="heatmap-labels">
                 <span className="label-left">menos habitação</span>
                 <span className="label-right">mais habitação</span>
