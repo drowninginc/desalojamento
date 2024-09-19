@@ -114,7 +114,7 @@ const Map = ({ city }: Props) => {
       map.current.on('load', () => {
         document.body.style.overflow = 'scroll'
 
-        const centroidMarkers = addCentroidMarkers(map.current, city, freguesiaData)
+        const centroidMarkers = addCentroidMarkers(map.current, freguesiaData, 'propAL')
 
         createScrollTriggers(
           city,

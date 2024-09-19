@@ -106,22 +106,24 @@ export const addSourcesAndLayers = (
   })
 }
 
-export const addCentroidMarkers = (map, city, freguesiaData) => {
+export const addCentroidMarkers = (map, data, property) => {
   const markers = []
-  freguesiaData.features.forEach(feature => {
-    const centroid = turf.centroid(feature).geometry.coordinates
-    const propAL = feature.properties.propAL
+  if (data && data.features) {
+    data.features.forEach(feature => {
+      const centroid = turf.centroid(feature).geometry.coordinates
+      const value = feature.properties[property]
 
-    const markerElement = document.createElement('div')
-    markerElement.className = 'centroid-marker'
-    markerElement.innerText = `${propAL}%`
+      const markerElement = document.createElement('div')
+      markerElement.className = 'centroid-marker'
+      markerElement.innerText = `${value.toFixed(1)}%`
 
-    const marker = new mapboxgl.Marker({ element: markerElement })
-      .setLngLat([centroid[0], centroid[1]])
-      .addTo(map)
-    marker.getElement().style.display = 'none'
-    markers.push(marker)
-  })
+      const marker = new mapboxgl.Marker({ element: markerElement })
+        .setLngLat([centroid[0], centroid[1]])
+        .addTo(map)
+      marker.getElement().style.display = 'none'
+      markers.push(marker)
+    })
+  }
   return markers
 }
 
