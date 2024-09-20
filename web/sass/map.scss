@@ -155,21 +155,60 @@ a.button {
   overflow: visible;
 }
 
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .centroid-marker {
-  display: inline-block;
-  padding: 0.25em 0.4em;
-  font-size: 200%;
-  font-weight: 700;
-  line-height: 1;
-  color: #fff;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: baseline;
-  border-radius: 0.25rem;
-  background-color: $color-blue-al; /* Adjust the color as needed */
-  position: absolute;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  opacity: 0;
+
+  &.visible {
+    opacity: 1;
+  }
+
+  &.hidden {
+    opacity: 0;
+  }
+
+  .animation-wrapper {
+    padding: 0.25em 0.4em;
+    font-size: 200%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+    background-color: $color-blue-al;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease-out, transform 1s ease-out;
+
+    &.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 .heatmap-label {

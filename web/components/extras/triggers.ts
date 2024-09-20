@@ -3,7 +3,7 @@ import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 import { cityDefinitions, freguesiaPaint, seccaoPaint, alPaintMegaHost } from './mapStyles'
 gsap.registerPlugin(ScrollTrigger)
 
-import { updateMarkerValues } from './helpers'
+import { updateMarkerValues, setMarkerVisibility } from './helpers'
 
 const setLayerVisibility = (
   city: string,
@@ -97,7 +97,7 @@ export const createScrollTriggers = (
     onEnterBack: () => {
       gsap.to('.plot-full-screen', { opacity: 1, duration: 0.5 })
       setLayerVisibility(city, map.current, `${city}-al`)
-      markers.forEach(marker => (marker.getElement().style.display = 'none'))
+      setMarkerVisibility(markers, 'none')
     },
   })
 
@@ -108,7 +108,7 @@ export const createScrollTriggers = (
     onEnter: () => {
       gsap.to('.plot-full-screen', { opacity: 0, duration: 0.5 })
       setLayerVisibility(city, map.current, `${city}-freguesia`)
-      markers.forEach(marker => (marker.getElement().style.display = 'block'))
+      setMarkerVisibility(markers, 'block')
       map.current?.flyTo({
         center: cityDefinitions[city].mapCenter,
         zoom: cityDefinitions[city].zoom,
@@ -116,7 +116,7 @@ export const createScrollTriggers = (
     },
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-freguesia`)
-      markers.forEach(marker => (marker.getElement().style.display = 'block'))
+      setMarkerVisibility(markers, 'block')
       updateMarkerValues(markers, freguesiaData, 'propAL')
       map.current?.flyTo({
         center: cityDefinitions[city].mapCenter,
@@ -167,7 +167,7 @@ export const createScrollTriggers = (
     },
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-freguesia`, freguesiaPaintAL['fill-color'])
-      markers.forEach(marker => (marker.getElement().style.display = 'block'))
+      setMarkerVisibility(markers, 'block')
       updateMarkerValues(markers, freguesiaData, 'diff_alojamentos_2011')
       map.current?.flyTo({
         center: cityDefinitions[city].center.mapCenter,
@@ -182,13 +182,11 @@ export const createScrollTriggers = (
     end: 'top 20%',
     onEnter: () => {
       setLayerVisibility(city, map.current, `${city}-seccao`)
-
-      markers.forEach(marker => (marker.getElement().style.display = 'none'))
+      setMarkerVisibility(markers, 'none')
     },
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-seccao`)
-
-      markers.forEach(marker => (marker.getElement().style.display = 'none'))
+      setMarkerVisibility(markers, 'none')
     },
   })
 

@@ -115,12 +115,17 @@ export const addCentroidMarkers = (map, data, property) => {
 
       const markerElement = document.createElement('div')
       markerElement.className = 'centroid-marker'
-      markerElement.innerText = `${value.toFixed(1)}%`
+
+      const wrapperElement = document.createElement('div')
+      wrapperElement.className = 'animation-wrapper'
+      wrapperElement.innerText = `${value.toFixed(1)}%`
+
+      markerElement.appendChild(wrapperElement)
 
       const marker = new mapboxgl.Marker({ element: markerElement })
         .setLngLat([centroid[0], centroid[1]])
         .addTo(map)
-      marker.getElement().style.display = 'none'
+      marker.getElement().classList.add('hidden')
       markers.push(marker)
     })
   }
@@ -130,6 +135,30 @@ export const addCentroidMarkers = (map, data, property) => {
 export const updateMarkerValues = (markers, data, property) => {
   data.features.forEach((feature, index) => {
     const value = feature.properties[property]
-    markers[index].getElement().innerText = `${value.toFixed(1)}%`
+    const element = markers[index].getElement()
+    const wrapper = element.querySelector('.animation-wrapper')
+    if (wrapper) {
+      wrapper.innerText = `${value.toFixed(1)}%`
+    }
+  })
+}
+
+export const setMarkerVisibility = (markers, visibility) => {
+  console.log(visibility)
+  markers.forEach(marker => {
+    const element = marker.getElement()
+    const wrapper = element.querySelector('.animation-wrapper')
+    console.log(wrapper)
+    if (visibility === 'block') {
+      wrapper.classList.add('visible')
+      wrapper.classList.remove('hidden')
+      element.classList.add('visible')
+      element.classList.remove('hidden')
+    } else {
+      wrapper.classList.add('hidden')
+      wrapper.classList.remove('visible')
+      element.classList.add('hidden')
+      element.classList.remove('visible')
+    }
   })
 }
