@@ -46,6 +46,7 @@ header {
   left: 0;
   background-size: cover;
   box-sizing: border-box;
+  z-index: -3;
 }
 
 #layer2 {
@@ -126,6 +127,16 @@ header {
 }
 
 @media (max-width: 768px) {
+  #layer2 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+  }
+  #layer3 {
+    margin-top: 50vh; // Adjust this value as needed to move layer3 down
+  }
   .logo {
     margin: 0 auto;
     padding: 0;

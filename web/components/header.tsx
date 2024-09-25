@@ -29,7 +29,6 @@ const Header = ({ language, setLanguage, city }: Props) => {
         const layer = layers[i] as HTMLElement
         const speed = parseFloat(layer.dataset.speed || '0')
         const yPos = -((top * speed) / 1000)
-        layer.style.transform = `translate3d(0, ${yPos}rem, 0)`
       }
     }
     function doParallax() {
