@@ -190,23 +190,51 @@ a.button {
 
   .animation-wrapper {
     padding: 0.25em 0.4em;
-    font-size: 200%;
-    font-weight: 700;
-    line-height: 1;
-    color: #fff;
+    font-size: 120%;
+    font-weight: 500;
+    line-height: 1.3;
+    color: #000;
     text-align: center;
     white-space: nowrap;
     vertical-align: baseline;
     border-radius: 0.25rem;
-    background-color: $color-blue-al;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    background-color: white;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 1s ease-out, transform 1s ease-out;
+    transition: opacity 0.7s ease-in-out, transform 0.7s ease-in-out;
+    width: 90px;
 
     &.visible {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    .marker-cell {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin: 6px 0;
+      opacity: 0; // Initial state
+      max-height: 0; // Initial state
+      overflow: hidden; // Ensure no overflow
+      transition: opacity 0.5s ease-in-out, max-height 0.5s ease-in-out, margin 0.4s ease-in-out;
+
+      &.visible {
+        opacity: 1;
+        max-height: 100px;
+        margin: 6px 0;
+      }
+
+      &.hidden {
+        opacity: 0;
+        max-height: 0;
+        margin: 0;
+      }
+
+      .cell-icon {
+        color: $color-blue-al;
+      }
     }
   }
 }
@@ -214,7 +242,7 @@ a.button {
 .heatmap-label {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
   margin-top: 30px;
 }
 
@@ -223,6 +251,15 @@ a.button {
   height: 20px;
   position: relative;
   margin-bottom: 5px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 80%;
+    height: 100%;
+    border-left: 1px dashed #676767; // Adjust color and width as needed
+  }
 }
 
 .heatmap-al {
@@ -230,7 +267,7 @@ a.button {
 }
 
 .heatmap-population {
-  background: linear-gradient(to right, #b2589a, #ffffff, #006400);
+  background: linear-gradient(to right, #b2589a 0%, #ffffff 80%, #b8ffcb 100%);
 }
 
 .heatmap-labels {

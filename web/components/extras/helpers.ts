@@ -106,19 +106,43 @@ export const addSourcesAndLayers = (
   })
 }
 
-export const addCentroidMarkers = (map, data, property) => {
+export const addCentroidMarkers = (map, data, properties) => {
   const markers = []
   if (data && data.features) {
-    data.features.forEach(feature => {
+    data.features.forEach((feature, index) => {
       const centroid = turf.centroid(feature).geometry.coordinates
-      const value = feature.properties[property]
 
       const markerElement = document.createElement('div')
       markerElement.className = 'centroid-marker'
 
       const wrapperElement = document.createElement('div')
       wrapperElement.className = 'animation-wrapper'
-      wrapperElement.innerText = `${value.toFixed(1)}%`
+
+      properties.forEach(property => {
+        const value = feature.properties[property]
+        const valueElement = document.createElement('div')
+        valueElement.className = `marker-cell ${property}`
+
+        const iconElement = document.createElement('div')
+        iconElement.className = 'cell-icon'
+        if (property === 'propAL') {
+          iconElement.innerText = 'AL'
+        } else if (property === 'diff_pop_2011') {
+          iconElement.innerText = '🧑‍🧑‍🧒‍🧒'
+        } else if (property === 'diff_alojamentos_2011') {
+          iconElement.innerText = '🏠'
+        }
+
+        const textElement = document.createElement('div')
+        textElement.className = 'cell-text'
+        textElement.innerText = `${value.toFixed(
+          value.toFixed(0) === '0' || value.toFixed(0) === '-0' ? 1 : 0,
+        )}%`
+
+        valueElement.appendChild(iconElement)
+        valueElement.appendChild(textElement)
+        wrapperElement.appendChild(valueElement)
+      })
 
       markerElement.appendChild(wrapperElement)
 
@@ -132,14 +156,21 @@ export const addCentroidMarkers = (map, data, property) => {
   return markers
 }
 
-export const updateMarkerValues = (markers, data, property) => {
-  data.features.forEach((feature, index) => {
-    const value = feature.properties[property]
-    const element = markers[index].getElement()
+export const updateMarkerValues = (markers, properties) => {
+  markers.forEach(marker => {
+    const element = marker.getElement()
     const wrapper = element.querySelector('.animation-wrapper')
-    if (wrapper) {
-      wrapper.innerText = `${value.toFixed(1)}%`
-    }
+    const cells = wrapper.querySelectorAll('.marker-cell')
+
+    cells.forEach(cell => {
+      if (properties.includes(cell.classList[1])) {
+        cell.classList.add('visible')
+        cell.classList.remove('hidden')
+      } else {
+        cell.classList.add('hidden')
+        cell.classList.remove('visible')
+      }
+    })
   })
 }
 

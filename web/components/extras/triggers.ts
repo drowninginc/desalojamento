@@ -51,7 +51,6 @@ export const createScrollTriggers = (
   freguesiaPaintPop,
   freguesiaPaintAL,
   markers,
-  freguesiaData,
 ) => {
   ScrollTrigger.create({
     id: 'map-pin',
@@ -108,6 +107,7 @@ export const createScrollTriggers = (
     onEnter: () => {
       gsap.to('.plot-full-screen', { opacity: 0, duration: 0.5 })
       setLayerVisibility(city, map.current, `${city}-freguesia`)
+      updateMarkerValues(markers, ['propAL'])
       setMarkerVisibility(markers, 'block')
       map.current?.flyTo({
         center: cityDefinitions[city].mapCenter,
@@ -115,9 +115,10 @@ export const createScrollTriggers = (
       })
     },
     onEnterBack: () => {
+      gsap.to('.plot-full-screen', { opacity: 0, duration: 0.5 })
+      updateMarkerValues(markers, ['propAL'])
+
       setLayerVisibility(city, map.current, `${city}-freguesia`)
-      setMarkerVisibility(markers, 'block')
-      updateMarkerValues(markers, freguesiaData, 'propAL')
       map.current?.flyTo({
         center: cityDefinitions[city].mapCenter,
         zoom: cityDefinitions[city].zoom,
@@ -144,31 +145,32 @@ export const createScrollTriggers = (
   })
 
   ScrollTrigger.create({
-    trigger: actionFreguesiaPop.current,
-    start: 'top 70%',
-    end: 'top 20%',
-    onEnter: () => {
-      setLayerVisibility(city, map.current, `${city}-freguesia`, freguesiaPaintPop['fill-color'])
-      updateMarkerValues(markers, freguesiaData, 'diff_pop_2011')
-    },
-    onEnterBack: () => {
-      setLayerVisibility(city, map.current, `${city}-freguesia`, freguesiaPaintPop['fill-color'])
-      updateMarkerValues(markers, freguesiaData, 'diff_pop_2011')
-    },
-  })
-
-  ScrollTrigger.create({
     trigger: actionFreguesiaAL.current,
     start: 'top 70%',
     end: 'top 20%',
     onEnter: () => {
       setLayerVisibility(city, map.current, `${city}-freguesia`, freguesiaPaintAL['fill-color'])
-      updateMarkerValues(markers, freguesiaData, 'diff_alojamentos_2011')
+      updateMarkerValues(markers, ['propAL', 'diff_alojamentos_2011'])
     },
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-freguesia`, freguesiaPaintAL['fill-color'])
+      updateMarkerValues(markers, ['propAL', 'diff_alojamentos_2011'])
+    },
+  })
+
+  ScrollTrigger.create({
+    trigger: actionFreguesiaPop.current,
+    start: 'top 70%',
+    end: 'top 20%',
+    onEnter: () => {
+      setLayerVisibility(city, map.current, `${city}-freguesia`, freguesiaPaintPop['fill-color'])
+      updateMarkerValues(markers, ['propAL', 'diff_alojamentos_2011', 'diff_pop_2011'])
+    },
+    onEnterBack: () => {
+      setLayerVisibility(city, map.current, `${city}-freguesia`, freguesiaPaintPop['fill-color'])
+      updateMarkerValues(markers, ['propAL', 'diff_alojamentos_2011', 'diff_pop_2011'])
       setMarkerVisibility(markers, 'block')
-      updateMarkerValues(markers, freguesiaData, 'diff_alojamentos_2011')
+
       map.current?.flyTo({
         center: cityDefinitions[city].center.mapCenter,
         zoom: cityDefinitions[city].center.zoom,

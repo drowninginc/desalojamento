@@ -65,7 +65,6 @@ const Map = ({ city }: Props) => {
   }, 15)
 
   useEffect(() => {
-    console.log(freguesiaData)
     document.body.style.overflow = !map.current
       ? 'hidden'
       : map.current.loaded()
@@ -87,7 +86,7 @@ const Map = ({ city }: Props) => {
           0,
           '#FFFFFF', // White for zero
           maxPop,
-          '#006400', // Dark green for the most positive values
+          '#b8ffcb', // Green for the most positive values
         ],
         'fill-opacity': 0.1,
         'fill-color-transition': { duration: 500 },
@@ -103,7 +102,7 @@ const Map = ({ city }: Props) => {
           0,
           '#FFFFFF', // White for zero
           maxAloj,
-          '#006400', // Dark green for the most positive values
+          '#b8ffcb', // Dark green for the most positive values
         ],
         'fill-opacity': 0.1,
         'fill-color-transition': { duration: 500 },
@@ -114,7 +113,11 @@ const Map = ({ city }: Props) => {
       map.current.on('load', () => {
         document.body.style.overflow = 'scroll'
 
-        const centroidMarkers = addCentroidMarkers(map.current, freguesiaData, 'propAL')
+        const centroidMarkers = addCentroidMarkers(map.current, freguesiaData, [
+          'propAL',
+          'diff_alojamentos_2011',
+          'diff_pop_2011',
+        ])
 
         createScrollTriggers(
           city,
@@ -135,7 +138,6 @@ const Map = ({ city }: Props) => {
           freguesiaPaintPop,
           freguesiaPaintAL,
           centroidMarkers,
-          freguesiaData,
         )
 
         addSourcesAndLayers(
@@ -149,8 +151,6 @@ const Map = ({ city }: Props) => {
           seccaoPaint,
           alPaintMegaHost,
         )
-
-        addCentroidMarkers(map.current, city, freguesiaData)
       })
     }
 
@@ -221,20 +221,9 @@ const Map = ({ city }: Props) => {
           <div ref={actionFreguesiaZoom} className="text-box glassy">
             As freguesias do Centro Histórico são as mais afetadas.
           </div>
-          <div ref={actionFreguesiaPop} className="text-box glassy">
-            As freguesias com maior concentração de ALs são precisamente as que perderam mais
-            população na última década.
-            <div className="heatmap-label">
-              <span className="label-center">Evolução do número de habitantes (%) 2011-2021</span>
-              <div className="heatmap-rectangle heatmap-population"></div>
-              <div className="heatmap-labels">
-                <span className="label-left">menos habitantes</span>
-                <span className="label-right">mais habitantes</span>
-              </div>
-            </div>
-          </div>
           <div ref={actionFreguesiaAL} className="text-box glassy">
-            E também as que mais perderam alojamentos para habitação permanente.
+            As freguesias com maior concentração de ALs são precisamente as que perderam mais
+            habitação na última década.
             <div className="heatmap-label">
               <span className="label-center">
                 Evolução do número de alojamentos para habitação permanente (%) 2011-2021
@@ -248,6 +237,17 @@ const Map = ({ city }: Props) => {
               <div className="heatmap-labels">
                 <span className="label-left">menos habitação</span>
                 <span className="label-right">mais habitação</span>
+              </div>
+            </div>
+          </div>
+          <div ref={actionFreguesiaPop} className="text-box glassy">
+            E também as que perderam mais população.
+            <div className="heatmap-label">
+              <span className="label-center">Evolução do número de habitantes (%) 2011-2021</span>
+              <div className="heatmap-rectangle heatmap-population"></div>
+              <div className="heatmap-labels">
+                <span className="label-left">menos habitantes</span>
+                <span className="label-right">mais habitantes</span>
               </div>
             </div>
           </div>
