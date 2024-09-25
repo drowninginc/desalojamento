@@ -40,10 +40,12 @@ header {
   background-image: url('/static/images/sky.png');
   height: 100vh;
   width: 100%;
+  max-width: 100vw;
   position: fixed;
   top: 0;
   left: 0;
   background-size: cover;
+  box-sizing: border-box;
 }
 
 #layer2 {
@@ -123,8 +125,28 @@ header {
   }
 }
 
-.author {
+@media (max-width: 768px) {
+  .logo {
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .logoLegend {
+    text-align: center;
+    margin-top: 10px;
+    font-size: medium;
+  }
+
+  .citySelector {
+    width: 80%;
+    margin: 20px auto;
+  }
+
+  .paragraphIntro {
+    padding: 0 10px;
+  }
 }
+
 .citySelector {
   display: flex;
   gap: 2vw;
