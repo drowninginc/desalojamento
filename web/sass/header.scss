@@ -127,6 +127,12 @@ header {
 }
 
 @media (max-width: 768px) {
+  .language-selector {
+    position: fixed;
+    top: $global-spacing-sm;
+    right: $global-spacing-sm;
+    z-index: -1;
+  }
   #layer2 {
     position: fixed;
     top: 0;
