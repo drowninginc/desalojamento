@@ -16,7 +16,7 @@ header {
   z-index: 1;
 
   & .active {
-    color: darken($color-blue-al, 15%);
+    font-weight: bold;
   }
 
   & .language {
@@ -142,7 +142,7 @@ header {
     transform: translate3d(0, 0, 0) !important;
   }
   #layer3 {
-    margin-top: 50vh; // Adjust this value as needed to move layer3 down
+    margin-top: 40vh;
   }
   .logo {
     margin: 0 auto;
