@@ -133,6 +133,7 @@ header {
     left: 0;
     width: 100%;
     z-index: -1;
+    transform: translate3d(0, 0, 0) !important;
   }
   #layer3 {
     margin-top: 50vh; // Adjust this value as needed to move layer3 down
