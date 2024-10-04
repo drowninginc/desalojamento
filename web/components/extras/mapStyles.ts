@@ -12,6 +12,10 @@ export const cityDefinitions = {
   Lisbon: {
     mapCenter: [-9.146, 38.735],
     zoom: 12.3,
+    center: {
+      mapCenter: [-9.146, 38.715],
+      zoom: 14,
+    },
   },
 }
 
@@ -36,7 +40,7 @@ export const alPaintMegaHost: mapboxgl.CirclePaint = {
     12,
     ['interpolate', ['linear'], ['get', 'weight'], 0, 2, 1, 6],
   ],
-  'circle-color': ['case', ['==', ['get', 'mega_host_2'], 'True'], '#ff1654', '#012169'],
+  'circle-color': ['case', ['>=', ['get', 'host_listings_number'], 2], '#ff1654', '#012169'],
 }
 
 // Map 2

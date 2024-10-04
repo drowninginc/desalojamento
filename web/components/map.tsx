@@ -256,7 +256,7 @@ const Map = ({ city }: Props) => {
             cidade, que se tornaram verdadeiros oásis da monocultura do turismo.
           </div>
           <div className="text-box glassy">
-            Já existem vários quarteirões sem qualquer habitante , apenas alojamentos locais.
+            Já existem vários quarteirões sem qualquer habitante, apenas alojamentos locais.
           </div>
           <div ref={actionMegaHosts} className="text-box glassy">
             actionMegaHosts
