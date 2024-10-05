@@ -55,46 +55,6 @@
   fill: $color-blue-al;
 }
 
-.casas-container {
-  margin: 0 auto;
-
-  &:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: var(--label);
-    width: 2px; // Width of the dashed line
-    height: 100%;
-    background: black; // Color of the dashed line
-    border-left: 2px dashed #000; // Style of the dashed line
-    z-index: 10;
-  }
-
-  .number-label {
-    position: absolute;
-    top: -70px; // Adjust as needed
-    transform: translateX(-40%);
-    background: white;
-    padding: 5px 10px;
-    z-index: 20;
-    font-size: 40px;
-  }
-}
-
-.casas-magenta {
-  z-index: 1;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-.casas-azul {
-  z-index: 2;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
 .histogram-container .chart-legend {
   display: flex;
   flex-direction: column;

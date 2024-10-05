@@ -167,11 +167,6 @@ export const createScrollTriggers = (
       setLayerVisibility(city, map.current, `${city}-freguesia`, freguesiaPaintPop['fill-color'])
       updateMarkerValues(markers, ['propAL', 'diff_alojamentos_2011', 'diff_pop_2011'])
       setMarkerVisibility(markers, 'block')
-
-      map.current?.flyTo({
-        center: cityDefinitions[city].center.mapCenter,
-        zoom: cityDefinitions[city].center.zoom,
-      })
     },
   })
 
@@ -186,6 +181,10 @@ export const createScrollTriggers = (
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-seccao`)
       setMarkerVisibility(markers, 'none')
+      map.current?.flyTo({
+        center: cityDefinitions[city].center.mapCenter,
+        zoom: cityDefinitions[city].center.zoom,
+      })
     },
   })
 

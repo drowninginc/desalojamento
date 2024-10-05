@@ -175,11 +175,9 @@ export const updateMarkerValues = (markers, properties) => {
 }
 
 export const setMarkerVisibility = (markers, visibility) => {
-  console.log(visibility)
   markers.forEach(marker => {
     const element = marker.getElement()
     const wrapper = element.querySelector('.animation-wrapper')
-    console.log(wrapper)
     if (visibility === 'block') {
       wrapper.classList.add('visible')
       wrapper.classList.remove('hidden')

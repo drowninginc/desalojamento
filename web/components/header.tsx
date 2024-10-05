@@ -36,16 +36,10 @@ const Header = ({ language, setLanguage, city }: Props) => {
       topParallax()
     }
 
-    function handleMouseOver(event: MouseEvent) {
-      console.log(event.target)
-    }
-
     window.addEventListener('scroll', doParallax)
-    document.addEventListener('mouseover', handleMouseOver)
 
     return () => {
       window.removeEventListener('scroll', doParallax)
-      document.removeEventListener('mouseover', handleMouseOver)
     }
   }, [])
 
@@ -56,7 +50,12 @@ const Header = ({ language, setLanguage, city }: Props) => {
         <div className="parallaxWrapper">
           <div id="layer1" className="parallaxLayer" data-speed="30"></div>
           <div id="layer2" className="parallaxLayer" data-speed="-80">
-            <Image className="logo" src={logoImage} alt="Logo Image" layout="responsive"></Image>
+            <Image
+              className="logo"
+              src={logoImage}
+              alt="Logo Image"
+              layout="responsive"
+              priority={true}></Image>
             <div className="logoLegend">
               por <a>João Bernardo Narciso</a>
             </div>

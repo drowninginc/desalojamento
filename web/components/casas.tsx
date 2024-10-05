@@ -1,60 +1,37 @@
 import Image from 'next/image'
 
 interface CasasProps {
-  city: string
+  percentage: number
 }
 
-const Casas = ({ city }: CasasProps) => {
-  let label = ''
-  if (city === 'Porto') {
-    label = '82%'
-  } else if (city === 'Lisbon') {
-    label = '68%'
-  }
+const Casas = ({ percentage }: CasasProps) => {
+  const label = `${percentage}%`
 
   const clipPathValue = `inset(0 0 0 ${label})`
-  const dynamicAfterStyle = `
-  .casas-container::after {
-    left: ${label};
-  }
-`
 
   return (
-    <>
-      <style>{dynamicAfterStyle}</style>
-      <div
-        className="casas-container"
-        style={{
-          position: 'relative',
-          width: '1080px', // Set the width to match the images
-          height: '107px', // Set the height to match the images
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <div className="number-label" style={{ left: label }}>
-          {label}
-        </div>
-        <div className="casas-magenta">
-          <Image
-            src="/static/images/casas_magenta.png"
-            alt="Casas Magenta"
-            layout="fill"
-            objectFit="cover"
-            objectPosition="center"
-          />
-        </div>
-        <div className="casas-azul" style={{ clipPath: clipPathValue }}>
-          <Image
-            src="/static/images/casas_azuis.png"
-            alt="Casas Azul"
-            layout="fill"
-            objectFit="cover"
-            objectPosition="center"
-          />
+    <div className="casas-wrapper">
+      <div className="casas-title">
+        <div className="casas-title-title">
+          Proporção de ALs cujos donos são proprietários de múltiplos alojamentos
         </div>
       </div>
-    </>
+      <div className="casas-container">
+        <Image src="/static/images/casas_magenta.png" alt="First Image" width={1080} height={107} />
+        <Image
+          src="/static/images/casas_azuis.png"
+          alt="First Image"
+          width={1080}
+          height={107}
+          style={{ clipPath: clipPathValue }}
+        />
+        <div className="separator-line" style={{ left: `${percentage}%` }} />
+        <div className="percentage-label" style={{ left: `${percentage}%` }}>
+          {' '}
+          {label}
+        </div>
+      </div>
+    </div>
   )
 }
 

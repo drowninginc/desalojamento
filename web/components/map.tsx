@@ -4,6 +4,8 @@ import React, { useRef, useEffect } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 import { debounce } from 'lodash'
+import Casas from './casas'
+
 import {
   cityDefinitions,
   alPaint,
@@ -62,14 +64,17 @@ const Map = ({ city }: Props) => {
 
   const debouncedSetFilter = debounce((map, dateValue) => {
     map.setFilter(`${city}-al`, ['<=', ['get', 'normalized_date'], dateValue])
-  }, 15)
+  }, 10)
 
   useEffect(() => {
-    document.body.style.overflow = !map.current
-      ? 'hidden'
-      : map.current.loaded()
-      ? 'scroll'
-      : 'hidden'
+    const checkMapLoaded = () => {
+      if (map.current && map.current.loaded()) {
+        document.body.style.overflow = 'scroll'
+      } else {
+        document.body.style.overflow = 'hidden'
+        setTimeout(checkMapLoaded, 400) // Retry every second
+      }
+    }
 
     if (alData && freguesiaData && seccaoData) {
       if (map.current) return
@@ -153,6 +158,8 @@ const Map = ({ city }: Props) => {
         )
       })
     }
+
+    checkMapLoaded()
 
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill())
@@ -255,11 +262,10 @@ const Map = ({ city }: Props) => {
             O mapa por quarteirões permite perceber melhor a concentração de ALs em alguns locais da
             cidade, que se tornaram verdadeiros oásis da monocultura do turismo.
           </div>
-          <div className="text-box glassy">
-            Já existem vários quarteirões sem qualquer habitante, apenas alojamentos locais.
-          </div>
           <div ref={actionMegaHosts} className="text-box glassy">
             actionMegaHosts
+            <Casas percentage={50}></Casas>
+            <Casas percentage={50}></Casas>
           </div>
         </div>
       </div>
