@@ -10,11 +10,11 @@ export const cityDefinitions = {
     },
   },
   Lisbon: {
-    mapCenter: [-9.146, 38.735],
+    mapCenter: [-9.146, 38.741],
     zoom: 12.3,
     center: {
-      mapCenter: [-9.146, 38.715],
-      zoom: 14,
+      mapCenter: [-9.146, 38.723],
+      zoom: 13,
     },
   },
 }
@@ -64,8 +64,14 @@ export const freguesiaPaint: mapboxgl.FillPaint = {
 
 // Map 3
 export const seccaoPaint: mapboxgl.FillPaint = {
-  'fill-color': ['interpolate', ['linear'], ['get', 'propAL'], 0, '#ADD8E6', 100, '#00008B'],
-  'fill-opacity': 0.8,
+  'fill-color': [
+    'step',
+    ['get', 'propAL'],
+    'rgba(0, 0, 0, 0)', // Transparent for values < 50
+    50,
+    '#012169', // Color for values >= 50
+  ],
+  'fill-opacity': 1,
   'fill-outline-color': '#00008C',
   'fill-color-transition': { duration: 500 },
 }
