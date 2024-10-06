@@ -190,3 +190,8 @@ export const setMarkerVisibility = (markers, visibility) => {
     }
   })
 }
+
+export const formatNumber = (value: number, language: string) => {
+  const roundedValue = Math.round(value / 1000)
+  return language === 'en' ? `${roundedValue} k` : `${roundedValue} mil`
+}

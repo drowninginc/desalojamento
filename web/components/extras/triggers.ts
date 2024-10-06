@@ -43,6 +43,7 @@ export const createScrollTriggers = (
   actionFreguesiaZoom,
   actionFreguesiaPop,
   actionFreguesiaAL,
+  actionLineChart,
   actionSeccao,
   actionMegaHosts,
   setNormalizedDate,
@@ -51,6 +52,7 @@ export const createScrollTriggers = (
   freguesiaPaintPop,
   freguesiaPaintAL,
   markers,
+  setTriggerAnimation,
 ) => {
   ScrollTrigger.create({
     id: 'map-pin',
@@ -158,6 +160,18 @@ export const createScrollTriggers = (
       setLayerVisibility(city, map.current, `${city}-freguesia`, freguesiaPaintPop['fill-color'])
       updateMarkerValues(markers, ['propAL', 'diff_alojamentos_2011', 'diff_pop_2011'])
       setMarkerVisibility(markers, 'block')
+    },
+  })
+
+  ScrollTrigger.create({
+    trigger: actionLineChart.current,
+    start: 'top 70%',
+    end: 'top 20%',
+    onEnter: () => {
+      setTriggerAnimation(true)
+    },
+    onEnterBack: () => {
+      setTriggerAnimation(true)
     },
   })
 

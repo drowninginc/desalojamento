@@ -1,10 +1,11 @@
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useCallback } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 import { debounce } from 'lodash'
 import Casas from './casas'
+import Linechart from './linechart'
 
 import {
   cityDefinitions,
@@ -21,6 +22,7 @@ import {
   addCentroidMarkers,
 } from './extras/helpers'
 import { createScrollTriggers } from './extras/triggers'
+import { timeout } from 'd3'
 
 // @ts-ignore
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default
@@ -30,11 +32,11 @@ mapboxgl.accessToken =
 
 type Props = {
   city: string
+  language: string
 }
 
-const Map = ({ city }: Props) => {
+const Map = ({ language, city }: Props) => {
   const { alData, freguesiaData, seccaoData } = getCityData(city)
-
   const divTrigger = React.useRef(null!)
   const mapPin = React.useRef(null!)
   const mapContainer = React.useRef(null!)
@@ -47,10 +49,12 @@ const Map = ({ city }: Props) => {
   const actionFreguesiaPop = React.useRef(null!)
   const actionFreguesiaAL = React.useRef(null!)
   const actionSeccao = React.useRef(null!)
+  const actionLineChart = React.useRef(null!)
   const actionMegaHosts = React.useRef(null!)
 
   const [normalizedDate, setNormalizedDate] = React.useState(0)
   const [barWidth, setBarWidth] = React.useState('0%')
+  const [triggerAnimation, setTriggerAnimation] = React.useState(false)
 
   const formatDate = value => {
     const startDate = new Date('2014-01-01')
@@ -116,8 +120,6 @@ const Map = ({ city }: Props) => {
       map.current = createMap(mapContainer.current, city, cityDefinitions)
 
       map.current.on('load', () => {
-        document.body.style.overflow = 'scroll'
-
         const centroidMarkers = addCentroidMarkers(map.current, freguesiaData, [
           'propAL',
           'diff_alojamentos_2011',
@@ -135,6 +137,7 @@ const Map = ({ city }: Props) => {
           actionFreguesiaZoom,
           actionFreguesiaPop,
           actionFreguesiaAL,
+          actionLineChart,
           actionSeccao,
           actionMegaHosts,
           setNormalizedDate,
@@ -143,6 +146,7 @@ const Map = ({ city }: Props) => {
           freguesiaPaintPop,
           freguesiaPaintAL,
           centroidMarkers,
+          setTriggerAnimation,
         )
 
         addSourcesAndLayers(
@@ -165,6 +169,26 @@ const Map = ({ city }: Props) => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill())
     }
   }, [alData])
+
+  const useResize = handler => {
+    useEffect(() => {
+      window.addEventListener('resize', handler)
+
+      return () => {
+        window.removeEventListener('resize', handler)
+      }
+    }, [handler])
+  }
+
+  const onResize = useCallback(() => {
+    if (map.current) {
+      setTimeout(() => map.current.resize(), 500)
+      map.current.resize()
+      //TODO acrescentar currentBoundaryBox variavel e mete-la aqui
+    }
+  }, [map.current])
+
+  useResize(onResize)
 
   return (
     <>
@@ -257,6 +281,13 @@ const Map = ({ city }: Props) => {
                 <span className="label-right">mais habitantes</span>
               </div>
             </div>
+          </div>
+          <div ref={actionLineChart} className="text-box glassy">
+            O padrão blablabla{' '}
+            <Linechart
+              language={language}
+              city={city}
+              triggerAnimation={triggerAnimation}></Linechart>
           </div>
           <div ref={actionSeccao} className="text-box glassy">
             O mapa por quarteirões permite perceber melhor a concentração de ALs em alguns locais da

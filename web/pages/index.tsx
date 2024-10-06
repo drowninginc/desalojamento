@@ -7,12 +7,12 @@ import translation from '../libs/translation'
 
 const Index = () => {
   const [language, setLanguage] = useState('pt')
-  const city = 'Lisbon'
+  const city = 'Porto'
 
   return (
     <>
       <Layout language={language} setLanguage={setLanguage} city={city}>
-        <Map city={city} />
+        <Map language={language} city={city} />
         <Paragraph>{translation('paragraph1', language, city)}</Paragraph>
       </Layout>
     </>

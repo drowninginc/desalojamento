@@ -1,14 +1,8 @@
 .histogram-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.histogram-svg {
-  width: 600px;
-  height: 350px;
+  height: 300px;
+  svg {
+    overflow: visible;
+  }
 }
 
 .histogram-rect {
@@ -55,20 +49,24 @@
   fill: $color-blue-al;
 }
 
-.histogram-container .chart-legend {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: left;
-  margin-top: 10px;
+.chart-legend {
+  margin-top: 30px;
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 5px;
+
+    .legend-text {
+      font-size: 14px;
+      margin-left: 10px;
+    }
+  }
 }
 
-.histogram-container .legend-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 5px;
-}
-
-.histogram-container .legend-text {
-  margin-left: 5px;
+button {
+  position: relative; /* Ensure it's positioned correctly */
+  z-index: 10; /* Bring it to the front */
+  cursor: pointer; /* Change cursor to pointer on hover */
 }
