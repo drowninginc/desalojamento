@@ -118,6 +118,13 @@ export const addCentroidMarkers = (map, data, properties) => {
       const wrapperElement = document.createElement('div')
       wrapperElement.className = 'animation-wrapper'
 
+      const textElement = document.createElement('div')
+      textElement.className = 'freg-name'
+      textElement.innerText = `${feature.properties.freg_name}`
+
+      // Append the text element to the wrapper
+      wrapperElement.appendChild(textElement)
+
       properties.forEach(property => {
         const value = feature.properties[property]
         const valueElement = document.createElement('div')
@@ -128,7 +135,7 @@ export const addCentroidMarkers = (map, data, properties) => {
         if (property === 'propAL') {
           iconElement.innerText = 'AL'
         } else if (property === 'diff_pop_2011') {
-          iconElement.innerText = '🧑‍🧑‍🧒‍🧒'
+          iconElement.innerText = '👪'
         } else if (property === 'diff_alojamentos_2011') {
           iconElement.innerText = '🏠'
         }

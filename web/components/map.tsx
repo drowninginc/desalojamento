@@ -121,6 +121,7 @@ const Map = ({ language, city }: Props) => {
       map.current = createMap(mapContainer.current, city, cityDefinitions, setBoundaryBox)
 
       map.current.on('load', () => {
+        console.log(freguesiaData)
         const centroidMarkers = addCentroidMarkers(map.current, freguesiaData, [
           'propAL',
           'diff_alojamentos_2011',
