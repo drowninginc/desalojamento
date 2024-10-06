@@ -22,8 +22,7 @@ export const createMap = (container, city, cityDefinitions) => {
   return new mapboxgl.Map({
     container,
     style: 'mapbox://styles/mapbox/light-v10?optimize=true',
-    center: cityDefinitions[city].mapCenter,
-    zoom: cityDefinitions[city].zoom,
+    bounds: cityDefinitions[city].boudingBox,
     interactive: false,
   })
 }

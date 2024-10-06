@@ -1,14 +1,13 @@
 import Layout from '../components/layout'
 import Map from '../components/map'
 import Paragraph from '../components/paragraph'
-import Linechart from '../components/linechart'
 
 import { useState } from 'react'
 import translation from '../libs/translation'
 
 const Index = () => {
   const [language, setLanguage] = useState('pt')
-  const city = 'Porto'
+  const city = 'Lisbon'
 
   return (
     <>

@@ -109,19 +109,13 @@ export const createScrollTriggers = (
       setLayerVisibility(city, map.current, `${city}-freguesia`)
       updateMarkerValues(markers, ['propAL'])
       setMarkerVisibility(markers, 'block')
-      map.current?.flyTo({
-        center: cityDefinitions[city].mapCenter,
-        zoom: cityDefinitions[city].zoom,
-      })
+      map.current?.fitBounds(cityDefinitions[city].boudingBox)
     },
     onEnterBack: () => {
       gsap.to('.plot-full-screen', { opacity: 0, duration: 0.5 })
       updateMarkerValues(markers, ['propAL'])
 
-      map.current?.flyTo({
-        center: cityDefinitions[city].mapCenter,
-        zoom: cityDefinitions[city].zoom,
-      })
+      map.current?.fitBounds(cityDefinitions[city].boudingBox)
     },
   })
 
@@ -130,10 +124,7 @@ export const createScrollTriggers = (
     start: 'top 70%',
     end: 'top 20%',
     onEnter: () => {
-      map.current?.flyTo({
-        center: cityDefinitions[city].center.mapCenter,
-        zoom: cityDefinitions[city].center.zoom,
-      })
+      map.current?.fitBounds(cityDefinitions[city].center.boudingBox)
     },
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-freguesia`)
@@ -181,10 +172,7 @@ export const createScrollTriggers = (
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-seccao`)
       setMarkerVisibility(markers, 'none')
-      map.current?.flyTo({
-        center: cityDefinitions[city].center.mapCenter,
-        zoom: cityDefinitions[city].center.zoom,
-      })
+      map.current?.fitBounds(cityDefinitions[city].center.boudingBox)
     },
   })
 
@@ -194,17 +182,11 @@ export const createScrollTriggers = (
     end: 'top 20%',
     onEnter: () => {
       setLayerVisibility(city, map.current, `${city}-al-megahosts`)
-      map.current?.flyTo({
-        center: cityDefinitions[city].mapCenter,
-        zoom: cityDefinitions[city].zoom,
-      })
+      map.current?.fitBounds(cityDefinitions[city].boudingBox)
     },
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-al-megahosts`)
-      map.current?.flyTo({
-        center: cityDefinitions[city].mapCenter,
-        zoom: cityDefinitions[city].zoom,
-      })
+      map.current?.fitBounds(cityDefinitions[city].boudingBox)
     },
   })
 }

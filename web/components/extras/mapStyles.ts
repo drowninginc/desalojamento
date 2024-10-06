@@ -2,19 +2,27 @@ import mapboxgl from 'mapbox-gl'
 
 export const cityDefinitions = {
   Porto: {
-    mapCenter: [-8.653, 41.162],
-    zoom: 12.3,
+    boudingBox: [
+      [-8.554615, 41.16],
+      [-8.743437, 41.165],
+    ],
     center: {
-      mapCenter: [-8.618, 41.153],
-      zoom: 14,
+      boudingBox: [
+        [-8.59, 41.14],
+        [-8.69, 41.177],
+      ],
     },
   },
   Lisbon: {
-    mapCenter: [-9.146, 38.741],
-    zoom: 12.3,
+    boudingBox: [
+      [-9.12, 38.8],
+      [-9.26, 38.689],
+    ],
     center: {
-      mapCenter: [-9.146, 38.723],
-      zoom: 13,
+      boudingBox: [
+        [-9.187, 38.703],
+        [-9.097, 38.744],
+      ],
     },
   },
 }
