@@ -55,6 +55,7 @@ const Map = ({ language, city }: Props) => {
   const [normalizedDate, setNormalizedDate] = React.useState(0)
   const [barWidth, setBarWidth] = React.useState('0%')
   const [triggerAnimation, setTriggerAnimation] = React.useState(false)
+  const [boundaryBox, setBoundaryBox] = React.useState<[number, number][]>([])
 
   const formatDate = value => {
     const startDate = new Date('2014-01-01')
@@ -117,7 +118,7 @@ const Map = ({ language, city }: Props) => {
         'fill-color-transition': { duration: 500 },
       }
 
-      map.current = createMap(mapContainer.current, city, cityDefinitions)
+      map.current = createMap(mapContainer.current, city, cityDefinitions, setBoundaryBox)
 
       map.current.on('load', () => {
         const centroidMarkers = addCentroidMarkers(map.current, freguesiaData, [
@@ -147,6 +148,7 @@ const Map = ({ language, city }: Props) => {
           freguesiaPaintAL,
           centroidMarkers,
           setTriggerAnimation,
+          setBoundaryBox,
         )
 
         addSourcesAndLayers(
@@ -182,11 +184,16 @@ const Map = ({ language, city }: Props) => {
 
   const onResize = useCallback(() => {
     if (map.current) {
-      setTimeout(() => map.current.resize(), 500)
       map.current.resize()
-      //TODO acrescentar currentBoundaryBox variavel e mete-la aqui
+      setTimeout(() => {
+        map.current.resize()
+        map.current.fitBounds([
+          [boundaryBox[0][0], boundaryBox[0][1]],
+          [boundaryBox[1][0], boundaryBox[1][1]],
+        ])
+      }, 500) // Ensure fitBounds is called after resize
     }
-  }, [map.current])
+  }, [map.current, boundaryBox])
 
   useResize(onResize)
 

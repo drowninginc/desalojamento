@@ -2,24 +2,24 @@ import mapboxgl from 'mapbox-gl'
 
 export const cityDefinitions = {
   Porto: {
-    boudingBox: [
+    boundingBox: [
       [-8.554615, 41.16],
       [-8.743437, 41.165],
     ],
     center: {
-      boudingBox: [
+      boundingBox: [
         [-8.59, 41.14],
         [-8.69, 41.177],
       ],
     },
   },
   Lisbon: {
-    boudingBox: [
+    boundingBox: [
       [-9.12, 38.8],
       [-9.26, 38.689],
     ],
     center: {
-      boudingBox: [
+      boundingBox: [
         [-9.187, 38.703],
         [-9.097, 38.744],
       ],

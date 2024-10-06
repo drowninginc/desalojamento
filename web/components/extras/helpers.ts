@@ -18,11 +18,12 @@ export const getCityData = city => {
   return { alData, freguesiaData, seccaoData }
 }
 
-export const createMap = (container, city, cityDefinitions) => {
+export const createMap = (container, city, cityDefinitions, setBoundaryBox) => {
+  setBoundaryBox(cityDefinitions[city].boundingBox)
   return new mapboxgl.Map({
     container,
     style: 'mapbox://styles/mapbox/light-v10?optimize=true',
-    bounds: cityDefinitions[city].boudingBox,
+    bounds: cityDefinitions[city].boundingBox,
     interactive: false,
   })
 }
@@ -194,4 +195,9 @@ export const setMarkerVisibility = (markers, visibility) => {
 export const formatNumber = (value: number, language: string) => {
   const roundedValue = Math.round(value / 1000)
   return language === 'en' ? `${roundedValue} k` : `${roundedValue} mil`
+}
+
+export const changeBoundaryBox = (map, setBoundaryBox, boundaryBox) => {
+  map.fitBounds(boundaryBox)
+  setBoundaryBox(boundaryBox)
 }

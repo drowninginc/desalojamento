@@ -3,7 +3,7 @@ import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 import { cityDefinitions, freguesiaPaint, seccaoPaint, alPaintMegaHost } from './mapStyles'
 gsap.registerPlugin(ScrollTrigger)
 
-import { updateMarkerValues, setMarkerVisibility } from './helpers'
+import { updateMarkerValues, setMarkerVisibility, changeBoundaryBox } from './helpers'
 
 const setLayerVisibility = (
   city: string,
@@ -53,6 +53,7 @@ export const createScrollTriggers = (
   freguesiaPaintAL,
   markers,
   setTriggerAnimation,
+  setBoundaryBox,
 ) => {
   ScrollTrigger.create({
     id: 'map-pin',
@@ -111,13 +112,12 @@ export const createScrollTriggers = (
       setLayerVisibility(city, map.current, `${city}-freguesia`)
       updateMarkerValues(markers, ['propAL'])
       setMarkerVisibility(markers, 'block')
-      map.current?.fitBounds(cityDefinitions[city].boudingBox)
+      changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].boundingBox)
     },
     onEnterBack: () => {
       gsap.to('.plot-full-screen', { opacity: 0, duration: 0.5 })
       updateMarkerValues(markers, ['propAL'])
-
-      map.current?.fitBounds(cityDefinitions[city].boudingBox)
+      changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].boundingBox)
     },
   })
 
@@ -126,7 +126,7 @@ export const createScrollTriggers = (
     start: 'top 70%',
     end: 'top 20%',
     onEnter: () => {
-      map.current?.fitBounds(cityDefinitions[city].center.boudingBox)
+      changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].center.boundingBox)
     },
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-freguesia`)
@@ -186,7 +186,7 @@ export const createScrollTriggers = (
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-seccao`)
       setMarkerVisibility(markers, 'none')
-      map.current?.fitBounds(cityDefinitions[city].center.boudingBox)
+      changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].center.boundingBox)
     },
   })
 
@@ -196,11 +196,11 @@ export const createScrollTriggers = (
     end: 'top 20%',
     onEnter: () => {
       setLayerVisibility(city, map.current, `${city}-al-megahosts`)
-      map.current?.fitBounds(cityDefinitions[city].boudingBox)
+      changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].boundingBox)
     },
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-al-megahosts`)
-      map.current?.fitBounds(cityDefinitions[city].boudingBox)
+      changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].boundingBox)
     },
   })
 }
