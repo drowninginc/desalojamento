@@ -44,36 +44,11 @@ const Linechart = ({ language, city, triggerAnimation }: Props) => {
 
   const margin = { top: 40, right: 30, bottom: 60, left: 30 }
 
-  // Accessors
   const getX = d => d[0]
   const getY = d => d[1]
 
   return (
     <>
-      <div className="chart-legend">
-        <div className="legend-item">
-          <Image
-            src="/static/images/casa_verde.png"
-            alt="Número de alojamentos"
-            width={40}
-            height={30.89}
-          />
-          {language === 'en' && <span className="legend-text">Number of Housing Units</span>}
-          {language !== 'en' && <span className="legend-text">Número de alojamentos</span>}
-        </div>
-        <div className="legend-item">
-          <Image
-            src="/static/images/casa_azul_verde.png"
-            alt="Número de alojamentos + AL"
-            width={40}
-            height={30.89}
-          />
-          {language === 'en' && (
-            <span className="legend-text">Number of Housing Units + Local Accomodations</span>
-          )}
-          {language !== 'en' && <span className="legend-text">Número de alojamentos + AL</span>}
-        </div>
-      </div>
       <div className="histogram-container">
         <ParentSize>
           {({ width, height }) => {
@@ -100,14 +75,10 @@ const Linechart = ({ language, city, triggerAnimation }: Props) => {
               to: {
                 strokeDashoffset: startAnimation ? 0 : lineLength,
                 imageOpacity: startAnimation ? 1 : 0,
-              }, // Step 3: Use state variable
+              },
               config: { duration: 5000 },
               delay: 100,
-              reset: true,
-              onRest: () => {
-                // This callback is called when the animation comes to a still-stand
-                // You can use this if you want to chain animations or trigger a state update
-              },
+              reset: triggerAnimation,
             })
 
             return (
@@ -159,6 +130,90 @@ const Linechart = ({ language, city, triggerAnimation }: Props) => {
                           }),
                         }}
                       />
+                      {i === 0 && (
+                        <>
+                          <animated.circle
+                            cx={xScale(getX(d))}
+                            cy={yScale(getY(d)) + 10}
+                            r={33}
+                            stroke="grey"
+                            strokeWidth={1.5}
+                            fill="none"
+                            style={{
+                              opacity: animationProps.strokeDashoffset.to(offset => {
+                                const currentLength = lineLength - offset
+                                const pointPosition = xScale(getX(d))
+                                const diff = pointPosition - currentLength
+                                if (diff <= 0) {
+                                  return 1
+                                }
+                                const fadeInDistance = 10
+                                if (diff < fadeInDistance) {
+                                  return 1 - diff / fadeInDistance
+                                }
+                                return 0
+                              }),
+                            }}
+                          />
+                          <animated.path
+                            d={`M${xScale(getX(d)) - 33},${yScale(getY(d)) + 10} 
+                                Q${xScale(getX(d)) - 60},${yScale(getY(d)) - 10} 
+                                ${xScale(getX(d)) - 30},${yScale(getY(d)) - 40}`}
+                            fill="none"
+                            stroke="grey"
+                            strokeWidth={1.5}
+                            markerEnd="url(#arrowhead)"
+                            style={{
+                              opacity: animationProps.strokeDashoffset.to(offset => {
+                                const currentLength = lineLength - offset
+                                const pointPosition = xScale(getX(d))
+                                const diff = pointPosition - currentLength
+                                if (diff <= 0) {
+                                  return 1
+                                }
+                                const fadeInDistance = 10
+                                if (diff < fadeInDistance) {
+                                  return 1 - diff / fadeInDistance
+                                }
+                                return 0
+                              }),
+                            }}
+                          />
+                          <animated.text
+                            x={xScale(getX(d)) - 40}
+                            y={yScale(getY(d)) - 60}
+                            fill="grey"
+                            fontSize="14"
+                            style={{
+                              opacity: animationProps.strokeDashoffset.to(offset => {
+                                const currentLength = lineLength - offset
+                                const pointPosition = xScale(getX(d))
+                                const diff = pointPosition - currentLength
+                                if (diff <= 0) {
+                                  return 1
+                                }
+                                const fadeInDistance = 10
+                                if (diff < fadeInDistance) {
+                                  return 1 - diff / fadeInDistance
+                                }
+                                return 0
+                              }),
+                            }}>
+                            Habitação
+                          </animated.text>
+                          <defs>
+                            <marker
+                              id="arrowhead"
+                              markerWidth="10"
+                              markerHeight="7"
+                              refX="0"
+                              refY="3.5"
+                              orient="auto">
+                              <polygon points="0 0, 10 3.5, 0 7" fill="grey" />
+                            </marker>
+                          </defs>
+                        </>
+                      )}
                       <animated.text
                         key={`habitacao-label-${i}`}
                         x={xScale(getX(d))}
@@ -211,7 +266,91 @@ const Linechart = ({ language, city, triggerAnimation }: Props) => {
                               return 0
                             }),
                           }}
-                        />
+                        />{' '}
+                        {i === 0 && (
+                          <>
+                            <animated.circle
+                              cx={xScale(getX(d))}
+                              cy={yScale(getY(d)) - 10}
+                              r={33}
+                              stroke="grey"
+                              strokeWidth={1.5}
+                              fill="none"
+                              style={{
+                                opacity: animationProps.strokeDashoffset.to(offset => {
+                                  const currentLength = lineLength - offset
+                                  const pointPosition = xScale(getX(d))
+                                  const diff = pointPosition - currentLength
+                                  if (diff <= 0) {
+                                    return 1
+                                  }
+                                  const fadeInDistance = 10
+                                  if (diff < fadeInDistance) {
+                                    return 1 - diff / fadeInDistance
+                                  }
+                                  return 0
+                                }),
+                              }}
+                            />
+                            <animated.path
+                              d={`M${xScale(getX(d)) + 30},${yScale(getY(d)) + 6} 
+                                Q${xScale(getX(d)) + 60},${yScale(getY(d)) - 30} 
+                                ${xScale(getX(d)) + 30},${yScale(getY(d)) - 50}`}
+                              fill="none"
+                              stroke="grey"
+                              strokeWidth={1.5}
+                              markerEnd="url(#arrowhead)"
+                              style={{
+                                opacity: animationProps.strokeDashoffset.to(offset => {
+                                  const currentLength = lineLength - offset
+                                  const pointPosition = xScale(getX(d))
+                                  const diff = pointPosition - currentLength
+                                  if (diff <= 0) {
+                                    return 1
+                                  }
+                                  const fadeInDistance = 10
+                                  if (diff < fadeInDistance) {
+                                    return 1 - diff / fadeInDistance
+                                  }
+                                  return 0
+                                }),
+                              }}
+                            />
+                            <animated.text
+                              x={xScale(getX(d)) - 92}
+                              y={yScale(getY(d)) - 57}
+                              fill="grey"
+                              fontSize="14"
+                              style={{
+                                opacity: animationProps.strokeDashoffset.to(offset => {
+                                  const currentLength = lineLength - offset
+                                  const pointPosition = xScale(getX(d))
+                                  const diff = pointPosition - currentLength
+                                  if (diff <= 0) {
+                                    return 1
+                                  }
+                                  const fadeInDistance = 10
+                                  if (diff < fadeInDistance) {
+                                    return 1 - diff / fadeInDistance
+                                  }
+                                  return 0
+                                }),
+                              }}>
+                              Habitação + ALs
+                            </animated.text>
+                            <defs>
+                              <marker
+                                id="arrowhead"
+                                markerWidth="10"
+                                markerHeight="7"
+                                refX="0"
+                                refY="3.5"
+                                orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="grey" />
+                              </marker>
+                            </defs>
+                          </>
+                        )}
                         <animated.text
                           key={`habitacao-label-${i}`}
                           x={xScale(getX(d))}
