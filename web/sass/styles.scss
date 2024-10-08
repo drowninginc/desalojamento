@@ -354,6 +354,9 @@ a.button {
     transform: translateY(20px);
     transition: opacity 0.7s ease-in-out, transform 0.7s ease-in-out;
     width: 90px;
+    white-space: pre-wrap;
+    word-break: break-word; // Add this line to break words at the end of the line
+    hyphens: none;
 
     &.visible {
       opacity: 1;
