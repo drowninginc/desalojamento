@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Image from 'next/image'
 import { curveLinear } from '@visx/curve'
 import { LinePath } from '@visx/shape'
 import { scaleLinear } from '@visx/scale'
@@ -69,7 +68,7 @@ const Linechart = ({ language, city, triggerAnimation }: Props) => {
               range: [height - margin.bottom, margin.top],
             })
 
-            const lineLength = width
+            const lineLength = width + margin.left + margin.right
             const animationProps = useSpring({
               from: { strokeDashoffset: lineLength, imageOpacity: 0 },
               to: {
@@ -216,7 +215,7 @@ const Linechart = ({ language, city, triggerAnimation }: Props) => {
                       )}
                       <animated.text
                         key={`habitacao-label-${i}`}
-                        x={xScale(getX(d))}
+                        x={city === 'Lisbon' && i === 3 ? xScale(getX(d)) + 10 : xScale(getX(d))}
                         y={yScale(getY(d)) + 30}
                         textAnchor="middle"
                         fill="black"

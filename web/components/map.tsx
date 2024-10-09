@@ -22,7 +22,6 @@ import {
   addCentroidMarkers,
 } from './extras/helpers'
 import { createScrollTriggers } from './extras/triggers'
-import { timeout } from 'd3'
 
 // @ts-ignore
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default
