@@ -54,7 +54,6 @@ const Casas = ({ percentage }: CasasProps) => {
         />
         <div className="separator-line" style={{ left: `${currentPercentage}%` }} />
         <div className="percentage-label" style={{ left: `${currentPercentage}%` }}>
-          {'  '}
           {`${Math.round(currentPercentage)}%`}
         </div>
       </div>
