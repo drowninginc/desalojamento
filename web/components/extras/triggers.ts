@@ -54,6 +54,7 @@ export const createScrollTriggers = (
   markers,
   setTriggerAnimation,
   setBoundaryBox,
+  setTriggerMegaHostAnimation,
 ) => {
   ScrollTrigger.create({
     id: 'map-pin',
@@ -197,10 +198,12 @@ export const createScrollTriggers = (
     onEnter: () => {
       setLayerVisibility(city, map.current, `${city}-al-megahosts`)
       changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].boundingBox)
+      setTriggerMegaHostAnimation(true)
     },
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-al-megahosts`)
       changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].boundingBox)
+      setTriggerMegaHostAnimation(true)
     },
   })
 }

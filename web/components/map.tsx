@@ -54,6 +54,8 @@ const Map = ({ language, city }: Props) => {
   const [normalizedDate, setNormalizedDate] = React.useState(0)
   const [barWidth, setBarWidth] = React.useState('0%')
   const [triggerAnimation, setTriggerAnimation] = React.useState(false)
+  const [triggerMegaHostAnimation, setTriggerMegaHostAnimation] = React.useState(false)
+
   const [boundaryBox, setBoundaryBox] = React.useState<[number, number][]>([])
 
   const formatDate = value => {
@@ -149,6 +151,7 @@ const Map = ({ language, city }: Props) => {
           centroidMarkers,
           setTriggerAnimation,
           setBoundaryBox,
+          setTriggerMegaHostAnimation,
         )
 
         addSourcesAndLayers(
@@ -302,8 +305,8 @@ const Map = ({ language, city }: Props) => {
           </div>
           <div ref={actionMegaHosts} className="text-box glassy">
             actionMegaHosts
-            <Casas percentage={50}></Casas>
-            <Casas percentage={50}></Casas>
+            <Casas percentage={60} triggerAnimation={triggerMegaHostAnimation}></Casas>
+            <Casas percentage={45} triggerAnimation={triggerMegaHostAnimation}></Casas>
           </div>
         </div>
       </div>

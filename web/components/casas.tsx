@@ -3,38 +3,40 @@ import { useState, useEffect } from 'react'
 
 interface CasasProps {
   percentage: number
+  triggerAnimation: boolean
 }
 
-const Casas = ({ percentage }: CasasProps) => {
+const Casas = ({ percentage, triggerAnimation }: CasasProps) => {
   const [currentPercentage, setCurrentPercentage] = useState(0)
 
   useEffect(() => {
-    const animationDuration = 3000 // duration in milliseconds
-    const totalSteps = 500 // total steps for the animation
-    const stepDuration = animationDuration / totalSteps
-    const bounceSteps = 50 // steps for the bounce effect
-    const bounceFactor = 1.014 // overshoot factor
-    let currentStep = 0
+    if (triggerAnimation) {
+      const animationDuration = 3000 // duration in milliseconds
+      const totalSteps = 500 // total steps for the animation
+      const stepDuration = animationDuration / totalSteps
+      const bounceSteps = 50 // steps for the bounce effect
+      const bounceFactor = 1.014 // overshoot factor
+      let currentStep = 0
 
-    const interval = setInterval(() => {
-      if (currentStep < totalSteps) {
-        currentStep += 1
-        const currentPercentage = (currentStep / totalSteps) * percentage
-        setCurrentPercentage(currentPercentage)
-      } else if (currentStep < totalSteps + bounceSteps) {
-        currentStep += 1
-        const overshootPercentage = percentage * bounceFactor
-        const bouncePercentage =
-          overshootPercentage -
-          ((currentStep - totalSteps) / bounceSteps) * (overshootPercentage - percentage)
-        setCurrentPercentage(bouncePercentage)
-      } else {
-        clearInterval(interval)
-      }
-    }, stepDuration)
-
-    return () => clearInterval(interval)
-  }, [percentage])
+      const interval = setInterval(() => {
+        if (currentStep < totalSteps) {
+          currentStep += 1
+          const currentPercentage = (currentStep / totalSteps) * percentage
+          setCurrentPercentage(currentPercentage)
+        } else if (currentStep < totalSteps + bounceSteps) {
+          currentStep += 1
+          const overshootPercentage = percentage * bounceFactor
+          const bouncePercentage =
+            overshootPercentage -
+            ((currentStep - totalSteps) / bounceSteps) * (overshootPercentage - percentage)
+          setCurrentPercentage(bouncePercentage)
+        } else {
+          clearInterval(interval)
+        }
+      }, stepDuration)
+      return () => clearInterval(interval)
+    }
+  }, [percentage, triggerAnimation])
 
   return (
     <div className="casas-wrapper">
