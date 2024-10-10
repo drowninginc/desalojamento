@@ -77,8 +77,8 @@ const Map = ({ language, city }: Props) => {
       if (map.current && map.current.loaded()) {
         document.body.style.overflow = 'scroll'
       } else {
-        document.body.style.overflow = 'hidden'
-        setTimeout(checkMapLoaded, 400) // Retry every second
+        document.body.style.overflow = 'scroll'
+        setTimeout(checkMapLoaded, 400)
       }
     }
 
