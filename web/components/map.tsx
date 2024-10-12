@@ -305,8 +305,14 @@ const Map = ({ language, city }: Props) => {
           </div>
           <div ref={actionMegaHosts} className="text-box glassy">
             actionMegaHosts
-            <Casas percentage={60} triggerAnimation={triggerMegaHostAnimation}></Casas>
-            <Casas percentage={45} triggerAnimation={triggerMegaHostAnimation}></Casas>
+            <Casas
+              percentage={60}
+              title={'Proporção de ALs cujos donos são proprietários de múltiplos alojamentos'}
+              triggerAnimation={triggerMegaHostAnimation}></Casas>
+            <Casas
+              percentage={45}
+              title={'Proporção de ALs detidos por empresas'}
+              triggerAnimation={triggerMegaHostAnimation}></Casas>
           </div>
         </div>
       </div>

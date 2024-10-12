@@ -3,10 +3,11 @@ import { useState, useEffect } from 'react'
 
 interface CasasProps {
   percentage: number
+  title: string
   triggerAnimation: boolean
 }
 
-const Casas = ({ percentage, triggerAnimation }: CasasProps) => {
+const Casas = ({ percentage, title, triggerAnimation }: CasasProps) => {
   const [currentPercentage, setCurrentPercentage] = useState(0)
 
   useEffect(() => {
@@ -41,9 +42,7 @@ const Casas = ({ percentage, triggerAnimation }: CasasProps) => {
   return (
     <div className="casas-wrapper">
       <div className="casas-title">
-        <div className="casas-title-title">
-          Proporção de ALs cujos donos são proprietários de múltiplos alojamentos
-        </div>
+        <div className="casas-title-title">{title}</div>
       </div>
       <div className="casas-container">
         <Image src="/static/images/casas_magenta.png" alt="First Image" width={1080} height={107} />
