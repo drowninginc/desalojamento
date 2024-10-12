@@ -7,7 +7,7 @@ import translation from '../libs/translation'
 
 const Index = () => {
   const [language, setLanguage] = useState('pt')
-  const city = 'Lisbon'
+  const city = 'Porto'
 
   return (
     <>

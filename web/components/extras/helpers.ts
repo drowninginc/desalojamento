@@ -110,7 +110,8 @@ export const addCentroidMarkers = (map, data, properties) => {
   const markers = []
   if (data && data.features) {
     data.features.forEach(feature => {
-      const centroid = turf.centroid(feature).geometry.coordinates
+      const bbox = turf.bbox(feature)
+      const centroid = [(bbox[0] + bbox[2]) / 2, (bbox[1] + bbox[3]) / 2]
 
       const markerElement = document.createElement('div')
       markerElement.className = 'centroid-marker'
