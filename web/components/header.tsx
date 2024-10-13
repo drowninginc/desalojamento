@@ -57,7 +57,8 @@ const Header = ({ language, setLanguage, city }: Props) => {
               layout="responsive"
               priority={true}></Image>
             <div className="logoLegend">
-              por <a>João Bernardo Narciso</a>
+              por{' '}
+              <a href="https://www.linkedin.com/in/joaobernardonarciso/">João Bernardo Narciso</a>
             </div>
 
             {/* <div className="citySelector">

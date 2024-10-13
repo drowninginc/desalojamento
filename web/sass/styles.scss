@@ -297,6 +297,7 @@ a.button {
   font-size: $font-size-h4;
   word-break: break-word;
   hyphens: none;
+  text-align: justify;
 
   @include screen-tablet-portrait-and-bigger {
     width: 550px;
@@ -407,9 +408,12 @@ a.button {
 
 .heatmap-rectangle {
   width: 100%;
-  height: 20px;
   position: relative;
-  margin-bottom: 5px;
+  margin-top: 5px;
+  margin-bottom: 2px;
+  border-radius: 10px;
+  height: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
   &::after {
     content: '';
