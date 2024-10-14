@@ -269,6 +269,7 @@ a.button {
   padding-left: 20px;
   border-bottom: $color-blue-al 2px solid;
   border-top: $color-blue-al 2px solid;
+  opacity: 0;
 }
 
 .progress-fill {
@@ -297,7 +298,6 @@ a.button {
   font-size: $font-size-h4;
   word-break: break-word;
   hyphens: none;
-  text-align: justify;
 
   @include screen-tablet-portrait-and-bigger {
     width: 550px;

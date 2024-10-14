@@ -20,7 +20,7 @@ export const cityDefinitions = {
     ],
     center: {
       boundingBox: [
-        [-9.187, 38.703],
+        [-9.187, 38.7],
         [-9.097, 38.744],
       ],
     },
