@@ -57,6 +57,8 @@ const Map = ({ language, city }: Props) => {
   const mapPin = React.useRef(null!)
   const mapContainer = React.useRef(null!)
   const progressBar = React.useRef(null!)
+  const alCount = React.useRef(null!)
+
   const map = useRef<mapboxgl.Map | null>(null)
 
   const actionIntro = React.useRef(null!)
@@ -85,12 +87,16 @@ const Map = ({ language, city }: Props) => {
   }
 
   const getMonthlyCount = value => {
+    if (!monthlyCountsData) return 0 // Check if monthlyCountsData exists
+
     const startDate = new Date('2014-01-01')
     const endDate = new Date('2024-12-30')
     const timeRange = endDate.valueOf() - startDate.valueOf()
     const date = new Date(startDate.getTime() + value * timeRange)
 
     const yearMonth = date.toISOString().slice(0, 7) // Format date to "YYYY-MM"
+    console.log(yearMonth)
+    console.log(monthlyCountsData)
     return monthlyCountsData[yearMonth] || 0 // Get the count or default to 0
   }
 
@@ -162,6 +168,7 @@ const Map = ({ language, city }: Props) => {
           divTrigger,
           mapPin,
           progressBar,
+          alCount,
           actionIntro,
           actionFreguesia,
           actionFreguesiaZoom,
@@ -234,10 +241,13 @@ const Map = ({ language, city }: Props) => {
           <div className="progress-fill" style={{ width: barWidth }}>
             <div className="progress-fill-text" style={{ width: barWidth }}>
               {formatDate(normalizedDate)}
+              <br />
+              {getMonthlyCount(normalizedDate)}
             </div>
           </div>
           {formatDate(normalizedDate)}
-          <div className="monthly-count">{getMonthlyCount(normalizedDate)}</div>
+          <br />
+          {getMonthlyCount(normalizedDate)}
         </div>
 
         <div className="plot-full-screen"></div>

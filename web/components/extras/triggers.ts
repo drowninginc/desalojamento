@@ -38,6 +38,7 @@ export const createScrollTriggers = (
   divTrigger,
   mapPin,
   progressBar,
+  alCount,
   actionIntro,
   actionFreguesia,
   actionFreguesiaZoom,
@@ -70,6 +71,14 @@ export const createScrollTriggers = (
     start: 'top top',
     end: 'bottom top',
     pin: progressBar.current,
+  })
+
+  ScrollTrigger.create({
+    id: 'AL-count',
+    trigger: divTrigger.current,
+    start: 'top top',
+    end: 'bottom top',
+    pin: alCount.current,
   })
 
   ScrollTrigger.create({
