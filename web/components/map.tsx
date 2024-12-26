@@ -1,11 +1,28 @@
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import React, { useRef, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 import { debounce } from 'lodash'
 import Casas from './casas'
 import Linechart from './linechart'
+import translation from '../libs/translation'
+
+import anuncioImage from './images/airbnb/anuncio.jpeg'
+import paginaImage from './images/airbnb/descricaoPagina.png'
+import outdoorImage from './images/airbnb/outdoor.png'
+
+const megahostsData = {
+  megahosts: {
+    Porto: 72,
+    Lisbon: 68,
+  },
+  companies: {
+    Porto: 60,
+    Lisbon: 50,
+  },
+}
 
 import {
   cityDefinitions,
@@ -35,7 +52,7 @@ type Props = {
 }
 
 const Map = ({ language, city }: Props) => {
-  const { alData, freguesiaData, seccaoData } = getCityData(city)
+  const { alData, freguesiaData, seccaoData, monthlyCountsData } = getCityData(city)
   const divTrigger = React.useRef(null!)
   const mapPin = React.useRef(null!)
   const mapContainer = React.useRef(null!)
@@ -60,10 +77,21 @@ const Map = ({ language, city }: Props) => {
 
   const formatDate = value => {
     const startDate = new Date('2014-01-01')
-    const endDate = new Date('2023-11-15')
+    const endDate = new Date('2024-12-30')
     const timeRange = endDate.valueOf() - startDate.valueOf()
     const date = new Date(startDate.getTime() + value * timeRange)
+    //console.log(date)
     return date.toLocaleDateString('pt-pt', { year: 'numeric', month: 'long' })
+  }
+
+  const getMonthlyCount = value => {
+    const startDate = new Date('2014-01-01')
+    const endDate = new Date('2024-12-30')
+    const timeRange = endDate.valueOf() - startDate.valueOf()
+    const date = new Date(startDate.getTime() + value * timeRange)
+
+    const yearMonth = date.toISOString().slice(0, 7) // Format date to "YYYY-MM"
+    return monthlyCountsData[yearMonth] || 0 // Get the count or default to 0
   }
 
   gsap.registerPlugin(ScrollTrigger)
@@ -122,7 +150,6 @@ const Map = ({ language, city }: Props) => {
       map.current = createMap(mapContainer.current, city, cityDefinitions, setBoundaryBox)
 
       map.current.on('load', () => {
-        console.log(freguesiaData)
         const centroidMarkers = addCentroidMarkers(map.current, freguesiaData, [
           'propAL',
           'diff_alojamentos_2011',
@@ -210,6 +237,7 @@ const Map = ({ language, city }: Props) => {
             </div>
           </div>
           {formatDate(normalizedDate)}
+          <div className="monthly-count">{getMonthlyCount(normalizedDate)}</div>
         </div>
 
         <div className="plot-full-screen"></div>
@@ -219,55 +247,46 @@ const Map = ({ language, city }: Props) => {
         </div>
 
         <div ref={divTrigger} className="text-boxes-container">
+          <div className="text-box glassy">{translation('map1', language, city)}</div>
           <div className="text-box glassy">
-            A figura jurídica do alojamento local foi introduzida em 2008. Só em 2014 passou a ser
-            obrigatório o seu registo, integrando-se na designação os alojamentos que já operavam.
-          </div>
-          <div className="text-box glassy">
-            Desde então, a oferta de AL não tem parado de crescer.
+            {translation('map2', language, city)}
             <div className="text-box-note">
-              <div className="text-box-note-text">
-                O tamanho dos círculos é proporcional ao número de ALs por número de porta
-              </div>
+              <div className="text-box-note-text">{translation('map2-note', language, city)}</div>
               <svg className="circle-legend-svg" width="22.66" height="21.66">
                 <circle className="circleBig" cx="11.33" cy="11.33" r="10.33" />
                 <circle className="circleSmall" cx="11.33" cy="16" r="5" />
               </svg>
             </div>
           </div>
-          <div className="text-box glassy">
-            Em novembro de 2023, já tinham sido atribuídas mais de 10 mil licenças de alojamento
-            local só na cidade do Porto.
-          </div>
-          <div className="text-box glassy">
-            O ritmo de novas licenças tem estado quase sempre em crescimento, com exceção dos anos
-            da COVID-19. Cada novo ano tem batido recordes de novos alojamentos. Só em 2022, foram
-            registadas 1914 novas licenças, 20% do total das licenças até à data.
-          </div>
           <div ref={actionIntro} className="text-box glassy">
-            actionIntro
+            {translation('actionIntro', language, city)}
           </div>
           <div ref={actionFreguesia} className="text-box glassy">
-            Embora o fenómeno se espalhe até às cidades periféricas, nem todas as zonas da cidade
-            são afetadas da mesma forma.
+            {translation('actionFreguesia', language, city)}
             <div className="heatmap-label">
-              <span className="label-center">rácio de alojamentos locais por habitação</span>
+              <span className="label-center">
+                {translation('actionFreguesia-label', language, city)}
+              </span>
               <div className="heatmap-rectangle heatmap-al"></div>
               <div className="heatmap-labels">
-                <span className="label-left">menos AL</span>
-                <span className="label-right">mais AL</span>
+                <span className="label-left">
+                  {translation('actionFreguesia-label-left', language, city)}
+                </span>
+                <span className="label-right">
+                  {translation('actionFreguesia-label-right', language, city)}
+                </span>
               </div>
             </div>
           </div>
           <div ref={actionFreguesiaZoom} className="text-box glassy">
-            As freguesias do Centro Histórico são as mais afetadas.
+            {translation('actionFreguesia-zoom', language, city)}
           </div>
           <div ref={actionFreguesiaAL} className="text-box glassy">
-            As freguesias com maior concentração de ALs são precisamente as que perderam mais
-            habitação na última década.
+            {translation('actionFreguesiaAL', language, city)}
+
             <div className="heatmap-label">
               <span className="label-center">
-                Evolução do número de alojamentos para habitação permanente (%) 2011-2021
+                {translation('actionFreguesia-label', language, city)}
               </span>
               <div className="heatmap-rectangle heatmap-population">
                 <div className="category category-1"></div>
@@ -276,46 +295,67 @@ const Map = ({ language, city }: Props) => {
                 <div className="category category-4"></div>
               </div>
               <div className="heatmap-labels">
-                <span className="label-left">menos habitação</span>
-                <span className="label-right">mais habitação</span>
+                <span className="label-left">
+                  {translation('actionFreguesiaAl-label-left', language, city)}
+                </span>
+                <span className="label-right">
+                  {translation('actionFreguesiaAl-label-right', language, city)}
+                </span>
               </div>
             </div>
           </div>
           <div ref={actionFreguesiaPop} className="text-box glassy">
-            E também as que perderam mais população.
+            {translation('actionFreguesiaPop', language, city)}
             <div className="heatmap-label">
-              <span className="label-center">Evolução do número de habitantes (%) 2011-2021</span>
+              <span className="label-center">
+                {translation('actionFreguesiaPop-label', language, city)}
+              </span>
               <div className="heatmap-rectangle heatmap-population"></div>
               <div className="heatmap-labels">
-                <span className="label-left">menos habitantes</span>
-                <span className="label-right">mais habitantes</span>
+                <span className="label-left">
+                  {translation('actionFreguesiaPop-label-left', language, city)}
+                </span>
+                <span className="label-right">
+                  {translation('actionFreguesiaPop-label-right', language, city)}
+                </span>
               </div>
             </div>
           </div>
           <div ref={actionLineChart} className="text-box glassy">
-            O padrão blablabla{' '}
+            {translation('actionLineChart', language, city)}
             <Linechart
               language={language}
               city={city}
               triggerAnimation={triggerAnimation}></Linechart>
           </div>
           <div ref={actionSeccao} className="text-box glassy">
-            O mapa por quarteirões permite perceber melhor a concentração de ALs em alguns locais da
-            cidade, que se tornaram verdadeiros oásis da monocultura do turismo.
+            {translation('actionSeccao', language, city)}
           </div>
           <div ref={actionMegaHosts} className="text-box glassy">
-            actionMegaHosts
+            {translation('actionMegaHosts', language, city)}
+
             <Casas
-              percentage={60}
-              title={'Proporção de ALs cujos donos são proprietários de múltiplos alojamentos'}
+              percentage={megahostsData.megahosts[city]}
+              title={translation('actionMegaHosts-label-1', language, city)}
               triggerAnimation={triggerMegaHostAnimation}></Casas>
             <Casas
-              percentage={45}
-              title={'Proporção de ALs detidos por empresas'}
+              percentage={megahostsData.companies[city]}
+              title={translation('actionMegaHosts-label-1', language, city)}
               triggerAnimation={triggerMegaHostAnimation}></Casas>
           </div>
         </div>
       </div>
+      {/*      <div className="images-container">
+        <div className="image-wrapper">
+          <Image src={anuncioImage} alt="Anuncio" layout="responsive" width={500} height={300} />
+        </div>
+        <div className="image-wrapper">
+          <Image src={paginaImage} alt="Pagina" layout="responsive" width={500} height={300} />
+        </div>
+        <div className="image-wrapper">
+          <Image src={outdoorImage} alt="Outdoor" layout="responsive" width={500} height={300} />
+        </div>
+      </div>*/}
     </>
   )
 }

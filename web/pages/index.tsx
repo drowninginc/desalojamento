@@ -1,6 +1,7 @@
 import Layout from '../components/layout'
 import Map from '../components/map'
 import Paragraph from '../components/paragraph'
+import AirbnbAnimation from '../components/airbnbAnimation'
 
 import { useState } from 'react'
 import translation from '../libs/translation'
@@ -13,6 +14,7 @@ const Index = () => {
     <>
       <Layout language={language} setLanguage={setLanguage} city={city}>
         <Map language={language} city={city} />
+        <AirbnbAnimation></AirbnbAnimation>
         <Paragraph>{translation('paragraph1', language, city)}</Paragraph>
       </Layout>
     </>

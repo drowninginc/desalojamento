@@ -14,8 +14,9 @@ export const getCityData = city => {
   const alData = useData(city + '/al.json').data
   const freguesiaData = useData(city + '/censosFreguesia.json').data
   const seccaoData = useData(city + '/censosSeccao.json').data
+  const monthlyCountsData = useData(city + '/monthlyCounts.json').data
 
-  return { alData, freguesiaData, seccaoData }
+  return { alData, freguesiaData, seccaoData, monthlyCountsData }
 }
 
 export const createMap = (container, city, cityDefinitions, setBoundaryBox) => {

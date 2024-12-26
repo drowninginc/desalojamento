@@ -500,3 +500,15 @@ a.button {
     }
   }
 }
+
+.images-container {
+  display: flex;
+  justify-content: space-between; /* Adjusts space between images */
+  align-items: center; /* Aligns images vertically */
+}
+
+.image-wrapper {
+  flex: 1; /* Ensures each image takes equal space */
+  margin: 0 10px; /* Adds some space between images */
+  opacity: 0;
+}
