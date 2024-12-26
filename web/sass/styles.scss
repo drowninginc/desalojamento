@@ -291,6 +291,23 @@ a.button {
   top: 0;
 }
 
+.al-count {
+  color: $color-blue-al;
+  font-weight: bold;
+  font-size: 2em;
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20; // Ensure it's above other elements
+  background: rgba(255, 255, 255, 0.8); // Optional: Add a background for better visibility
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  opacity: 0; // Start hidden
+  transition: opacity 0.5s ease-in-out;
+}
+
 .text-box {
   padding: $global-spacing-sm $global-spacing-md;
 

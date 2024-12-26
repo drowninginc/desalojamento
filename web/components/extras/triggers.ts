@@ -74,11 +74,15 @@ export const createScrollTriggers = (
   })
 
   ScrollTrigger.create({
-    id: 'AL-count',
+    id: 'al-count',
     trigger: divTrigger.current,
     start: 'top top',
-    end: 'bottom top',
-    pin: alCount.current,
+    endTrigger: actionIntro.current,
+    end: 'center center',
+    onEnter: () => gsap.to('.al-count', { opacity: 1, duration: 0.3 }),
+    onLeave: () => gsap.to('.al-count', { opacity: 0, duration: 0.3 }),
+    onEnterBack: () => gsap.to('.al-count', { opacity: 1, duration: 0.3 }),
+    onLeaveBack: () => gsap.to('.al-count', { opacity: 0, duration: 0.3 }),
   })
 
   ScrollTrigger.create({

@@ -241,21 +241,18 @@ const Map = ({ language, city }: Props) => {
           <div className="progress-fill" style={{ width: barWidth }}>
             <div className="progress-fill-text" style={{ width: barWidth }}>
               {formatDate(normalizedDate)}
-              <br />
-              {getMonthlyCount(normalizedDate)}
             </div>
           </div>
           {formatDate(normalizedDate)}
-          <br />
-          {getMonthlyCount(normalizedDate)}
         </div>
-
+        <div ref={alCount} className="al-count">
+          {getMonthlyCount(normalizedDate) + ' ALs'}
+        </div>
         <div className="plot-full-screen"></div>
 
         <div ref={mapPin} className="map-content">
           <div ref={mapContainer} className="map-container" />
         </div>
-
         <div ref={divTrigger} className="text-boxes-container">
           <div className="text-box glassy">{translation('map1', language, city)}</div>
           <div className="text-box glassy">
