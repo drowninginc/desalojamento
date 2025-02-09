@@ -350,6 +350,12 @@ a.button {
 
 .centroid-marker {
   opacity: 0;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 5px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border: 1px solid rgba(255, 255, 255, 0.46);
 
   &.visible {
     opacity: 1;
@@ -367,9 +373,6 @@ a.button {
     color: #000;
     text-align: center;
     vertical-align: baseline;
-    border-radius: 0.25rem;
-    background-color: white;
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.7s ease-in-out, transform 0.7s ease-in-out;
@@ -411,6 +414,14 @@ a.button {
 
       .cell-icon {
         color: $color-blue-al;
+      }
+
+      .positive-number {
+        color: rgb(1, 119, 1);
+      }
+
+      .negative-number {
+        color: rgb(206, 1, 1);
       }
     }
   }
@@ -528,4 +539,11 @@ a.button {
   flex: 1; /* Ensures each image takes equal space */
   margin: 0 10px; /* Adds some space between images */
   opacity: 0;
+}
+
+.full-text-box {
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  margin-top: 50vh;
 }

@@ -26,7 +26,6 @@ export default function (section: string, language: string, city: string): React
       }))
       cachedTranslations = transformedData
       setTranslations(transformedData)
-      console.log('transformedData', transformedData)
     }
   }, [])
 

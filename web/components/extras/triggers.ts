@@ -219,25 +219,4 @@ export const createScrollTriggers = (
       setTriggerMegaHostAnimation(true)
     },
   })
-
-  ScrollTrigger.create({
-    trigger: '.images-container',
-    start: 'top 50%', // Adjust start position as needed
-    end: 'bottom 20%', // Adjust end position as needed
-    markers: true,
-    onEnter: () => {
-      const tl = gsap.timeline()
-      tl.to('.images-container .image-wrapper:nth-child(1)', { opacity: 1, duration: 0.5 })
-        .to('.images-container .image-wrapper:nth-child(2)', { opacity: 1, duration: 0.5 }, '+=0.3')
-        .to('.images-container .image-wrapper:nth-child(3)', { opacity: 1, duration: 0.5 }, '+=0.3')
-    },
-    onEnterBack: () => {
-      const tl = gsap.timeline()
-      tl.to('.images-container .image-wrapper:nth-child(1)', { opacity: 1, duration: 0.5 })
-        .to('.images-container .image-wrapper:nth-child(2)', { opacity: 1, duration: 0.5 }, '+=0.3')
-        .to('.images-container .image-wrapper:nth-child(3)', { opacity: 1, duration: 0.5 }, '+=0.3')
-    },
-    onLeave: () => gsap.to('.images-container .image-wrapper', { opacity: 0, duration: 0.5 }),
-    onLeaveBack: () => gsap.to('.images-container .image-wrapper', { opacity: 0, duration: 0.5 }),
-  })
 }

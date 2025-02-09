@@ -14,7 +14,6 @@ const Index = () => {
     <>
       <Layout language={language} setLanguage={setLanguage} city={city}>
         <Map language={language} city={city} />
-        <AirbnbAnimation></AirbnbAnimation>
         <Paragraph>{translation('paragraph1', language, city)}</Paragraph>
       </Layout>
     </>

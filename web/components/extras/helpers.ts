@@ -148,6 +148,12 @@ export const addCentroidMarkers = (map, data, properties) => {
           value.toFixed(0) === '0' || value.toFixed(0) === '-0' ? 1 : 0,
         )}%`
 
+        if (value > 0) {
+          textElement.classList.add('positive-number')
+        } else if (value < 0) {
+          textElement.classList.add('negative-number')
+        }
+
         valueElement.appendChild(iconElement)
         valueElement.appendChild(textElement)
         wrapperElement.appendChild(valueElement)
