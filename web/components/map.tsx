@@ -380,11 +380,11 @@ const Map = ({ language, city }: Props) => {
 
             <Casas
               percentage={megahostsData.megahosts[city]}
-              title={translation('actionMegaHosts-label-1', language, city)}
+              title={translation('actionMegaHosts-label-1', language, city) as string}
               triggerAnimation={triggerMegaHostAnimation}></Casas>
             <Casas
               percentage={megahostsData.companies[city]}
-              title={translation('actionMegaHosts-label-2', language, city)}
+              title={translation('actionMegaHosts-label-2', language, city) as string}
               triggerAnimation={triggerMegaHostAnimation}></Casas>
           </div>
         </div>
