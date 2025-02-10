@@ -1,15 +1,9 @@
 import Image from 'next/image'
-import Paragraph from './paragraph'
 import Language from './language'
 import translation from '../libs/translation'
-import Link from 'next/link'
 
-import skyImage from './images/sky.png'
 import logoImage from './images/desalojamento_logo.png'
-import housesImage from './images/houses_porto.png'
 import housesShorter from './images/houses_porto_shorter.png'
-import lisbonSelector from './images/lisbon_selector.png'
-import portoSelector from './images/porto_selector.png'
 
 import { useEffect } from 'react'
 
