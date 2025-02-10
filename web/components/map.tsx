@@ -69,6 +69,9 @@ const Map = ({ language, city }: Props) => {
   const actionSeccao = React.useRef(null!)
   const actionLineChart = React.useRef(null!)
   const actionMegaHosts = React.useRef(null!)
+  const actionFullAirbnb = React.useRef(null!)
+
+  const imageWrappers = [useRef(null), useRef(null), useRef(null)]
 
   const [normalizedDate, setNormalizedDate] = React.useState(0)
   const [barWidth, setBarWidth] = React.useState('0%')
@@ -177,6 +180,7 @@ const Map = ({ language, city }: Props) => {
           actionLineChart,
           actionSeccao,
           actionMegaHosts,
+          actionFullAirbnb,
           setNormalizedDate,
           setBarWidth,
           debouncedSetFilter,
@@ -186,6 +190,7 @@ const Map = ({ language, city }: Props) => {
           setTriggerAnimation,
           setBoundaryBox,
           setTriggerMegaHostAnimation,
+          imageWrappers,
         )
 
         addSourcesAndLayers(
@@ -338,6 +343,38 @@ const Map = ({ language, city }: Props) => {
           <div ref={actionSeccao} className="text-box glassy">
             {translation('actionSeccao', language, city)}
           </div>
+
+          <div className="full-text-box" ref={actionFullAirbnb}>
+            <div className="images-container">
+              <div className="image-wrapper" ref={imageWrappers[0]}>
+                <Image
+                  src={paginaImage}
+                  alt="Anuncio"
+                  layout="responsive"
+                  width={500}
+                  height={300}
+                />
+              </div>
+              <div className="image-wrapper" ref={imageWrappers[1]}>
+                <Image
+                  src={anuncioImage}
+                  alt="Pagina"
+                  layout="responsive"
+                  width={500}
+                  height={300}
+                />
+              </div>
+              <div className="image-wrapper" ref={imageWrappers[2]}>
+                <Image
+                  src={outdoorImage}
+                  alt="Outdoor"
+                  layout="responsive"
+                  width={500}
+                  height={300}
+                />
+              </div>
+            </div>
+          </div>
           <div ref={actionMegaHosts} className="text-box glassy">
             {translation('actionMegaHosts', language, city)}
 
@@ -347,22 +384,11 @@ const Map = ({ language, city }: Props) => {
               triggerAnimation={triggerMegaHostAnimation}></Casas>
             <Casas
               percentage={megahostsData.companies[city]}
-              title={translation('actionMegaHosts-label-1', language, city)}
+              title={translation('actionMegaHosts-label-2', language, city)}
               triggerAnimation={triggerMegaHostAnimation}></Casas>
           </div>
         </div>
       </div>
-      {/*      <div className="images-container">
-        <div className="image-wrapper">
-          <Image src={anuncioImage} alt="Anuncio" layout="responsive" width={500} height={300} />
-        </div>
-        <div className="image-wrapper">
-          <Image src={paginaImage} alt="Pagina" layout="responsive" width={500} height={300} />
-        </div>
-        <div className="image-wrapper">
-          <Image src={outdoorImage} alt="Outdoor" layout="responsive" width={500} height={300} />
-        </div>
-      </div>*/}
     </>
   )
 }

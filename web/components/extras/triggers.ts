@@ -47,6 +47,7 @@ export const createScrollTriggers = (
   actionLineChart,
   actionSeccao,
   actionMegaHosts,
+  actionFullAirbnb,
   setNormalizedDate,
   setBarWidth,
   debouncedSetFilter,
@@ -56,6 +57,7 @@ export const createScrollTriggers = (
   setTriggerAnimation,
   setBoundaryBox,
   setTriggerMegaHostAnimation,
+  imageWrappers,
 ) => {
   ScrollTrigger.create({
     id: 'map-pin',
@@ -204,13 +206,47 @@ export const createScrollTriggers = (
     },
   })
 
+  if (actionFullAirbnb.current) {
+    const timeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: actionFullAirbnb.current,
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true,
+        pin: true,
+        onEnter: () => {
+          setLayerVisibility(city, map.current, `${city}-al-megahosts`)
+          changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].boundingBox)
+        },
+        onLeave: () => {
+          setLayerVisibility(city, map.current, `${city}-al-megahosts`)
+          changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].boundingBox)
+        },
+        onEnterBack: () => {
+          setLayerVisibility(city, map.current, `${city}-seccao`)
+          setMarkerVisibility(markers, 'none')
+          changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].center.boundingBox)
+        },
+        onLeaveBack: () => {
+          setLayerVisibility(city, map.current, `${city}-seccao`)
+          setMarkerVisibility(markers, 'none')
+          changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].center.boundingBox)
+        },
+      },
+    })
+
+    imageWrappers.forEach((wrapperRef, index) => {
+      if (wrapperRef.current) {
+        timeline.to(wrapperRef.current, { opacity: 1, y: 0, duration: 1 }, index)
+      }
+    })
+  }
+
   ScrollTrigger.create({
     trigger: actionMegaHosts.current,
-    start: 'top 70%',
+    start: 'top 90%',
     end: 'top 20%',
     onEnter: () => {
-      setLayerVisibility(city, map.current, `${city}-al-megahosts`)
-      changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].boundingBox)
       setTriggerMegaHostAnimation(true)
     },
     onEnterBack: () => {

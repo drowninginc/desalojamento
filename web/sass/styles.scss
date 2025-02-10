@@ -221,6 +221,28 @@ header {
 .text-boxes-container {
   position: absolute;
   top: 0;
+
+  .text-box {
+    padding: $global-spacing-sm $global-spacing-md;
+
+    margin: 50vh $global-spacing-sm 0 $global-spacing-sm;
+    font-size: $font-size-h4;
+    word-break: break-word;
+    hyphens: none;
+
+    &:last-child {
+      margin-bottom: 100vh;
+    }
+
+    @include screen-tablet-portrait-and-bigger {
+      width: 550px;
+      margin: 80vh $global-spacing-xlg 0 $global-spacing-xlg;
+
+      &:last-child {
+        margin-bottom: 100vh;
+      }
+    }
+  }
 }
 
 div.mapboxgl-ctrl-attrib,
@@ -306,20 +328,6 @@ a.button {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   opacity: 0; // Start hidden
   transition: opacity 0.5s ease-in-out;
-}
-
-.text-box {
-  padding: $global-spacing-sm $global-spacing-md;
-
-  margin: 50vh $global-spacing-sm 0 $global-spacing-sm;
-  font-size: $font-size-h4;
-  word-break: break-word;
-  hyphens: none;
-
-  @include screen-tablet-portrait-and-bigger {
-    width: 550px;
-    margin: 80vh $global-spacing-xlg 0 $global-spacing-xlg;
-  }
 }
 
 .circleSmall {
@@ -529,21 +537,39 @@ a.button {
   }
 }
 
-.images-container {
-  display: flex;
-  justify-content: space-between; /* Adjusts space between images */
-  align-items: center; /* Aligns images vertically */
-}
-
-.image-wrapper {
-  flex: 1; /* Ensures each image takes equal space */
-  margin: 0 10px; /* Adds some space between images */
-  opacity: 0;
-}
-
 .full-text-box {
   width: 100vw;
   height: 100vh;
   background-color: white;
   margin-top: 50vh;
+  position: relative;
+  border-radius: 50px; // Rounded corners for cloud effect
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); // Soft shadow for depth
+  background: linear-gradient(to bottom, #f0f8ff, #e0f7fa);
+
+  .images-container {
+    .image-wrapper {
+      position: absolute;
+      opacity: 0;
+
+      // Apply a slight rotation to all images
+      &:nth-child(1) {
+        transform: translateX(-50%) rotate(10deg) scale(1); // Rotate the second image in the opposite direction
+        left: 40%;
+        top: 20%;
+      }
+
+      &:nth-child(2) {
+        top: 10%;
+        left: 5%;
+        transform: translateX(-50%) rotate(-5deg) scale(0.8);
+      }
+      &:nth-child(3) {
+        transform: translateX(-50%) rotate(-5deg); // Rotate the third image back
+        top: 40%;
+        left: 30%;
+      }
+      // Add more nth-child selectors as needed for additional images
+    }
+  }
 }
