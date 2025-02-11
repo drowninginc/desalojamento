@@ -349,6 +349,7 @@ const Map = ({ language, city }: Props) => {
           </div>
 
           <div className="full-text-box" ref={actionFullAirbnb}>
+            <h1>Quem ganha afinal com o Alojamento Local?</h1>
             <div className="images-container">
               <div className="image-wrapper" ref={imageWrappers[0]}>
                 <Image

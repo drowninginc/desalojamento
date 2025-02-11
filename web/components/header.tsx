@@ -1,9 +1,11 @@
 import Image from 'next/image'
 import Language from './language'
 import translation from '../libs/translation'
+import ReactDOM from 'react-dom'
 
 import logoImage from './images/desalojamento_logo.png'
 import housesShorter from './images/houses_porto_shorter.png'
+import ALPlaque from './images/ALBlock.png'
 
 import { useEffect } from 'react'
 
@@ -31,6 +33,26 @@ const Header = ({ language, setLanguage, city }: Props) => {
     }
 
     window.addEventListener('scroll', doParallax)
+
+    // Add ALPlaque at random positions on layer3 every second
+    const layer3 = document.getElementById('layer3')
+    const intervalId = setInterval(() => {
+      if (layer3) {
+        const plaqueWrapper = document.createElement('div')
+        plaqueWrapper.style.position = 'absolute'
+        plaqueWrapper.style.width = '50px' // Adjust size as needed
+        plaqueWrapper.style.height = '50px' // Adjust size as needed
+        plaqueWrapper.style.top = `${Math.random() * 30 + 10}%`
+        plaqueWrapper.style.left = `${Math.random() * 90 + 5}%`
+        layer3.appendChild(plaqueWrapper)
+
+        // Use Next.js Image component
+        ReactDOM.render(
+          <Image src={ALPlaque} alt="AL Plaque" layout="fill" objectFit="contain" />,
+          plaqueWrapper,
+        )
+      }
+    }, 1000) // Every second
 
     return () => {
       window.removeEventListener('scroll', doParallax)

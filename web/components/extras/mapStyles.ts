@@ -76,7 +76,7 @@ export const seccaoPaint: mapboxgl.FillPaint = {
     'step',
     ['get', 'propAL'],
     'rgba(0, 0, 0, 0)', // Transparent for values < 50
-    50,
+    90,
     '#012169', // Color for values >= 50
   ],
   'fill-opacity': 1,

@@ -542,12 +542,10 @@ a.button {
 .full-text-box {
   width: 100vw;
   height: 100vh;
-  background-color: white;
+  padding: 2em;
   margin-top: 50vh;
   position: relative;
-  border-radius: 50px; // Rounded corners for cloud effect
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); // Soft shadow for depth
-  background: linear-gradient(to bottom, #f0f8ff, #e0f7fa);
+  background-color: rgba(255, 255, 255); // 90% transparency
 
   .images-container {
     .image-wrapper {
@@ -580,4 +578,10 @@ h2 {
   color: $color-blue-al;
   font-family: $font-stack-title;
   margin-bottom: 0.5em;
+}
+
+h1 {
+  color: $color-blue-al;
+  font-family: $font-stack-title;
+  font-size: 4em;
 }
