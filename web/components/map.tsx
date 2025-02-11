@@ -274,6 +274,7 @@ const Map = ({ language, city }: Props) => {
             {translation('actionIntro', language, city)}
           </div>
           <div ref={actionFreguesia} className="text-box glassy">
+            <h2>{translation('actionFreguesia-title', language, city)}</h2>
             {translation('actionFreguesia', language, city)}
             <div className="heatmap-label">
               <span className="label-center">
@@ -294,6 +295,7 @@ const Map = ({ language, city }: Props) => {
             {translation('actionFreguesia-zoom', language, city)}
           </div>
           <div ref={actionFreguesiaAL} className="text-box glassy">
+            <h2>{translation('actionFreguesiaAL-title', language, city)}</h2>
             {translation('actionFreguesiaAL', language, city)}
 
             <div className="heatmap-label">
@@ -317,6 +319,7 @@ const Map = ({ language, city }: Props) => {
             </div>
           </div>
           <div ref={actionFreguesiaPop} className="text-box glassy">
+            <h2>{translation('actionFreguesiaPop-title', language, city)}</h2>
             {translation('actionFreguesiaPop', language, city)}
             <div className="heatmap-label">
               <span className="label-center">
@@ -334,6 +337,7 @@ const Map = ({ language, city }: Props) => {
             </div>
           </div>
           <div ref={actionLineChart} className="text-box glassy">
+            <h2>{translation('actionLineChart-title', language, city)}</h2>
             {translation('actionLineChart', language, city)}
             <Linechart
               language={language}

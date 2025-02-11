@@ -41,7 +41,7 @@ const Linechart = ({ language, city, triggerAnimation }: Props) => {
     }
   }, [triggerAnimation])
 
-  const margin = { top: 40, right: 30, bottom: 60, left: 30 }
+  const margin = { top: 60, right: 30, bottom: 60, left: 30 }
 
   const getX = d => d[0]
   const getY = d => d[1]

@@ -1,5 +1,7 @@
 body {
   overflow-x: hidden !important;
+  font-weight: light;
+  font-family: $font-stack-primary;
 }
 
 .glassy {
@@ -439,7 +441,7 @@ a.button {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-top: 30px;
+  margin-top: 1.5em;
 }
 
 .heatmap-rectangle {
@@ -572,4 +574,10 @@ a.button {
       // Add more nth-child selectors as needed for additional images
     }
   }
+}
+
+h2 {
+  color: $color-blue-al;
+  font-family: $font-stack-title;
+  margin-bottom: 0.5em;
 }
