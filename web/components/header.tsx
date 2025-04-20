@@ -8,6 +8,7 @@ import housesShorter from './images/houses_porto_shorter.png'
 import ALPlaque from './images/ALBlock.png'
 
 import { useEffect } from 'react'
+import { createRoot } from 'react-dom/client'
 
 type Props = {
   language: string
@@ -36,26 +37,29 @@ const Header = ({ language, setLanguage, city }: Props) => {
 
     // Add ALPlaque at random positions on layer3 every second
     const layer3 = document.getElementById('layer3')
+    let plaqueCount = 0
     const intervalId = setInterval(() => {
-      if (layer3) {
+      if (layer3 && plaqueCount < 50) {
         const plaqueWrapper = document.createElement('div')
         plaqueWrapper.style.position = 'absolute'
-        plaqueWrapper.style.width = '50px' // Adjust size as needed
-        plaqueWrapper.style.height = '50px' // Adjust size as needed
-        plaqueWrapper.style.top = `${Math.random() * 30 + 10}%`
-        plaqueWrapper.style.left = `${Math.random() * 90 + 5}%`
+        plaqueWrapper.style.width = '50px'
+        plaqueWrapper.style.height = '50px'
+        plaqueWrapper.style.top = `${Math.random() * 30 + 15}%`
+        plaqueWrapper.style.left = `${Math.random() * 85 + 5}%`
         layer3.appendChild(plaqueWrapper)
 
-        // Use Next.js Image component
-        ReactDOM.render(
-          <Image src={ALPlaque} alt="AL Plaque" layout="fill" objectFit="contain" />,
-          plaqueWrapper,
-        )
+        const root = createRoot(plaqueWrapper)
+        root.render(<Image src={ALPlaque} alt="AL Plaque" layout="fill" objectFit="contain" />)
+
+        plaqueCount++
+      } else {
+        clearInterval(intervalId)
       }
-    }, 1000) // Every second
+    }, 1500)
 
     return () => {
       window.removeEventListener('scroll', doParallax)
+      clearInterval(intervalId)
     }
   }, [])
 

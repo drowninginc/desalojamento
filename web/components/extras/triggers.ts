@@ -235,11 +235,17 @@ export const createScrollTriggers = (
       },
     })
 
+    // Add animation for timeline-order-first
+    timeline.to('.timeline-order-first', { opacity: 1, y: 0, duration: 1 })
+
     imageWrappers.forEach((wrapperRef, index) => {
       if (wrapperRef.current) {
-        timeline.to(wrapperRef.current, { opacity: 1, y: 0, duration: 1 }, index)
+        timeline.to(wrapperRef.current, { opacity: 1, y: 0, duration: 1 }, index + 1)
       }
     })
+
+    // Add animation for timeline-order-final
+    timeline.to('.timeline-order-final', { opacity: 1, y: 0, duration: 1 })
   }
 
   ScrollTrigger.create({

@@ -44,7 +44,7 @@ import { createScrollTriggers } from './extras/triggers'
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default
 
 mapboxgl.accessToken =
-  'pk.eyJ1IjoiY2xhdWRpb2xlbW9zIiwiYSI6ImNsMDV4NXBxajBzMWkzYm9ndXhzbTk5ZHkifQ.85n9mjZbTDUpyQZrrJTBwA'
+  'pk.eyJ1Ijoiam9hb2Jlcm5hcmNpc28iLCJhIjoiY2xlNjFmdWo5MDFnZTNvcHBoZmtwa2gyMSJ9.yDJ6Z-4Ig2XJC4IK4CJ4MQ'
 
 type Props = {
   city: string
@@ -85,7 +85,6 @@ const Map = ({ language, city }: Props) => {
     const endDate = new Date('2024-12-30')
     const timeRange = endDate.valueOf() - startDate.valueOf()
     const date = new Date(startDate.getTime() + value * timeRange)
-    //console.log(date)
     return date.toLocaleDateString('pt-pt', { year: 'numeric', month: 'long' })
   }
 
@@ -98,8 +97,6 @@ const Map = ({ language, city }: Props) => {
     const date = new Date(startDate.getTime() + value * timeRange)
 
     const yearMonth = date.toISOString().slice(0, 7) // Format date to "YYYY-MM"
-    console.log(yearMonth)
-    console.log(monthlyCountsData)
     return monthlyCountsData[yearMonth] || 0 // Get the count or default to 0
   }
 
@@ -117,6 +114,16 @@ const Map = ({ language, city }: Props) => {
         document.body.style.overflow = 'hidden'
         setTimeout(checkMapLoaded, 400)
       }
+    }
+
+    if (!alData) {
+      console.log('Missing alData')
+    }
+    if (!freguesiaData) {
+      console.log('Missing freguesiaData')
+    }
+    if (!seccaoData) {
+      console.log('Missing seccaoData')
     }
 
     if (alData && freguesiaData && seccaoData) {
@@ -156,9 +163,13 @@ const Map = ({ language, city }: Props) => {
         'fill-color-transition': { duration: 500 },
       }
 
+      console.log('prewtf')
+
       map.current = createMap(mapContainer.current, city, cityDefinitions, setBoundaryBox)
 
+      console.log('wtf')
       map.current.on('load', () => {
+        console.log('Map loaded successfully')
         const centroidMarkers = addCentroidMarkers(map.current, freguesiaData, [
           'propAL',
           'diff_alojamentos_2011',
@@ -349,34 +360,44 @@ const Map = ({ language, city }: Props) => {
           </div>
 
           <div className="full-text-box" ref={actionFullAirbnb}>
-            <h1>Quem ganha afinal com o Alojamento Local?</h1>
-            <div className="images-container">
-              <div className="image-wrapper" ref={imageWrappers[0]}>
-                <Image
-                  src={paginaImage}
-                  alt="Anuncio"
-                  layout="responsive"
-                  width={500}
-                  height={300}
-                />
+            <h1> {translation('airbnbAds-title', language, city)}</h1>
+            <div className="content-wrapper">
+              <div className="text-container">
+                <p className="timeline-order-first">
+                  {translation('airbnbAds-intro', language, city)}
+                </p>
+                <h2 className="timeline-order-final">
+                  {translation('airbnbAds-conclusion', language, city)}
+                </h2>
               </div>
-              <div className="image-wrapper" ref={imageWrappers[1]}>
-                <Image
-                  src={anuncioImage}
-                  alt="Pagina"
-                  layout="responsive"
-                  width={500}
-                  height={300}
-                />
-              </div>
-              <div className="image-wrapper" ref={imageWrappers[2]}>
-                <Image
-                  src={outdoorImage}
-                  alt="Outdoor"
-                  layout="responsive"
-                  width={500}
-                  height={300}
-                />
+              <div className="images-container">
+                <div className="image-wrapper" ref={imageWrappers[0]}>
+                  <Image
+                    src={paginaImage}
+                    alt="Anuncio"
+                    layout="responsive"
+                    width={500}
+                    height={300}
+                  />
+                </div>
+                <div className="image-wrapper" ref={imageWrappers[1]}>
+                  <Image
+                    src={anuncioImage}
+                    alt="Pagina"
+                    layout="responsive"
+                    width={500}
+                    height={300}
+                  />
+                </div>
+                <div className="image-wrapper" ref={imageWrappers[2]}>
+                  <Image
+                    src={outdoorImage}
+                    alt="Outdoor"
+                    layout="responsive"
+                    width={500}
+                    height={300}
+                  />
+                </div>
               </div>
             </div>
           </div>
