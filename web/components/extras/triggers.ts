@@ -1,6 +1,6 @@
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
-import { cityDefinitions, freguesiaPaint, seccaoPaint, alPaintMegaHost } from './mapStyles'
+import { cityDefinitions, freguesiaPaint, alPaintMegaHost } from './mapStyles'
 gsap.registerPlugin(ScrollTrigger)
 
 import { updateMarkerValues, setMarkerVisibility, changeBoundaryBox } from './helpers'
@@ -11,15 +11,13 @@ const setLayerVisibility = (
   visibleLayerId: string | null,
   paintProperty?: any,
 ) => {
-  const layers = [`${city}-al`, `${city}-freguesia`, `${city}-seccao`, `${city}-al-megahosts`]
+  const layers = [`${city}-al`, `${city}-freguesia`, `${city}-al-megahosts`]
   layers.forEach(layerId => {
     const visibility = layerId === visibleLayerId ? 'visible' : 'none'
     map.setLayoutProperty(layerId, 'visibility', visibility)
 
     if (layerId === `${city}-freguesia` && visibility === 'visible') {
       map.setPaintProperty(layerId, 'fill-color', paintProperty || freguesiaPaint['fill-color'])
-    } else if (layerId === `${city}-seccao` && visibility === 'visible') {
-      map.setPaintProperty(layerId, 'fill-color', seccaoPaint['fill-color'])
     } else if (layerId === `${city}-al-megahosts` && visibility === 'visible') {
       map.setPaintProperty(layerId, 'circle-color', alPaintMegaHost['circle-color'])
     }
@@ -45,7 +43,6 @@ export const createScrollTriggers = (
   actionFreguesiaPop,
   actionFreguesiaAL,
   actionLineChart,
-  actionSeccao,
   actionMegaHosts,
   actionFullAirbnb,
   setNormalizedDate,
@@ -191,21 +188,6 @@ export const createScrollTriggers = (
     },
   })
 
-  ScrollTrigger.create({
-    trigger: actionSeccao.current,
-    start: 'top 70%',
-    end: 'top 20%',
-    onEnter: () => {
-      setLayerVisibility(city, map.current, `${city}-seccao`)
-      setMarkerVisibility(markers, 'none')
-    },
-    onEnterBack: () => {
-      setLayerVisibility(city, map.current, `${city}-seccao`)
-      setMarkerVisibility(markers, 'none')
-      changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].center.boundingBox)
-    },
-  })
-
   if (actionFullAirbnb.current) {
     const timeline = gsap.timeline({
       scrollTrigger: {
@@ -216,20 +198,34 @@ export const createScrollTriggers = (
         pin: true,
         onEnter: () => {
           setLayerVisibility(city, map.current, `${city}-al-megahosts`)
+          setMarkerVisibility(markers, 'none')
+
           changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].boundingBox)
         },
         onLeave: () => {
           setLayerVisibility(city, map.current, `${city}-al-megahosts`)
+          setMarkerVisibility(markers, 'none')
+
           changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].boundingBox)
         },
         onEnterBack: () => {
-          setLayerVisibility(city, map.current, `${city}-seccao`)
-          setMarkerVisibility(markers, 'none')
+          setLayerVisibility(
+            city,
+            map.current,
+            `${city}-freguesia`,
+            freguesiaPaintPop['fill-color'],
+          )
+          setMarkerVisibility(markers, 'block')
           changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].center.boundingBox)
         },
         onLeaveBack: () => {
-          setLayerVisibility(city, map.current, `${city}-seccao`)
-          setMarkerVisibility(markers, 'none')
+          setLayerVisibility(
+            city,
+            map.current,
+            `${city}-freguesia`,
+            freguesiaPaintPop['fill-color'],
+          )
+          setMarkerVisibility(markers, 'block')
           changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].center.boundingBox)
         },
       },

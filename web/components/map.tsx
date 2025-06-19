@@ -24,13 +24,7 @@ const megahostsData = {
   },
 }
 
-import {
-  cityDefinitions,
-  alPaint,
-  alPaintMegaHost,
-  freguesiaPaint,
-  seccaoPaint,
-} from './extras/mapStyles'
+import { cityDefinitions, alPaint, alPaintMegaHost, freguesiaPaint } from './extras/mapStyles'
 import {
   getCityData,
   getMinMax,
@@ -52,7 +46,7 @@ type Props = {
 }
 
 const Map = ({ language, city }: Props) => {
-  const { alData, freguesiaData, seccaoData, monthlyCountsData } = getCityData(city)
+  const { alData, freguesiaData, monthlyCountsData } = getCityData(city)
   const divTrigger = React.useRef(null!)
   const mapPin = React.useRef(null!)
   const mapContainer = React.useRef(null!)
@@ -66,7 +60,6 @@ const Map = ({ language, city }: Props) => {
   const actionFreguesiaZoom = React.useRef(null!)
   const actionFreguesiaPop = React.useRef(null!)
   const actionFreguesiaAL = React.useRef(null!)
-  const actionSeccao = React.useRef(null!)
   const actionLineChart = React.useRef(null!)
   const actionMegaHosts = React.useRef(null!)
   const actionFullAirbnb = React.useRef(null!)
@@ -122,11 +115,8 @@ const Map = ({ language, city }: Props) => {
     if (!freguesiaData) {
       console.log('Missing freguesiaData')
     }
-    if (!seccaoData) {
-      console.log('Missing seccaoData')
-    }
 
-    if (alData && freguesiaData && seccaoData) {
+    if (alData && freguesiaData) {
       if (map.current) return
 
       const [minPop, maxPop] = getMinMax(freguesiaData, 'diff_pop_2011')
@@ -189,7 +179,6 @@ const Map = ({ language, city }: Props) => {
           actionFreguesiaPop,
           actionFreguesiaAL,
           actionLineChart,
-          actionSeccao,
           actionMegaHosts,
           actionFullAirbnb,
           setNormalizedDate,
@@ -209,10 +198,8 @@ const Map = ({ language, city }: Props) => {
           map.current,
           alData,
           freguesiaData,
-          seccaoData,
           alPaint,
           freguesiaPaint,
-          seccaoPaint,
           alPaintMegaHost,
         )
       })
@@ -354,9 +341,6 @@ const Map = ({ language, city }: Props) => {
               language={language}
               city={city}
               triggerAnimation={triggerAnimation}></Linechart>
-          </div>
-          <div ref={actionSeccao} className="text-box glassy">
-            {translation('actionSeccao', language, city)}
           </div>
 
           <div className="full-text-box" ref={actionFullAirbnb}>

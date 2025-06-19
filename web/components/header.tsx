@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import Language from './language'
 import translation from '../libs/translation'
-import ReactDOM from 'react-dom'
 
 import logoImage from './images/desalojamento_logo.png'
 import housesShorter from './images/houses_porto_shorter.png'

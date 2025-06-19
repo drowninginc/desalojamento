@@ -13,10 +13,9 @@ export const getMinMax = (data, property) => {
 export const getCityData = city => {
   const alData = useData(city + '/al.json').data
   const freguesiaData = useData(city + '/censosFreguesia.json').data
-  const seccaoData = useData(city + '/censosSeccao.json').data
   const monthlyCountsData = useData(city + '/monthlyCounts.json').data
 
-  return { alData, freguesiaData, seccaoData, monthlyCountsData }
+  return { alData, freguesiaData, monthlyCountsData }
 }
 
 export const createMap = (container, city, cityDefinitions, setBoundaryBox) => {
@@ -34,10 +33,8 @@ export const addSourcesAndLayers = (
   map,
   alData,
   freguesiaData,
-  seccaoData,
   alPaint,
   freguesiaPaint,
-  seccaoPaint,
   alPaintMegaHost,
 ) => {
   map.addSource(`${city}-al`, {
@@ -48,11 +45,6 @@ export const addSourcesAndLayers = (
   map.addSource(`${city}-freguesia`, {
     type: 'geojson',
     data: freguesiaData,
-  })
-
-  map.addSource(`${city}-seccao`, {
-    type: 'geojson',
-    data: seccaoData,
   })
 
   map.addLayer({
@@ -84,16 +76,6 @@ export const addSourcesAndLayers = (
       'line-color': '#007cbf',
       'line-width': 3,
     },
-  })
-
-  map.addLayer({
-    id: `${city}-seccao`,
-    type: 'fill',
-    source: `${city}-seccao`,
-    layout: {
-      visibility: 'none',
-    },
-    paint: seccaoPaint,
   })
 
   map.addLayer({
