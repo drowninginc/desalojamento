@@ -344,13 +344,13 @@ const Map = ({ language, city }: Props) => {
           </div>
 
           <div className="full-text-box" ref={actionFullAirbnb}>
-            <h1> {translation('airbnbAds-title', language, city)}</h1>
+            <div className="full-text-title"> {translation('airbnbAds-title', language, city)}</div>
             <div className="content-wrapper">
               <div className="text-container">
                 <p className="timeline-order-first">
                   {translation('airbnbAds-intro', language, city)}
                 </p>
-                <h2 className="timeline-order-final">
+                <h2 className="timeline-order-final ">
                   {translation('airbnbAds-conclusion', language, city)}
                 </h2>
               </div>
