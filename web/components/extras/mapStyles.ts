@@ -3,8 +3,8 @@ import mapboxgl from 'mapbox-gl'
 export const cityDefinitions = {
   Porto: {
     boundingBox: [
-      [-8.554615, 41.16],
-      [-8.743437, 41.165],
+      [-8.564656, 41.137038],
+      [-8.695717, 41.178693],
     ],
     center: {
       boundingBox: [
