@@ -6,7 +6,7 @@ import { useState } from 'react'
 
 const Index = () => {
   const [language, setLanguage] = useState('pt')
-  const city = 'Lisbon'
+  const city = 'Porto'
 
   return (
     <>
