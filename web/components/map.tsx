@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 import { debounce } from 'lodash'
 import Casas from './casas'
 import Linechart from './linechart'
-import translation from '../libs/translation'
+import translation, { getTranslationString } from '../libs/translation'
 
 import anuncioImage from './images/airbnb/anuncio.jpeg'
 import paginaImage from './images/airbnb/descricaoPagina.png'
@@ -24,7 +24,13 @@ const megahostsData = {
   },
 }
 
-import { cityDefinitions, alPaint, alPaintMegaHost, freguesiaPaint } from './extras/mapStyles'
+import {
+  cityDefinitions,
+  alPaint,
+  alPaintMegaHost,
+  freguesiaPaint,
+  hotelsPaint,
+} from './extras/mapStyles'
 import {
   getCityData,
   getMinMax,
@@ -46,7 +52,7 @@ type Props = {
 }
 
 const Map = ({ language, city }: Props) => {
-  const { alData, freguesiaData, monthlyCountsData } = getCityData(city)
+  const { alData, freguesiaData, monthlyCountsData, hotelsData } = getCityData(city)
   const divTrigger = React.useRef(null!)
   const mapPin = React.useRef(null!)
   const mapContainer = React.useRef(null!)
@@ -115,8 +121,11 @@ const Map = ({ language, city }: Props) => {
     if (!freguesiaData) {
       console.log('Missing freguesiaData')
     }
+    if (!hotelsData) {
+      console.log('Missing hotelsData')
+    }
 
-    if (alData && freguesiaData) {
+    if (alData && freguesiaData && hotelsData) {
       if (map.current) return
 
       const [minPop, maxPop] = getMinMax(freguesiaData, 'diff_pop_2011')
@@ -198,9 +207,11 @@ const Map = ({ language, city }: Props) => {
           map.current,
           alData,
           freguesiaData,
+          hotelsData,
           alPaint,
           freguesiaPaint,
           alPaintMegaHost,
+          hotelsPaint,
         )
       })
     }
@@ -210,7 +221,7 @@ const Map = ({ language, city }: Props) => {
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill())
     }
-  }, [alData])
+  }, [alData, hotelsData])
 
   const useResize = handler => {
     useEffect(() => {
@@ -269,6 +280,7 @@ const Map = ({ language, city }: Props) => {
             </div>
           </div>
           <div ref={actionIntro} className="text-box glassy">
+            <h2>{translation('actionIntro-title', language, city)}</h2>
             {translation('actionIntro', language, city)}
           </div>
           <div ref={actionFreguesia} className="text-box glassy">
@@ -386,7 +398,7 @@ const Map = ({ language, city }: Props) => {
             </div>
           </div>
           <div ref={actionMegaHosts} className="text-box glassy">
-            {translation('actionMegaHosts', language, city)}
+            <h2>{translation('actionMegaHosts-title', language, city)}</h2>
 
             <Casas
               percentage={megahostsData.megahosts[city]}
@@ -396,6 +408,13 @@ const Map = ({ language, city }: Props) => {
               percentage={megahostsData.companies[city]}
               title={translation('actionMegaHosts-label-2', language, city) as string}
               triggerAnimation={triggerMegaHostAnimation}></Casas>
+          </div>
+          <div className="text-box glassy">
+            <h2
+              dangerouslySetInnerHTML={{
+                __html: getTranslationString('actionRooms-title', language, city),
+              }}
+            />
           </div>
         </div>
       </div>

@@ -83,3 +83,10 @@ export const seccaoPaint: mapboxgl.FillPaint = {
   'fill-outline-color': '#00008C',
   'fill-color-transition': { duration: 500 },
 }
+
+// Hotels
+export const hotelsPaint: mapboxgl.FillPaint = {
+  'fill-color': '#012169',
+  'fill-opacity': 0.4,
+  'fill-outline-color': '#012169',
+}

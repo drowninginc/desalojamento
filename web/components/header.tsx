@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Language from './language'
-import translation from '../libs/translation'
+import translation, { getTranslationString } from '../libs/translation'
 
 import logoImage from './images/desalojamento_logo.png'
 import housesShorter from './images/houses_porto_shorter.png'
@@ -100,7 +100,12 @@ const Header = ({ language, setLanguage, city }: Props) => {
           </div>
         </div>
         <div className="paragraphWrapper">
-          <div className="paragraphIntro o-container">{translation('intro', language, city)}</div>
+          <div
+            className="paragraphIntro o-container"
+            dangerouslySetInnerHTML={{
+              __html: getTranslationString('intro', language, city),
+            }}
+          />
         </div>
       </header>
     </>

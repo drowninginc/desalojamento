@@ -4,6 +4,12 @@ body {
   font-family: $font-stack-primary;
 }
 
+p {
+  font-size: 1.6rem;
+  word-break: break-word;
+  hyphens: none;
+}
+
 .glassy {
   background: rgba(255, 255, 255, 0.25);
   border-radius: 5px;
@@ -93,10 +99,10 @@ header {
 }
 
 .paragraphIntro {
-  margin: $global-spacing-sm auto;
-  text-align: justify;
+  margin: $global-spacing-md auto;
   font-family: $font-stack-primary;
   line-height: 2;
+  font-size: 1.1em;
 }
 
 .logo {
@@ -113,30 +119,38 @@ header {
   margin-top: -3vw;
 
   a {
-    text-decoration: none;
     font-family: 'Cooper Md';
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
+  }
+}
 
+a {
+  text-decoration: none;
+
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+
+  &:hover {
+    border-bottom: none;
+  }
+
+  &::after {
+    content: '';
+    margin-bottom: -0.2em;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0.1em;
+    background-color: $color-blue-al;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  @include hover-focus {
     &::after {
-      content: '';
-      margin-bottom: -0.2em;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 0.1em;
-      background-color: $color-blue-al;
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s ease-in-out;
-    }
-
-    @include hover-focus {
-      &::after {
-        transform: scaleX(1);
-      }
+      transform: scaleX(1);
     }
   }
 }
@@ -683,8 +697,48 @@ a.button {
   }
 }
 
+h1,
 h2 {
   color: $color-blue-al;
   font-family: $font-stack-title;
   margin-bottom: 0.5em;
+}
+
+.ghostHotels {
+  margin: 3em auto;
+
+  img {
+    width: 60vw;
+    height: auto;
+    display: block;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid $color-blue-al;
+  }
+
+  img:not(#servicos) {
+    width: 30vw;
+  }
+
+  .image-legend {
+    text-align: center;
+    margin-top: 1em;
+    font-size: 0.9em;
+    color: #666;
+
+    a {
+      color: $color-blue-al;
+      text-decoration: none;
+    }
+  }
+
+  @media (max-width: 750px) {
+    img {
+      width: 95vw;
+    }
+
+    img:not(#servicos) {
+      width: 80vw;
+    }
+  }
 }

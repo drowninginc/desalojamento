@@ -119,6 +119,19 @@ export const createScrollTriggers = (
   })
 
   ScrollTrigger.create({
+    id: 'hotels-visibility',
+    trigger: actionIntro.current,
+    start: 'top 70%',
+    end: 'top 20%',
+    onEnter: () => {
+      map.current.setLayoutProperty(`${city}-hotels`, 'visibility', 'visible')
+    },
+    onLeaveBack: () => {
+      map.current.setLayoutProperty(`${city}-hotels`, 'visibility', 'none')
+    },
+  })
+
+  ScrollTrigger.create({
     trigger: actionFreguesia.current,
     start: 'top 70%',
     end: 'top 20%',

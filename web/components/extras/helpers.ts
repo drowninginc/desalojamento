@@ -14,8 +14,9 @@ export const getCityData = city => {
   const alData = useData(city + '/al.json').data
   const freguesiaData = useData(city + '/censosFreguesia.json').data
   const monthlyCountsData = useData(city + '/monthlyCounts.json').data
+  const hotelsData = useData(city + '/hotels.json').data
 
-  return { alData, freguesiaData, monthlyCountsData }
+  return { alData, freguesiaData, monthlyCountsData, hotelsData }
 }
 
 export const createMap = (container, city, cityDefinitions, setBoundaryBox) => {
@@ -33,9 +34,11 @@ export const addSourcesAndLayers = (
   map,
   alData,
   freguesiaData,
+  hotelsData,
   alPaint,
   freguesiaPaint,
   alPaintMegaHost,
+  hotelsPaint,
 ) => {
   map.addSource(`${city}-al`, {
     type: 'geojson',
@@ -45,6 +48,22 @@ export const addSourcesAndLayers = (
   map.addSource(`${city}-freguesia`, {
     type: 'geojson',
     data: freguesiaData,
+  })
+
+  map.addSource(`${city}-hotels`, {
+    type: 'geojson',
+    data: hotelsData,
+  })
+
+  // Add hotels layer first (bottom layer)
+  map.addLayer({
+    id: `${city}-hotels`,
+    type: 'fill',
+    source: `${city}-hotels`,
+    layout: {
+      visibility: 'none',
+    },
+    paint: hotelsPaint,
   })
 
   map.addLayer({

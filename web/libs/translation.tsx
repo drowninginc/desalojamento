@@ -44,3 +44,17 @@ export default function (section: string, language: string, city: string): React
 
   return <>{translationString}</>
 }
+
+export function getTranslationString(section: string, language: string, city: string): string {
+  const transformedData = csvData.map((row: string[]) => ({
+    section: row[0],
+    language: row[1],
+    city: row[2],
+    string: row[3],
+  }))
+
+  const translation = transformedData.find(
+    t => t.section === section && t.language === language && t.city === city,
+  )
+  return translation ? translation.string : 'Text not found'
+}
