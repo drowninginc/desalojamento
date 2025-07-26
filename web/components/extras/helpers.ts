@@ -58,7 +58,8 @@ export const addSourcesAndLayersForBothCities = (
   alPaintMegaHost,
   hotelsPaint,
 ) => {
-  ;['Lisbon', 'Porto'].forEach(city => {
+  const cities = ['Lisbon', 'Porto']
+  cities.forEach(city => {
     const cityData = citiesData[city]
 
     map.addSource(`${city}-al`, {
