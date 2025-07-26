@@ -130,6 +130,9 @@ header {
   color: $color-blue-al;
   font-family: 'Cooper Lt';
   margin-top: 2em;
+  letter-spacing: 0.01em;
+  word-break: normal;
+  hyphens: none;
 }
 
 @media (max-width: 750px) {

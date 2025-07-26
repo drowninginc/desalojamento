@@ -193,7 +193,9 @@ const Header = ({ language, setLanguage, city, setCity }: Props) => {
               <a href="https://www.linkedin.com/in/joaobernardonarciso/">João Bernardo Narciso</a>
             </div>
 
-            <div className="introDescription">Alguns dados e mapas sobre o Alojamento Local</div>
+            <div className="introDescription">
+              Alguns dados e mapas sobre o Alojamento Local em Lisboa e no Porto
+            </div>
           </div>
 
           <div id="layer3" className="parallaxLayer">
