@@ -19,16 +19,121 @@ export const getCityData = city => {
   return { alData, freguesiaData, monthlyCountsData, hotelsData }
 }
 
-export const createMap = (container, city, cityDefinitions, setBoundaryBox) => {
-  setBoundaryBox(cityDefinitions[city].boundingBox)
+// New function to load data for both cities
+export const getBothCitiesData = () => {
+  const lisbonData = getCityData('Lisbon')
+  const portoData = getCityData('Porto')
+
+  return {
+    Lisbon: lisbonData,
+    Porto: portoData,
+    // Check if all data is loaded
+    isLoaded:
+      lisbonData.alData &&
+      lisbonData.freguesiaData &&
+      lisbonData.monthlyCountsData &&
+      lisbonData.hotelsData &&
+      portoData.alData &&
+      portoData.freguesiaData &&
+      portoData.monthlyCountsData &&
+      portoData.hotelsData,
+  }
+}
+
+export const createMap = (container, cityDefinitions, setBoundaryBox, initialCity = 'Lisbon') => {
+  setBoundaryBox(cityDefinitions[initialCity].boundingBox)
   return new mapboxgl.Map({
     container,
     style: 'mapbox://styles/mapbox/light-v10?optimize=true',
-    bounds: cityDefinitions[city].boundingBox,
+    bounds: cityDefinitions[initialCity].boundingBox,
     interactive: false,
   })
 }
 
+export const addSourcesAndLayersForBothCities = (
+  map,
+  citiesData,
+  alPaint,
+  freguesiaPaint,
+  alPaintMegaHost,
+  hotelsPaint,
+) => {
+  ;['Lisbon', 'Porto'].forEach(city => {
+    const cityData = citiesData[city]
+
+    map.addSource(`${city}-al`, {
+      type: 'geojson',
+      data: cityData.alData,
+    })
+
+    map.addSource(`${city}-freguesia`, {
+      type: 'geojson',
+      data: cityData.freguesiaData,
+    })
+
+    map.addSource(`${city}-hotels`, {
+      type: 'geojson',
+      data: cityData.hotelsData,
+    })
+
+    // Add hotels layer first (bottom layer)
+    map.addLayer({
+      id: `${city}-hotels`,
+      type: 'fill',
+      source: `${city}-hotels`,
+      layout: {
+        visibility: city === 'Lisbon' ? 'none' : 'none', // Initially hidden for both
+      },
+      paint: hotelsPaint,
+    })
+
+    map.addLayer({
+      id: `${city}-al`,
+      type: 'circle',
+      source: `${city}-al`,
+      layout: {
+        visibility: city === 'Lisbon' ? 'visible' : 'none', // Show only Lisbon initially
+      },
+      paint: alPaint,
+      filter: ['<=', ['get', 'normalized_date'], 0],
+    })
+
+    map.addLayer({
+      id: `${city}-freguesia`,
+      type: 'fill',
+      source: `${city}-freguesia`,
+      layout: {
+        visibility: 'none',
+      },
+      paint: freguesiaPaint,
+    })
+
+    map.addLayer({
+      id: `${city}-freguesia-outline`,
+      type: 'line',
+      source: `${city}-freguesia`,
+      layout: {
+        visibility: 'none',
+      },
+      paint: {
+        'line-color': '#007cbf',
+        'line-width': 3,
+      },
+    })
+
+    map.addLayer({
+      id: `${city}-al-megahosts`,
+      type: 'circle',
+      source: `${city}-al`,
+      layout: {
+        visibility: 'none',
+      },
+      paint: alPaintMegaHost,
+    })
+  })
+}
+
+// Original function for backward compatibility
 export const addSourcesAndLayers = (
   city,
   map,
@@ -106,6 +211,42 @@ export const addSourcesAndLayers = (
     },
     paint: alPaintMegaHost,
   })
+}
+
+// Function to switch between cities without recreating the map
+export const switchCity = (
+  map,
+  newCity,
+  currentCity,
+  cityDefinitions,
+  setBoundaryBox,
+  isMobile = false,
+) => {
+  // Hide all layers for current city
+  if (currentCity) {
+    const currentCityLayers = [
+      `${currentCity}-al`,
+      `${currentCity}-freguesia`,
+      `${currentCity}-al-megahosts`,
+      `${currentCity}-hotels`,
+      `${currentCity}-freguesia-outline`,
+    ]
+    currentCityLayers.forEach(layerId => {
+      if (map.getLayer(layerId)) {
+        map.setLayoutProperty(layerId, 'visibility', 'none')
+      }
+    })
+  }
+
+  // Show AL layer for new city (others stay hidden until scroll triggers activate them)
+  map.setLayoutProperty(`${newCity}-al`, 'visibility', 'visible')
+
+  // Update map bounds to new city
+  const bounds = isMobile
+    ? cityDefinitions[newCity].boundingBoxMobile || cityDefinitions[newCity].boundingBox
+    : cityDefinitions[newCity].boundingBox
+  setBoundaryBox(bounds)
+  map.fitBounds(bounds, { duration: 1000 })
 }
 
 export const addCentroidMarkers = (map, data, properties) => {

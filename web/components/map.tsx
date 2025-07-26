@@ -32,11 +32,12 @@ import {
   hotelsPaint,
 } from './extras/mapStyles'
 import {
-  getCityData,
+  getBothCitiesData,
   getMinMax,
   createMap,
-  addSourcesAndLayers,
+  addSourcesAndLayersForBothCities,
   addCentroidMarkers,
+  switchCity,
 } from './extras/helpers'
 import { createScrollTriggers } from './extras/triggers'
 
@@ -52,7 +53,7 @@ type Props = {
 }
 
 const Map = ({ language, city }: Props) => {
-  const { alData, freguesiaData, monthlyCountsData, hotelsData } = getCityData(city)
+  const citiesData = getBothCitiesData()
   const divTrigger = React.useRef(null!)
   const mapPin = React.useRef(null!)
   const mapContainer = React.useRef(null!)
@@ -62,6 +63,8 @@ const Map = ({ language, city }: Props) => {
 
   const map = useRef<mapboxgl.Map | null>(null)
   const centroidMarkersRef = useRef<any[]>([])
+  const previousCityRef = useRef<string | null>(null)
+  const isMapInitialized = useRef(false)
 
   const actionIntro = React.useRef(null!)
   const actionFreguesia = React.useRef(null!)
@@ -90,7 +93,8 @@ const Map = ({ language, city }: Props) => {
   }
 
   const getMonthlyCount = value => {
-    if (!monthlyCountsData) return 0 // Check if monthlyCountsData exists
+    const currentCityData = citiesData[city]?.monthlyCountsData
+    if (!currentCityData) return 0
 
     const startDate = new Date('2014-01-01')
     const endDate = new Date('2024-12-30')
@@ -98,7 +102,7 @@ const Map = ({ language, city }: Props) => {
     const date = new Date(startDate.getTime() + value * timeRange)
 
     const yearMonth = date.toISOString().slice(0, 7) // Format date to "YYYY-MM"
-    return monthlyCountsData[yearMonth] || 0 // Get the count or default to 0
+    return currentCityData[yearMonth] || 0 // Get the count or default to 0
   }
 
   gsap.registerPlugin(ScrollTrigger)
@@ -119,37 +123,8 @@ const Map = ({ language, city }: Props) => {
     }
   }, [debouncedSetFilter])
 
+  // Initialize map only once when all data is loaded
   useEffect(() => {
-    // Clean up existing map and triggers when city changes
-    if (map.current) {
-      // Remove all ScrollTrigger instances
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
-
-      // Clean up markers
-      centroidMarkersRef.current.forEach(marker => {
-        if (marker && marker.remove) {
-          marker.remove()
-        }
-      })
-      centroidMarkersRef.current = []
-
-      // Remove map event listeners and destroy map
-      map.current.remove()
-      map.current = null
-    }
-
-    // Clear map container
-    if (mapContainer.current) {
-      mapContainer.current.innerHTML = ''
-    }
-
-    // Reset state when city changes
-    setNormalizedDate(0)
-    setBarWidth('0%')
-    setTriggerAnimation(false)
-    setTriggerMegaHostAnimation(false)
-    setBoundaryBox([])
-
     const checkMapLoaded = () => {
       if (map.current && map.current.loaded()) {
         document.body.style.overflow = 'scroll'
@@ -159,33 +134,43 @@ const Map = ({ language, city }: Props) => {
       }
     }
 
-    if (!alData) {
-      console.log('Missing alData')
-      return
-    }
-    if (!freguesiaData) {
-      console.log('Missing freguesiaData')
-      return
-    }
-    if (!hotelsData) {
-      console.log('Missing hotelsData')
+    if (!citiesData.isLoaded || isMapInitialized.current) {
       return
     }
 
-    if (alData && freguesiaData && hotelsData) {
+    console.log('Initializing map with both cities data')
+
+    // Reset state
+    setNormalizedDate(0)
+    setBarWidth('0%')
+    setTriggerAnimation(false)
+    setTriggerMegaHostAnimation(false)
+    setBoundaryBox([])
+
+    // Clear map container
+    if (mapContainer.current) {
+      mapContainer.current.innerHTML = ''
+    }
+
+    // Get freguesia data for initial city to calculate paint properties
+    const initialCityData = citiesData[city]
+    const freguesiaData = initialCityData.freguesiaData
+
+    if (freguesiaData) {
       const [minPop, maxPop] = getMinMax(freguesiaData, 'diff_pop_2011')
       const [minAloj, maxAloj] = getMinMax(freguesiaData, 'diff_alojamentos_2011')
+
       const freguesiaPaintPop: mapboxgl.FillPaint = {
         'fill-color': [
           'interpolate',
           ['linear'],
           ['get', 'diff_pop_2011'],
           minPop,
-          '#b3589a', // Vivid red for the most negative values
+          '#b3589a',
           0,
-          '#FFFFFF', // White for zero
+          '#FFFFFF',
           maxPop,
-          '#b8ffcb', // Green for the most positive values
+          '#b8ffcb',
         ],
         'fill-opacity': 0.1,
         'fill-color-transition': { duration: 500 },
@@ -197,40 +182,41 @@ const Map = ({ language, city }: Props) => {
           ['linear'],
           ['get', 'diff_alojamentos_2011'],
           minAloj,
-          '#b3589a', // Vivid red for the most negative values
+          '#b3589a',
           0,
-          '#FFFFFF', // White for zero
+          '#FFFFFF',
           maxAloj,
-          '#b8ffcb', // Dark green for the most positive values
+          '#b8ffcb',
         ],
         'fill-opacity': 0.1,
         'fill-color-transition': { duration: 500 },
       }
 
-      console.log('prewtf')
+      map.current = createMap(mapContainer.current, cityDefinitions, setBoundaryBox, city)
 
-      map.current = createMap(mapContainer.current, city, cityDefinitions, setBoundaryBox)
-
-      console.log('wtf')
       map.current.on('load', () => {
         console.log('Map loaded successfully')
 
-        // Clean up previous markers
-        centroidMarkersRef.current.forEach(marker => {
-          if (marker && marker.remove) {
-            marker.remove()
-          }
-        })
+        // Add sources and layers for both cities
+        addSourcesAndLayersForBothCities(
+          map.current,
+          citiesData,
+          alPaint,
+          freguesiaPaint,
+          alPaintMegaHost,
+          hotelsPaint,
+        )
 
+        // Add centroid markers for current city
         const centroidMarkers = addCentroidMarkers(map.current, freguesiaData, [
           'propAL',
           'diff_alojamentos_2011',
           'diff_pop_2011',
         ])
 
-        // Store markers reference for cleanup
         centroidMarkersRef.current = centroidMarkers
 
+        // Create scroll triggers
         createScrollTriggers(
           isMobile,
           city,
@@ -259,41 +245,118 @@ const Map = ({ language, city }: Props) => {
           imageWrappers,
         )
 
-        addSourcesAndLayers(
-          city,
-          map.current,
-          alData,
-          freguesiaData,
-          hotelsData,
-          alPaint,
-          freguesiaPaint,
-          alPaintMegaHost,
-          hotelsPaint,
-        )
+        isMapInitialized.current = true
+        previousCityRef.current = city
       })
+
+      checkMapLoaded()
+    }
+  }, [citiesData.isLoaded, isMobile])
+
+  // Handle city changes without recreating the map
+  useEffect(() => {
+    if (!isMapInitialized.current || !map.current || previousCityRef.current === city) {
+      return
     }
 
-    checkMapLoaded()
+    console.log(`Switching from ${previousCityRef.current} to ${city}`)
 
-    return () => {
-      // Clean up ScrollTrigger instances
+    // Clean up previous markers
+    centroidMarkersRef.current.forEach(marker => {
+      if (marker && marker.remove) {
+        marker.remove()
+      }
+    })
+
+    // Switch city layers and camera
+    switchCity(
+      map.current,
+      city,
+      previousCityRef.current,
+      cityDefinitions,
+      setBoundaryBox,
+      isMobile,
+    )
+
+    // Add markers for new city
+    const newCityData = citiesData[city]
+    if (newCityData.freguesiaData) {
+      const centroidMarkers = addCentroidMarkers(map.current, newCityData.freguesiaData, [
+        'propAL',
+        'diff_alojamentos_2011',
+        'diff_pop_2011',
+      ])
+      centroidMarkersRef.current = centroidMarkers
+
+      // Update scroll triggers for new city
       ScrollTrigger.getAll().forEach(trigger => trigger.kill())
 
-      // Clean up markers
-      centroidMarkersRef.current.forEach(marker => {
-        if (marker && marker.remove) {
-          marker.remove()
-        }
-      })
-      centroidMarkersRef.current = []
+      const [minPop, maxPop] = getMinMax(newCityData.freguesiaData, 'diff_pop_2011')
+      const [minAloj, maxAloj] = getMinMax(newCityData.freguesiaData, 'diff_alojamentos_2011')
 
-      // Clean up map
-      if (map.current) {
-        map.current.remove()
-        map.current = null
+      const freguesiaPaintPop: mapboxgl.FillPaint = {
+        'fill-color': [
+          'interpolate',
+          ['linear'],
+          ['get', 'diff_pop_2011'],
+          minPop,
+          '#b3589a',
+          0,
+          '#FFFFFF',
+          maxPop,
+          '#b8ffcb',
+        ],
+        'fill-opacity': 0.1,
+        'fill-color-transition': { duration: 500 },
       }
+
+      const freguesiaPaintAL: mapboxgl.FillPaint = {
+        'fill-color': [
+          'interpolate',
+          ['linear'],
+          ['get', 'diff_alojamentos_2011'],
+          minAloj,
+          '#b3589a',
+          0,
+          '#FFFFFF',
+          maxAloj,
+          '#b8ffcb',
+        ],
+        'fill-opacity': 0.1,
+        'fill-color-transition': { duration: 500 },
+      }
+
+      createScrollTriggers(
+        isMobile,
+        city,
+        map,
+        divTrigger,
+        mapPin,
+        progressBar,
+        alCount,
+        actionIntro,
+        actionFreguesia,
+        actionFreguesiaZoom,
+        actionFreguesiaPop,
+        actionFreguesiaAL,
+        actionLineChart,
+        actionMegaHosts,
+        actionFullAirbnb,
+        setNormalizedDate,
+        setBarWidth,
+        debouncedSetFilter,
+        freguesiaPaintPop,
+        freguesiaPaintAL,
+        centroidMarkers,
+        setTriggerAnimation,
+        setBoundaryBox,
+        setTriggerMegaHostAnimation,
+        imageWrappers,
+      )
     }
-  }, [alData, hotelsData, city])
+
+    previousCityRef.current = city
+  }, [city, citiesData, isMobile])
 
   const useResize = handler => {
     useEffect(() => {
@@ -319,6 +382,29 @@ const Map = ({ language, city }: Props) => {
   }, [map.current, boundaryBox])
 
   useResize(onResize)
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      // Clean up ScrollTrigger instances
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+
+      // Clean up markers
+      centroidMarkersRef.current.forEach(marker => {
+        if (marker && marker.remove) {
+          marker.remove()
+        }
+      })
+      centroidMarkersRef.current = []
+
+      // Clean up map
+      if (map.current) {
+        map.current.remove()
+        map.current = null
+      }
+      isMapInitialized.current = false
+    }
+  }, [])
 
   return (
     <>

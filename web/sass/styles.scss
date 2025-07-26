@@ -211,12 +211,6 @@ a {
   cursor: pointer;
 }
 
-.citySelector > img:hover {
-  filter: grayscale(0%);
-  transform: rotate(5deg);
-  cursor: pointer;
-}
-
 .map-container {
   height: 100vh;
   width: 100%;
@@ -732,5 +726,194 @@ h2 {
     img:not(#servicos) {
       width: 80vw;
     }
+  }
+}
+
+// City Switcher Glass Morphism Styles
+.city-switcher {
+  position: fixed;
+  bottom: 40px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  gap: 0;
+  width: 192px;
+  max-width: 192px;
+  height: 70px;
+  box-sizing: border-box;
+  padding: 8px 12px 10px;
+  border: none;
+  border-radius: 99em;
+  font-size: 1rem;
+  background-color: color-mix(in srgb, #ffffff40 62%, transparent);
+  backdrop-filter: blur(8px) url(#city-switcher) saturate(150%);
+  -webkit-backdrop-filter: blur(8px) saturate(150%);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, rgba(255, 255, 255, 0.9) 10%, transparent),
+    inset 1.8px 3px 0px -2px color-mix(in srgb, rgba(255, 255, 255, 0.9) 90%, transparent),
+    inset -2px -2px 0px -2px color-mix(in srgb, rgba(255, 255, 255, 0.8) 80%, transparent),
+    inset -3px -8px 1px -6px color-mix(in srgb, rgba(255, 255, 255, 0.6) 60%, transparent),
+    inset -0.3px -1px 4px 0px color-mix(in srgb, rgba(0, 0, 0, 0.18) 18%, transparent),
+    inset -1.5px 2.5px 0px -2px color-mix(in srgb, rgba(0, 0, 0, 0.3) 30%, transparent),
+    inset 0px 3px 4px -2px color-mix(in srgb, rgba(0, 0, 0, 0.3) 30%, transparent),
+    inset 2px -6.5px 1px -4px color-mix(in srgb, rgba(0, 0, 0, 0.15) 15%, transparent),
+    0px 1px 5px 0px color-mix(in srgb, rgba(0, 0, 0, 0.15) 15%, transparent),
+    0px 6px 16px 0px color-mix(in srgb, rgba(0, 0, 0, 0.12) 12%, transparent);
+  transition: background-color 400ms cubic-bezier(1, 0, 0.4, 1),
+    box-shadow 400ms cubic-bezier(1, 0, 0.4, 1);
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    display: block;
+    width: 88px;
+    height: calc(100% - 8px);
+    border-radius: 99em;
+    background-color: color-mix(in srgb, rgba(200, 200, 200, 0.36) 80%, transparent);
+    z-index: -1;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, rgba(255, 255, 255, 0.1) 10%, transparent),
+      inset 2px 1px 0px -1px color-mix(in srgb, rgba(255, 255, 255, 0.9) 90%, transparent),
+      inset -1.5px -1px 0px -1px color-mix(in srgb, rgba(255, 255, 255, 0.8) 80%, transparent),
+      inset -2px -6px 1px -5px color-mix(in srgb, rgba(255, 255, 255, 0.6) 60%, transparent),
+      inset -1px 2px 3px -1px color-mix(in srgb, rgba(0, 0, 0, 0.3) 30%, transparent),
+      inset 0px -4px 1px -2px color-mix(in srgb, rgba(0, 0, 0, 0.15) 15%, transparent),
+      0px 3px 6px 0px color-mix(in srgb, rgba(0, 0, 0, 0.12) 12%, transparent);
+  }
+
+  &:has(input[c-option='1']:checked)::after {
+    translate: 0 0;
+    transform-origin: right;
+    transition: background-color 400ms cubic-bezier(1, 0, 0.4, 1),
+      box-shadow 400ms cubic-bezier(1, 0, 0.4, 1), translate 400ms cubic-bezier(1, 0, 0.4, 1);
+    animation: scaleToggle 440ms ease;
+  }
+
+  &:has(input[c-option='2']:checked)::after {
+    translate: 96px 0;
+    transition: background-color 400ms cubic-bezier(1, 0, 0.4, 1),
+      box-shadow 400ms cubic-bezier(1, 0, 0.4, 1), translate 400ms cubic-bezier(1, 0, 0.4, 1);
+    animation: scaleToggle2 440ms ease;
+  }
+
+  &[c-previous='1']:has(input[c-option='2']:checked)::after {
+    transform-origin: left;
+  }
+}
+
+.city-switcher__legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+
+.city-switcher__input {
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+}
+
+.city-switcher__text {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--c);
+  transition: all 200ms cubic-bezier(0.5, 0, 0, 1);
+}
+
+.city-switcher__filter {
+  position: absolute;
+  width: 0;
+  height: 0;
+  z-index: -1;
+}
+
+.city-switcher__option {
+  --c: #224;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  width: 72px;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 99em;
+  opacity: 1;
+  transition: all 160ms;
+
+  &:hover {
+    --c: #0052f5;
+    cursor: pointer;
+
+    .city-switcher__text {
+      transform: scale(1.2);
+    }
+  }
+
+  &:has(input:checked) {
+    --c: #224;
+    cursor: auto;
+
+    .city-switcher__text {
+      transform: scale(1.4);
+      animation: city-switcher-bounce 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 1;
+    }
+  }
+}
+
+@keyframes scaleToggle {
+  0% {
+    scale: 1 1;
+  }
+  50% {
+    scale: 1.1 1;
+  }
+  100% {
+    scale: 1 1;
+  }
+}
+
+@keyframes scaleToggle2 {
+  0% {
+    scale: 1 1;
+  }
+  50% {
+    scale: 1.2 1;
+  }
+  100% {
+    scale: 1 1;
+  }
+}
+
+@keyframes city-switcher-bounce {
+  0% {
+    transform: scale(1);
+  }
+  20% {
+    transform: scale(1.25);
+  }
+  40% {
+    transform: scale(0.92);
+  }
+  60% {
+    transform: scale(1.08);
+  }
+  80% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
   }
 }

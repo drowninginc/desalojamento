@@ -63,8 +63,82 @@ const Header = ({ language, setLanguage, city, setCity }: Props) => {
     }
   }, [])
 
+  // Track previous selection for animation
+  useEffect(() => {
+    const switcher = document.querySelector('.city-switcher') as HTMLElement
+    if (!switcher) return
+
+    const trackPrevious = (el: HTMLElement) => {
+      const radios = el.querySelectorAll('input[type="radio"]')
+      let previousValue = null
+
+      // Find already selected radio on initialization
+      const initiallyChecked = el.querySelector(
+        'input[type="radio"]:checked',
+      ) as HTMLInputElement | null
+      if (initiallyChecked) {
+        previousValue = initiallyChecked.getAttribute('c-option')
+        el.setAttribute('c-previous', previousValue || '')
+      }
+
+      radios.forEach(radio => {
+        radio.addEventListener('change', () => {
+          if ((radio as HTMLInputElement).checked) {
+            el.setAttribute('c-previous', previousValue ?? '')
+            previousValue = radio.getAttribute('c-option')
+          }
+        })
+      })
+    }
+
+    trackPrevious(switcher)
+  }, [city])
+
   return (
     <>
+      <fieldset className="city-switcher">
+        <legend className="city-switcher__legend">Choose city</legend>
+        <label className="city-switcher__option">
+          <input
+            className="city-switcher__input"
+            type="radio"
+            name="city"
+            value="Lisbon"
+            c-option="1"
+            checked={city === 'Lisbon'}
+            onChange={() => setCity('Lisbon')}
+          />
+          <span className="city-switcher__text">Lisboa</span>
+        </label>
+        <label className="city-switcher__option">
+          <input
+            className="city-switcher__input"
+            type="radio"
+            name="city"
+            value="Porto"
+            c-option="2"
+            checked={city === 'Porto'}
+            onChange={() => setCity('Porto')}
+          />
+          <span className="city-switcher__text">Porto</span>
+        </label>
+        <div className="city-switcher__filter">
+          <svg>
+            <filter id="city-switcher" primitiveUnits="objectBoundingBox">
+              <feImage result="map" width="100%" height="100%" x="0" y="0" href="" />
+              <feGaussianBlur in="SourceGraphic" stdDeviation="0.04" result="blur" />
+              <feDisplacementMap
+                id="disp"
+                in="blur"
+                in2="map"
+                scale="0.5"
+                xChannelSelector="R"
+                yChannelSelector="G"></feDisplacementMap>
+            </filter>
+          </svg>
+        </div>
+      </fieldset>
+
       <header>
         <Language language={language} setLanguage={setLanguage} />
         <div className="parallaxWrapper">
@@ -82,21 +156,6 @@ const Header = ({ language, setLanguage, city, setCity }: Props) => {
             </div>
 
             <div className="introDescription">Alguns dados e mapas sobre o Alojamento Local</div>
-
-            <div className="citySelector">
-              <button
-                className={city === 'Lisbon' ? 'active' : ''}
-                onClick={() => setCity('Lisbon')}
-                type="button">
-                Lisbon
-              </button>
-              <button
-                className={city === 'Porto' ? 'active' : ''}
-                onClick={() => setCity('Porto')}
-                type="button">
-                Porto
-              </button>
-            </div>
           </div>
 
           <div id="layer3" className="parallaxLayer">
