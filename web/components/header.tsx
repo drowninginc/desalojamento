@@ -38,20 +38,73 @@ const Header = ({ language, setLanguage, city, setCity }: Props) => {
     // Add ALPlaque at random positions on layer3 every second
     const layer3 = document.getElementById('layer3')
     let plaqueCount = 0
+    const existingPlaques: { top: number; left: number; width: number; height: number }[] = []
+
+    // Function to check if two rectangles overlap
+    const isOverlapping = (
+      rect1: { top: number; left: number; width: number; height: number },
+      rect2: { top: number; left: number; width: number; height: number },
+    ) => {
+      return !(
+        rect1.left + rect1.width < rect2.left ||
+        rect2.left + rect2.width < rect1.left ||
+        rect1.top + rect1.height < rect2.top ||
+        rect2.top + rect2.height < rect1.top
+      )
+    }
+
+    // Function to find a non-overlapping position
+    const findValidPosition = (width: number, height: number, maxRetries = 50) => {
+      for (let attempt = 0; attempt < maxRetries; attempt++) {
+        const top = Math.random() * 30 + 15 // 15% to 45%
+        const left = Math.random() * 85 + 5 // 5% to 90%
+
+        const newRect = { top, left, width, height }
+
+        // Check if this position overlaps with any existing plaque
+        const hasOverlap = existingPlaques.some(existingRect =>
+          isOverlapping(newRect, existingRect),
+        )
+
+        if (!hasOverlap) {
+          return { top, left }
+        }
+      }
+      return null // No valid position found after max retries
+    }
+
     const intervalId = setInterval(() => {
-      if (layer3 && plaqueCount < 50) {
-        const plaqueWrapper = document.createElement('div')
-        plaqueWrapper.style.position = 'absolute'
-        plaqueWrapper.style.width = '50px'
-        plaqueWrapper.style.height = '50px'
-        plaqueWrapper.style.top = `${Math.random() * 30 + 15}%`
-        plaqueWrapper.style.left = `${Math.random() * 85 + 5}%`
-        layer3.appendChild(plaqueWrapper)
+      if (layer3 && plaqueCount < 10) {
+        const plaqueWidth = (50 / layer3.offsetWidth) * 100 // Convert to percentage
+        const plaqueHeight = (50 / layer3.offsetHeight) * 100 // Convert to percentage
 
-        const root = createRoot(plaqueWrapper)
-        root.render(<Image src={ALPlaque} alt="AL Plaque" layout="fill" objectFit="contain" />)
+        const position = findValidPosition(plaqueWidth, plaqueHeight)
 
-        plaqueCount++
+        if (position) {
+          const plaqueWrapper = document.createElement('div')
+          plaqueWrapper.style.position = 'absolute'
+          plaqueWrapper.style.width = '50px'
+          plaqueWrapper.style.height = '50px'
+          plaqueWrapper.style.top = `${position.top}%`
+          plaqueWrapper.style.left = `${position.left}%`
+          layer3.appendChild(plaqueWrapper)
+
+          // Store the position for future collision detection
+          existingPlaques.push({
+            top: position.top,
+            left: position.left,
+            width: plaqueWidth,
+            height: plaqueHeight,
+          })
+
+          const root = createRoot(plaqueWrapper)
+          root.render(<Image src={ALPlaque} alt="AL Plaque" layout="fill" objectFit="contain" />)
+
+          plaqueCount++
+        } else {
+          // If no valid position found, stop trying to add more plaques
+          clearInterval(intervalId)
+        }
       } else {
         clearInterval(intervalId)
       }

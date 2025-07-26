@@ -789,25 +789,19 @@ h2 {
       inset -1px 2px 3px -1px color-mix(in srgb, rgba(0, 0, 0, 0.3) 30%, transparent),
       inset 0px -4px 1px -2px color-mix(in srgb, rgba(0, 0, 0, 0.15) 15%, transparent),
       0px 3px 6px 0px color-mix(in srgb, rgba(0, 0, 0, 0.12) 12%, transparent);
+    transition: translate 500ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   &:has(input[c-option='1']:checked)::after {
     translate: 0 0;
-    transform-origin: right;
-    transition: background-color 400ms cubic-bezier(1, 0, 0.4, 1),
-      box-shadow 400ms cubic-bezier(1, 0, 0.4, 1), translate 400ms cubic-bezier(1, 0, 0.4, 1);
-    animation: scaleToggle 440ms ease;
+    transform-origin: center;
+    animation: scaleToggle 400ms ease-out;
   }
 
   &:has(input[c-option='2']:checked)::after {
     translate: 96px 0;
-    transition: background-color 400ms cubic-bezier(1, 0, 0.4, 1),
-      box-shadow 400ms cubic-bezier(1, 0, 0.4, 1), translate 400ms cubic-bezier(1, 0, 0.4, 1);
-    animation: scaleToggle2 440ms ease;
-  }
-
-  &[c-previous='1']:has(input[c-option='2']:checked)::after {
-    transform-origin: left;
+    transform-origin: center;
+    animation: scaleToggle 400ms ease-out;
   }
 }
 
@@ -877,7 +871,6 @@ h2 {
 
     .city-switcher__text {
       transform: scale(1.4);
-      animation: city-switcher-bounce 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 1;
     }
   }
 }
@@ -887,19 +880,7 @@ h2 {
     scale: 1 1;
   }
   50% {
-    scale: 1.1 1;
-  }
-  100% {
-    scale: 1 1;
-  }
-}
-
-@keyframes scaleToggle2 {
-  0% {
-    scale: 1 1;
-  }
-  50% {
-    scale: 1.2 1;
+    scale: 1.15 1;
   }
   100% {
     scale: 1 1;

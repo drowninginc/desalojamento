@@ -115,12 +115,6 @@ export const createScrollTriggers = (
     },
     onEnterBack: () => {
       gsap.to('.progress-bar', { opacity: 1, duration: 0.2 })
-      gsap.to('.city-switcher', {
-        opacity: 1,
-        transform: isMobile ? 'translateX(-50%) translateY(0px)' : 'translateY(0px)',
-        duration: 0.4,
-        ease: 'back.out(1.7)',
-      })
     },
     onLeaveBack: () => {
       gsap.to('.progress-bar', { opacity: 0, duration: 0.5, delay: 0.2 })
