@@ -100,10 +100,38 @@ export const createScrollTriggers = (
         debouncedSetFilter(map.current, dateValue, city)
       }
     },
-    onEnter: () => gsap.to('.progress-bar', { opacity: 1, duration: 0.5, delay: 0.2 }),
-    onLeave: () => gsap.to('.progress-bar', { opacity: 0, duration: 0.5, delay: 0.2 }),
-    onEnterBack: () => gsap.to('.progress-bar', { opacity: 1, duration: 0.2 }),
-    onLeaveBack: () => gsap.to('.progress-bar', { opacity: 0, duration: 0.5, delay: 0.2 }),
+    onEnter: () => {
+      gsap.to('.progress-bar', { opacity: 1, duration: 0.5, delay: 0.2 })
+      gsap.to('.city-switcher', {
+        opacity: 1,
+        transform: isMobile ? 'translateX(-50%) translateY(0px)' : 'translateY(0px)',
+        duration: 0.6,
+        delay: 0.2,
+        ease: 'back.out(1.7)',
+      })
+    },
+    onLeave: () => {
+      gsap.to('.progress-bar', { opacity: 0, duration: 0.5, delay: 0.2 })
+    },
+    onEnterBack: () => {
+      gsap.to('.progress-bar', { opacity: 1, duration: 0.2 })
+      gsap.to('.city-switcher', {
+        opacity: 1,
+        transform: isMobile ? 'translateX(-50%) translateY(0px)' : 'translateY(0px)',
+        duration: 0.4,
+        ease: 'back.out(1.7)',
+      })
+    },
+    onLeaveBack: () => {
+      gsap.to('.progress-bar', { opacity: 0, duration: 0.5, delay: 0.2 })
+      gsap.to('.city-switcher', {
+        opacity: 0,
+        transform: isMobile ? 'translateX(-50%) translateY(120px)' : 'translateY(120px)',
+        duration: 0.4,
+        delay: 0.2,
+        ease: 'back.in(1.2)',
+      })
+    },
   })
 
   ScrollTrigger.create({
@@ -213,6 +241,31 @@ export const createScrollTriggers = (
       setLayerVisibility(city, map.current, `${city}-freguesia`, freguesiaPaintPop['fill-color'])
       updateMarkerValues(markers, ['propAL', 'diff_alojamentos_2011', 'diff_pop_2011'])
       setMarkerVisibility(markers, 'block')
+    },
+  })
+
+  // City switcher visibility control for actionFullAirbnb
+  ScrollTrigger.create({
+    trigger: actionFullAirbnb.current,
+    start: 'top bottom',
+    end: 'top bottom',
+    onEnter: () => {
+      gsap.to('.city-switcher', {
+        opacity: 0,
+        transform: isMobile ? 'translateX(-50%) translateY(120px)' : 'translateY(120px)',
+        duration: 0.4,
+        delay: 0.2,
+        ease: 'back.in(1.2)',
+      })
+    },
+    onLeaveBack: () => {
+      gsap.to('.city-switcher', {
+        opacity: 1,
+        transform: isMobile ? 'translateX(-50%) translateY(0px)' : 'translateY(0px)',
+        duration: 0.6,
+        delay: 0.2,
+        ease: 'back.out(1.7)',
+      })
     },
   })
 

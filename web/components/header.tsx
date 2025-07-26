@@ -122,21 +122,6 @@ const Header = ({ language, setLanguage, city, setCity }: Props) => {
           />
           <span className="city-switcher__text">Porto</span>
         </label>
-        <div className="city-switcher__filter">
-          <svg>
-            <filter id="city-switcher" primitiveUnits="objectBoundingBox">
-              <feImage result="map" width="100%" height="100%" x="0" y="0" href="" />
-              <feGaussianBlur in="SourceGraphic" stdDeviation="0.04" result="blur" />
-              <feDisplacementMap
-                id="disp"
-                in="blur"
-                in2="map"
-                scale="0.5"
-                xChannelSelector="R"
-                yChannelSelector="G"></feDisplacementMap>
-            </filter>
-          </svg>
-        </div>
       </fieldset>
 
       <header>
