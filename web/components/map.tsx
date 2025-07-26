@@ -58,8 +58,10 @@ const Map = ({ language, city }: Props) => {
   const mapContainer = React.useRef(null!)
   const progressBar = React.useRef(null!)
   const alCount = React.useRef(null!)
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768
 
   const map = useRef<mapboxgl.Map | null>(null)
+  const centroidMarkersRef = useRef<any[]>([])
 
   const actionIntro = React.useRef(null!)
   const actionFreguesia = React.useRef(null!)
@@ -101,11 +103,53 @@ const Map = ({ language, city }: Props) => {
 
   gsap.registerPlugin(ScrollTrigger)
 
-  const debouncedSetFilter = debounce((map, dateValue) => {
-    map.setFilter(`${city}-al`, ['<=', ['get', 'normalized_date'], dateValue])
-  }, 10)
+  const debouncedSetFilter = useCallback(
+    debounce((map, dateValue, currentCity) => {
+      if (map && map.getLayer(`${currentCity}-al`)) {
+        map.setFilter(`${currentCity}-al`, ['<=', ['get', 'normalized_date'], dateValue])
+      }
+    }, 10),
+    [city],
+  )
+
+  // Cleanup debounced function on unmount
+  useEffect(() => {
+    return () => {
+      debouncedSetFilter.cancel()
+    }
+  }, [debouncedSetFilter])
 
   useEffect(() => {
+    // Clean up existing map and triggers when city changes
+    if (map.current) {
+      // Remove all ScrollTrigger instances
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+
+      // Clean up markers
+      centroidMarkersRef.current.forEach(marker => {
+        if (marker && marker.remove) {
+          marker.remove()
+        }
+      })
+      centroidMarkersRef.current = []
+
+      // Remove map event listeners and destroy map
+      map.current.remove()
+      map.current = null
+    }
+
+    // Clear map container
+    if (mapContainer.current) {
+      mapContainer.current.innerHTML = ''
+    }
+
+    // Reset state when city changes
+    setNormalizedDate(0)
+    setBarWidth('0%')
+    setTriggerAnimation(false)
+    setTriggerMegaHostAnimation(false)
+    setBoundaryBox([])
+
     const checkMapLoaded = () => {
       if (map.current && map.current.loaded()) {
         document.body.style.overflow = 'scroll'
@@ -117,17 +161,18 @@ const Map = ({ language, city }: Props) => {
 
     if (!alData) {
       console.log('Missing alData')
+      return
     }
     if (!freguesiaData) {
       console.log('Missing freguesiaData')
+      return
     }
     if (!hotelsData) {
       console.log('Missing hotelsData')
+      return
     }
 
     if (alData && freguesiaData && hotelsData) {
-      if (map.current) return
-
       const [minPop, maxPop] = getMinMax(freguesiaData, 'diff_pop_2011')
       const [minAloj, maxAloj] = getMinMax(freguesiaData, 'diff_alojamentos_2011')
       const freguesiaPaintPop: mapboxgl.FillPaint = {
@@ -169,13 +214,25 @@ const Map = ({ language, city }: Props) => {
       console.log('wtf')
       map.current.on('load', () => {
         console.log('Map loaded successfully')
+
+        // Clean up previous markers
+        centroidMarkersRef.current.forEach(marker => {
+          if (marker && marker.remove) {
+            marker.remove()
+          }
+        })
+
         const centroidMarkers = addCentroidMarkers(map.current, freguesiaData, [
           'propAL',
           'diff_alojamentos_2011',
           'diff_pop_2011',
         ])
 
+        // Store markers reference for cleanup
+        centroidMarkersRef.current = centroidMarkers
+
         createScrollTriggers(
+          isMobile,
           city,
           map,
           divTrigger,
@@ -219,9 +276,24 @@ const Map = ({ language, city }: Props) => {
     checkMapLoaded()
 
     return () => {
+      // Clean up ScrollTrigger instances
       ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+
+      // Clean up markers
+      centroidMarkersRef.current.forEach(marker => {
+        if (marker && marker.remove) {
+          marker.remove()
+        }
+      })
+      centroidMarkersRef.current = []
+
+      // Clean up map
+      if (map.current) {
+        map.current.remove()
+        map.current = null
+      }
     }
-  }, [alData, hotelsData])
+  }, [alData, hotelsData, city])
 
   const useResize = handler => {
     useEffect(() => {
@@ -401,10 +473,12 @@ const Map = ({ language, city }: Props) => {
             <h2>{translation('actionMegaHosts-title', language, city)}</h2>
 
             <Casas
+              key={`megahosts-${city}`}
               percentage={megahostsData.megahosts[city]}
               title={translation('actionMegaHosts-label-1', language, city) as string}
               triggerAnimation={triggerMegaHostAnimation}></Casas>
             <Casas
+              key={`companies-${city}`}
               percentage={megahostsData.companies[city]}
               title={translation('actionMegaHosts-label-2', language, city) as string}
               triggerAnimation={triggerMegaHostAnimation}></Casas>

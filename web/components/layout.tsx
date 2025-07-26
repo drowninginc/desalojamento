@@ -7,13 +7,14 @@ type Props = {
   language: string
   setLanguage: any
   city: string
+  setCity: any
 }
 
-const Layout = ({ children, language, setLanguage, city }: Props) => {
+const Layout = ({ children, language, setLanguage, city, setCity }: Props) => {
   return (
     <>
       <Meta />
-      <Header language={language} setLanguage={setLanguage} city={city} />
+      <Header language={language} setLanguage={setLanguage} city={city} setCity={setCity} />
       <main>{children}</main>
     </>
   )

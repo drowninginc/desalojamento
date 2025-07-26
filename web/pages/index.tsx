@@ -6,11 +6,11 @@ import { useState } from 'react'
 
 const Index = () => {
   const [language, setLanguage] = useState('pt')
-  const city = 'Porto'
+  const [city, setCity] = useState('Lisbon')
 
   return (
     <>
-      <Layout language={language} setLanguage={setLanguage} city={city}>
+      <Layout language={language} setLanguage={setLanguage} city={city} setCity={setCity}>
         <Map language={language} city={city} />
         <GhostHotels language={language} city={city} />
       </Layout>

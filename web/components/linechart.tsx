@@ -33,7 +33,7 @@ const Linechart = ({ language, city, triggerAnimation }: Props) => {
     }
 
     fetchData()
-  }, [language])
+  }, [language, city])
 
   useEffect(() => {
     if (triggerAnimation) {

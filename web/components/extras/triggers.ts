@@ -31,6 +31,7 @@ const setLayerVisibility = (
 }
 
 export const createScrollTriggers = (
+  isMobile,
   city,
   map,
   divTrigger,
@@ -96,7 +97,7 @@ export const createScrollTriggers = (
       setNormalizedDate(dateValue)
       setBarWidth(`${scrollProgress * 100}%`)
       if (map.current) {
-        debouncedSetFilter(map.current, dateValue)
+        debouncedSetFilter(map.current, dateValue, city)
       }
     },
     onEnter: () => gsap.to('.progress-bar', { opacity: 1, duration: 0.5, delay: 0.2 }),
@@ -140,12 +141,20 @@ export const createScrollTriggers = (
       setLayerVisibility(city, map.current, `${city}-freguesia`)
       updateMarkerValues(markers, ['propAL'])
       setMarkerVisibility(markers, 'block')
-      changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].boundingBox)
+      changeBoundaryBox(
+        map.current,
+        setBoundaryBox,
+        isMobile ? cityDefinitions[city].boundingBoxMobile : cityDefinitions[city].boundingBox,
+      )
     },
     onEnterBack: () => {
       gsap.to('.plot-full-screen', { opacity: 0, duration: 0.5 })
       updateMarkerValues(markers, ['propAL'])
-      changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].boundingBox)
+      changeBoundaryBox(
+        map.current,
+        setBoundaryBox,
+        isMobile ? cityDefinitions[city].boundingBoxMobile : cityDefinitions[city].boundingBox,
+      )
     },
   })
 
@@ -154,7 +163,13 @@ export const createScrollTriggers = (
     start: 'top 70%',
     end: 'top 20%',
     onEnter: () => {
-      changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].center.boundingBox)
+      changeBoundaryBox(
+        map.current,
+        setBoundaryBox,
+        isMobile
+          ? cityDefinitions[city].center.boundingBoxMobile
+          : cityDefinitions[city].center.boundingBox,
+      )
     },
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-freguesia`)
@@ -212,14 +227,20 @@ export const createScrollTriggers = (
         onEnter: () => {
           setLayerVisibility(city, map.current, `${city}-al-megahosts`)
           setMarkerVisibility(markers, 'none')
-
-          changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].boundingBox)
+          changeBoundaryBox(
+            map.current,
+            setBoundaryBox,
+            isMobile ? cityDefinitions[city].boundingBoxMobile : cityDefinitions[city].boundingBox,
+          )
         },
         onLeave: () => {
           setLayerVisibility(city, map.current, `${city}-al-megahosts`)
           setMarkerVisibility(markers, 'none')
-
-          changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].boundingBox)
+          changeBoundaryBox(
+            map.current,
+            setBoundaryBox,
+            isMobile ? cityDefinitions[city].boundingBoxMobile : cityDefinitions[city].boundingBox,
+          )
         },
         onEnterBack: () => {
           setLayerVisibility(
@@ -229,7 +250,13 @@ export const createScrollTriggers = (
             freguesiaPaintPop['fill-color'],
           )
           setMarkerVisibility(markers, 'block')
-          changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].center.boundingBox)
+          changeBoundaryBox(
+            map.current,
+            setBoundaryBox,
+            isMobile
+              ? cityDefinitions[city].center.boundingBoxMobile
+              : cityDefinitions[city].center.boundingBox,
+          )
         },
         onLeaveBack: () => {
           setLayerVisibility(
@@ -239,7 +266,13 @@ export const createScrollTriggers = (
             freguesiaPaintPop['fill-color'],
           )
           setMarkerVisibility(markers, 'block')
-          changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].center.boundingBox)
+          changeBoundaryBox(
+            map.current,
+            setBoundaryBox,
+            isMobile
+              ? cityDefinitions[city].center.boundingBoxMobile
+              : cityDefinitions[city].center.boundingBox,
+          )
         },
       },
     })
@@ -266,7 +299,11 @@ export const createScrollTriggers = (
     },
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-al-megahosts`)
-      changeBoundaryBox(map.current, setBoundaryBox, cityDefinitions[city].boundingBox)
+      changeBoundaryBox(
+        map.current,
+        setBoundaryBox,
+        isMobile ? cityDefinitions[city].boundingBoxMobile : cityDefinitions[city].boundingBox,
+      )
       setTriggerMegaHostAnimation(true)
     },
   })

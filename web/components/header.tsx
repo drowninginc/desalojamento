@@ -13,9 +13,10 @@ type Props = {
   language: string
   setLanguage: any
   city: string
+  setCity: any
 }
 
-const Header = ({ language, setLanguage, city }: Props) => {
+const Header = ({ language, setLanguage, city, setCity }: Props) => {
   useEffect(() => {
     const layers = document.getElementsByClassName('parallaxLayer')
 
@@ -80,19 +81,22 @@ const Header = ({ language, setLanguage, city }: Props) => {
               <a href="https://www.linkedin.com/in/joaobernardonarciso/">João Bernardo Narciso</a>
             </div>
 
-            {/* <div className="citySelector">
-              <Image
-                src={lisbonSelector}
-                layout="responsive"
-                alt="Lisbon city selector"
-                className={city === 'Lisbon' ? 'selected' : 'unselected'}
-              />
-              <Image
-                src={portoSelector}
-                layout="responsive"
-                alt="Porto city selector"
-                className={city === 'Porto' ? 'selected' : 'unselected'}></Image>
-            </div> */}
+            <div className="introDescription">Alguns dados e mapas sobre o Alojamento Local</div>
+
+            <div className="citySelector">
+              <button
+                className={city === 'Lisbon' ? 'active' : ''}
+                onClick={() => setCity('Lisbon')}
+                type="button">
+                Lisbon
+              </button>
+              <button
+                className={city === 'Porto' ? 'active' : ''}
+                onClick={() => setCity('Porto')}
+                type="button">
+                Porto
+              </button>
+            </div>
           </div>
 
           <div id="layer3" className="parallaxLayer">
