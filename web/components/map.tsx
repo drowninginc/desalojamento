@@ -83,6 +83,8 @@ const Map = ({ language, city }: Props) => {
   const [triggerMegaHostAnimation, setTriggerMegaHostAnimation] = React.useState(false)
 
   const [boundaryBox, setBoundaryBox] = React.useState<[number, number][]>([])
+  const [showTooltip, setShowTooltip] = React.useState(false)
+  const [tooltipPosition, setTooltipPosition] = React.useState({ x: 0, y: 0 })
 
   const formatDate = value => {
     const startDate = new Date('2014-01-01')
@@ -383,6 +385,20 @@ const Map = ({ language, city }: Props) => {
 
   useResize(onResize)
 
+  // Tooltip handlers
+  const handleMouseEnter = (event: React.MouseEvent) => {
+    const rect = event.currentTarget.getBoundingClientRect()
+    setTooltipPosition({
+      x: rect.left + rect.width / 2,
+      y: rect.top - 25,
+    })
+    setShowTooltip(true)
+  }
+
+  const handleMouseLeave = () => {
+    setShowTooltip(false)
+  }
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -408,6 +424,14 @@ const Map = ({ language, city }: Props) => {
 
   return (
     <>
+      <div
+        className={`tooltip ${showTooltip ? 'visible' : ''}`}
+        style={{
+          left: tooltipPosition.x,
+          top: tooltipPosition.y,
+        }}>
+        tooltip 1
+      </div>
       <div className="whole-container">
         <div ref={progressBar} className="progress-bar">
           <div className="progress-fill" style={{ width: barWidth }}>
@@ -445,9 +469,23 @@ const Map = ({ language, city }: Props) => {
             <h2>{translation('actionFreguesia-title', language, city)}</h2>
             {translation('actionFreguesia', language, city)}
             <div className="heatmap-label">
+              <span
+                className="label-center"
+                dangerouslySetInnerHTML={{
+                  __html: getTranslationString('actionFreguesia-label', language, city),
+                }}
+              />
               <span className="label-center">
-                {translation('actionFreguesia-label', language, city)}
+                <span
+                  className="hover-tooltip"
+                  id="hover_1"
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}>
+                  rácio de Alojamentos Local
+                </span>{' '}
+                por habitação
               </span>
+
               <div className="heatmap-rectangle heatmap-al"></div>
               <div className="heatmap-labels">
                 <span className="label-left">

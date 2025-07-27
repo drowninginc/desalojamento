@@ -340,7 +340,6 @@ export const createScrollTriggers = (
     trigger: actionMegaHosts.current,
     start: 'top 90%',
     end: 'top 20%',
-    markers: true,
     onEnter: () => {
       setTriggerMegaHostAnimation(true)
     },

@@ -307,6 +307,7 @@ a.button {
   border-bottom: $color-blue-al 2px solid;
   border-top: $color-blue-al 2px solid;
   opacity: 0;
+  pointer-events: none;
 }
 
 .progress-fill {
@@ -368,7 +369,7 @@ a.button {
 }
 
 .circle-legend-svg {
-  overflow: visible;
+  overflow: visible !important;
 }
 
 .centroid-marker {
@@ -397,16 +398,19 @@ a.button {
     text-align: center;
     vertical-align: baseline;
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.7s ease-in-out, transform 0.7s ease-in-out;
+    transform: translateY(20px) scale(0.95);
+    transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+      transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     width: 90px;
     white-space: pre-wrap;
     word-break: break-word; // Add this line to break words at the end of the line
     hyphens: none;
+    filter: blur(2px);
 
     &.visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
+      filter: blur(0px);
     }
 
     .freg-name {
@@ -421,30 +425,75 @@ a.button {
       opacity: 0; // Initial state
       max-height: 0; // Initial state
       overflow: hidden; // Ensure no overflow
-      transition: opacity 0.5s ease-in-out, max-height 0.5s ease-in-out, margin 0.4s ease-in-out;
+      transform: translateX(-15px) scale(0.9);
+      transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        margin 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+      &:nth-child(1) {
+        transition-delay: 0.1s;
+      }
+      &:nth-child(2) {
+        transition-delay: 0.2s;
+      }
+      &:nth-child(3) {
+        transition-delay: 0.3s;
+      }
+      &:nth-child(4) {
+        transition-delay: 0.4s;
+      }
+      &:nth-child(5) {
+        transition-delay: 0.5s;
+      }
 
       &.visible {
         opacity: 1;
         max-height: 100px;
         margin: 6px 0;
+        transform: translateX(0) scale(1);
       }
 
       &.hidden {
         opacity: 0;
         max-height: 0;
         margin: 0;
+        transform: translateX(-15px) scale(0.9);
+        transition-delay: 0s !important;
       }
 
       .cell-icon {
         color: $color-blue-al;
+        transform: scale(0.8);
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
 
       .positive-number {
         color: rgb(1, 119, 1);
+        transform: translateX(5px);
+        opacity: 0.7;
+        transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+          opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       }
 
       .negative-number {
         color: rgb(206, 1, 1);
+        transform: translateX(5px);
+        opacity: 0.7;
+        transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+          opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      &.visible {
+        .cell-icon {
+          transform: scale(1);
+        }
+
+        .positive-number,
+        .negative-number {
+          transform: translateX(0);
+          opacity: 1;
+        }
       }
     }
   }
@@ -919,4 +968,35 @@ h2 {
     transform: translateX(-50%) translateY(120px);
     bottom: 20px;
   }
+}
+
+.hover-tooltip {
+  border-bottom: 1px dashed #888;
+  cursor: help;
+  text-decoration: none;
+}
+
+.tooltip {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out, transform 0.2s ease-in-out;
+  transform: translateX(-50%) translateY(5px);
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.pin-spacer {
+  pointer-events: none;
 }
