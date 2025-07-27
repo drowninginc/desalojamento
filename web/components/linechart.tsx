@@ -77,7 +77,6 @@ const Linechart = ({ language, city, triggerAnimation }: Props) => {
               },
               config: { duration: 5000 },
               delay: 100,
-              reset: triggerAnimation,
             })
 
             return (

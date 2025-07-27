@@ -231,7 +231,6 @@ export const createScrollTriggers = (
       setTriggerAnimation(true)
     },
     onEnterBack: () => {
-      setTriggerAnimation(true)
       setLayerVisibility(city, map.current, `${city}-freguesia`, freguesiaPaintPop['fill-color'])
       updateMarkerValues(markers, ['propAL', 'diff_alojamentos_2011', 'diff_pop_2011'])
       setMarkerVisibility(markers, 'block')
@@ -341,6 +340,7 @@ export const createScrollTriggers = (
     trigger: actionMegaHosts.current,
     start: 'top 90%',
     end: 'top 20%',
+    markers: true,
     onEnter: () => {
       setTriggerMegaHostAnimation(true)
     },
@@ -351,7 +351,6 @@ export const createScrollTriggers = (
         setBoundaryBox,
         isMobile ? cityDefinitions[city].boundingBoxMobile : cityDefinitions[city].boundingBox,
       )
-      setTriggerMegaHostAnimation(true)
     },
   })
 }

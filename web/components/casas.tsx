@@ -12,8 +12,8 @@ const Casas = ({ percentage, title, triggerAnimation }: CasasProps) => {
 
   useEffect(() => {
     if (triggerAnimation) {
-      const delay = 1000 // delay in milliseconds
-      const animationDuration = 3000 // duration in milliseconds
+      const delay = 0 // delay in milliseconds
+      const animationDuration = 1800 // duration in milliseconds
       const totalSteps = 500 // total steps for the animation
       const stepDuration = animationDuration / totalSteps
       const bounceSteps = 50 // steps for the bounce effect
