@@ -114,6 +114,7 @@ header {
   text-align: right;
   font-family: 'Cooper Lt';
   font-weight: light;
+
   font-size: large;
   color: $color-blue-al;
   margin-top: -3vw;
@@ -123,8 +124,6 @@ header {
 
   a {
     font-family: 'Cooper Md';
-    position: relative;
-    z-index: 3;
   }
 }
 
@@ -191,7 +190,7 @@ a {
     left: 50%; /* Center horizontally */
     transform: translateX(-50%) translate3d(0, 0, 0) !important; /* Adjust transform */
     width: 90%;
-    z-index: 1;
+    z-index: -1;
     margin-left: auto;
     margin-right: auto;
   }
@@ -201,7 +200,6 @@ a {
   .logo {
     margin: 0 auto;
     padding: 0;
-    pointer-events: none;
   }
 
   .logoLegend {
