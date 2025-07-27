@@ -40,12 +40,21 @@ export const getBothCitiesData = () => {
   }
 }
 
-export const createMap = (container, cityDefinitions, setBoundaryBox, initialCity = 'Lisbon') => {
-  setBoundaryBox(cityDefinitions[initialCity].boundingBox)
+export const createMap = (
+  container,
+  cityDefinitions,
+  setBoundaryBox,
+  initialCity = 'Lisbon',
+  isMobile = false,
+) => {
+  const bounds = isMobile
+    ? cityDefinitions[initialCity].boundingBoxMobile || cityDefinitions[initialCity].boundingBox
+    : cityDefinitions[initialCity].boundingBox
+  setBoundaryBox(bounds)
   return new mapboxgl.Map({
     container,
     style: 'mapbox://styles/mapbox/light-v10?optimize=true',
-    bounds: cityDefinitions[initialCity].boundingBox,
+    bounds: bounds,
     interactive: false,
   })
 }

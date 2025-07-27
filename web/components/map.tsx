@@ -194,7 +194,7 @@ const Map = ({ language, city }: Props) => {
         'fill-color-transition': { duration: 500 },
       }
 
-      map.current = createMap(mapContainer.current, cityDefinitions, setBoundaryBox, city)
+      map.current = createMap(mapContainer.current, cityDefinitions, setBoundaryBox, city, isMobile)
 
       map.current.on('load', () => {
         console.log('Map loaded successfully')
