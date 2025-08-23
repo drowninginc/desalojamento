@@ -14,6 +14,10 @@ import paginaImage from './images/airbnb/descricaoPagina.png'
 import outdoorImage from './images/airbnb/outdoor.png'
 
 const megahostsData = {
+  supermegahost: {
+    Porto: 48,
+    Lisbon: 42,
+  },
   megahosts: {
     Porto: 72,
     Lisbon: 68,
@@ -65,6 +69,7 @@ const Map = ({ language, city }: Props) => {
   const centroidMarkersRef = useRef<any[]>([])
   const previousCityRef = useRef<string | null>(null)
   const isMapInitialized = useRef(false)
+  const tooltipRef = useRef<HTMLDivElement>(null)
 
   const actionIntro = React.useRef(null!)
   const actionFreguesia = React.useRef(null!)
@@ -72,6 +77,7 @@ const Map = ({ language, city }: Props) => {
   const actionFreguesiaPop = React.useRef(null!)
   const actionFreguesiaAL = React.useRef(null!)
   const actionLineChart = React.useRef(null!)
+  const actionRooms = React.useRef(null!)
   const actionMegaHosts = React.useRef(null!)
   const actionFullAirbnb = React.useRef(null!)
 
@@ -85,6 +91,7 @@ const Map = ({ language, city }: Props) => {
   const [boundaryBox, setBoundaryBox] = React.useState<[number, number][]>([])
   const [showTooltip, setShowTooltip] = React.useState(false)
   const [tooltipPosition, setTooltipPosition] = React.useState({ x: 0, y: 0 })
+  const [isLoadingMarkers, setIsLoadingMarkers] = React.useState(false)
 
   const formatDate = value => {
     const startDate = new Date('2014-01-01')
@@ -233,6 +240,7 @@ const Map = ({ language, city }: Props) => {
           actionFreguesiaPop,
           actionFreguesiaAL,
           actionLineChart,
+          actionRooms,
           actionMegaHosts,
           actionFullAirbnb,
           setNormalizedDate,
@@ -280,82 +288,94 @@ const Map = ({ language, city }: Props) => {
       isMobile,
     )
 
-    // Add markers for new city
-    const newCityData = citiesData[city]
-    if (newCityData.freguesiaData) {
-      const centroidMarkers = addCentroidMarkers(map.current, newCityData.freguesiaData, [
-        'propAL',
-        'diff_alojamentos_2011',
-        'diff_pop_2011',
-      ])
-      centroidMarkersRef.current = centroidMarkers
+    // Show loading state for markers
+    setIsLoadingMarkers(true)
 
-      // Update scroll triggers for new city
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+    // OPTIMIZATION: Defer marker creation and ScrollTrigger recreation to avoid blocking the map animation
+    // This ensures the map fly-to animation remains smooth and responsive, even when many markers need to be created
+    // The 350ms delay allows the map animation (300ms) to complete before starting expensive DOM operations
+    setTimeout(() => {
+      // Add markers for new city
+      const newCityData = citiesData[city]
+      if (newCityData.freguesiaData) {
+        const centroidMarkers = addCentroidMarkers(map.current, newCityData.freguesiaData, [
+          'propAL',
+          'diff_alojamentos_2011',
+          'diff_pop_2011',
+        ])
+        centroidMarkersRef.current = centroidMarkers
 
-      const [minPop, maxPop] = getMinMax(newCityData.freguesiaData, 'diff_pop_2011')
-      const [minAloj, maxAloj] = getMinMax(newCityData.freguesiaData, 'diff_alojamentos_2011')
+        // Update scroll triggers for new city
+        ScrollTrigger.getAll().forEach(trigger => trigger.kill())
 
-      const freguesiaPaintPop: mapboxgl.FillPaint = {
-        'fill-color': [
-          'interpolate',
-          ['linear'],
-          ['get', 'diff_pop_2011'],
-          minPop,
-          '#b3589a',
-          0,
-          '#FFFFFF',
-          maxPop,
-          '#b8ffcb',
-        ],
-        'fill-opacity': 0.1,
-        'fill-color-transition': { duration: 500 },
+        const [minPop, maxPop] = getMinMax(newCityData.freguesiaData, 'diff_pop_2011')
+        const [minAloj, maxAloj] = getMinMax(newCityData.freguesiaData, 'diff_alojamentos_2011')
+
+        const freguesiaPaintPop: mapboxgl.FillPaint = {
+          'fill-color': [
+            'interpolate',
+            ['linear'],
+            ['get', 'diff_pop_2011'],
+            minPop,
+            '#b3589a',
+            0,
+            '#FFFFFF',
+            maxPop,
+            '#b8ffcb',
+          ],
+          'fill-opacity': 0.1,
+          'fill-color-transition': { duration: 500 },
+        }
+
+        const freguesiaPaintAL: mapboxgl.FillPaint = {
+          'fill-color': [
+            'interpolate',
+            ['linear'],
+            ['get', 'diff_alojamentos_2011'],
+            minAloj,
+            '#b3589a',
+            0,
+            '#FFFFFF',
+            maxAloj,
+            '#b8ffcb',
+          ],
+          'fill-opacity': 0.1,
+          'fill-color-transition': { duration: 500 },
+        }
+
+        createScrollTriggers(
+          isMobile,
+          city,
+          map,
+          divTrigger,
+          mapPin,
+          progressBar,
+          alCount,
+          actionIntro,
+          actionFreguesia,
+          actionFreguesiaZoom,
+          actionFreguesiaPop,
+          actionFreguesiaAL,
+          actionLineChart,
+          actionRooms,
+          actionMegaHosts,
+          actionFullAirbnb,
+          setNormalizedDate,
+          setBarWidth,
+          debouncedSetFilter,
+          freguesiaPaintPop,
+          freguesiaPaintAL,
+          centroidMarkers,
+          setTriggerAnimation,
+          setBoundaryBox,
+          setTriggerMegaHostAnimation,
+          imageWrappers,
+        )
       }
 
-      const freguesiaPaintAL: mapboxgl.FillPaint = {
-        'fill-color': [
-          'interpolate',
-          ['linear'],
-          ['get', 'diff_alojamentos_2011'],
-          minAloj,
-          '#b3589a',
-          0,
-          '#FFFFFF',
-          maxAloj,
-          '#b8ffcb',
-        ],
-        'fill-opacity': 0.1,
-        'fill-color-transition': { duration: 500 },
-      }
-
-      createScrollTriggers(
-        isMobile,
-        city,
-        map,
-        divTrigger,
-        mapPin,
-        progressBar,
-        alCount,
-        actionIntro,
-        actionFreguesia,
-        actionFreguesiaZoom,
-        actionFreguesiaPop,
-        actionFreguesiaAL,
-        actionLineChart,
-        actionMegaHosts,
-        actionFullAirbnb,
-        setNormalizedDate,
-        setBarWidth,
-        debouncedSetFilter,
-        freguesiaPaintPop,
-        freguesiaPaintAL,
-        centroidMarkers,
-        setTriggerAnimation,
-        setBoundaryBox,
-        setTriggerMegaHostAnimation,
-        imageWrappers,
-      )
-    }
+      // Hide loading state
+      setIsLoadingMarkers(false)
+    }, 350) // Wait for map animation to complete (300ms + 50ms buffer)
 
     previousCityRef.current = city
   }, [city, citiesData, isMobile])
@@ -388,9 +408,13 @@ const Map = ({ language, city }: Props) => {
   // Tooltip handlers
   const handleMouseEnter = (event: React.MouseEvent) => {
     const rect = event.currentTarget.getBoundingClientRect()
+
+    // Get tooltip height, fallback to 30 if not available
+    const tooltipHeight = tooltipRef.current?.offsetHeight || 30
+
     setTooltipPosition({
-      x: rect.left + rect.width / 2,
-      y: rect.top - 25,
+      x: rect.left,
+      y: rect.top - tooltipHeight,
     })
     setShowTooltip(true)
   }
@@ -425,13 +449,15 @@ const Map = ({ language, city }: Props) => {
   return (
     <>
       <div
+        ref={tooltipRef}
         className={`tooltip ${showTooltip ? 'visible' : ''}`}
         style={{
           left: tooltipPosition.x,
           top: tooltipPosition.y,
-        }}>
-        tooltip 1
-      </div>
+        }}
+        dangerouslySetInnerHTML={{
+          __html: getTranslationString('tooltip-content', language, city),
+        }}></div>
       <div className="whole-container">
         <div ref={progressBar} className="progress-bar">
           <div className="progress-fill" style={{ width: barWidth }}>
@@ -444,6 +470,11 @@ const Map = ({ language, city }: Props) => {
         <div ref={alCount} className="al-count">
           {getMonthlyCount(normalizedDate) + ' ALs'}
         </div>
+        {isLoadingMarkers && (
+          <div className="markers-loading">
+            <div className="loading-spinner"></div>
+          </div>
+        )}
         <div className="plot-full-screen"></div>
 
         <div ref={mapPin} className="map-content">
@@ -469,21 +500,34 @@ const Map = ({ language, city }: Props) => {
             <h2>{translation('actionFreguesia-title', language, city)}</h2>
             {translation('actionFreguesia', language, city)}
             <div className="heatmap-label">
-              <span
-                className="label-center"
-                dangerouslySetInnerHTML={{
-                  __html: getTranslationString('actionFreguesia-label', language, city),
-                }}
-              />
               <span className="label-center">
                 <span
                   className="hover-tooltip"
                   id="hover_1"
                   onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}>
-                  rácio de Alojamentos Local
-                </span>{' '}
-                por habitação
+                  onMouseLeave={handleMouseLeave}
+                  style={{ display: 'inline-flex', alignItems: 'center', cursor: 'pointer' }}>
+                  {translation('actionFreguesia-label', language, city)}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    style={{ marginLeft: '6px' }}>
+                    <circle cx="8" cy="8" r="7" stroke="#888" strokeWidth="1.5" fill="#fff" />
+                    <text
+                      x="8"
+                      y="11"
+                      textAnchor="middle"
+                      fontSize="10"
+                      fill="#888"
+                      fontFamily="Arial"
+                      fontWeight="bold">
+                      ?
+                    </text>
+                  </svg>
+                </span>
               </span>
 
               <div className="heatmap-rectangle heatmap-al"></div>
@@ -593,6 +637,13 @@ const Map = ({ language, city }: Props) => {
               </div>
             </div>
           </div>
+          <div ref={actionRooms} className="text-box glassy">
+            <h2
+              dangerouslySetInnerHTML={{
+                __html: getTranslationString('actionRooms-title', language, city),
+              }}
+            />
+          </div>
           <div ref={actionMegaHosts} className="text-box glassy">
             <h2>{translation('actionMegaHosts-title', language, city)}</h2>
 
@@ -601,18 +652,12 @@ const Map = ({ language, city }: Props) => {
               percentage={megahostsData.megahosts[city]}
               title={translation('actionMegaHosts-label-1', language, city) as string}
               triggerAnimation={triggerMegaHostAnimation}></Casas>
+
             <Casas
               key={`companies-${city}`}
               percentage={megahostsData.companies[city]}
               title={translation('actionMegaHosts-label-2', language, city) as string}
               triggerAnimation={triggerMegaHostAnimation}></Casas>
-          </div>
-          <div className="text-box glassy">
-            <h2
-              dangerouslySetInnerHTML={{
-                __html: getTranslationString('actionRooms-title', language, city),
-              }}
-            />
           </div>
         </div>
       </div>

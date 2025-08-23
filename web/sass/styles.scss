@@ -48,6 +48,7 @@ header {
   position: relative;
   top: 0;
   left: 0;
+  pointer-events: none;
 }
 
 .parallaxLayer {
@@ -207,16 +208,12 @@ a {
     z-index: 2;
     pointer-events: auto;
   }
-
-  .paragraphIntro {
-    padding: 0 10px;
-  }
 }
 
 @media (max-width: 750px) {
   .logoLegend {
     font-size: medium;
-    margin-top: -2vw;
+    margin-top: 2vh;
   }
 }
 
@@ -611,6 +608,12 @@ a.button {
   }
 }
 
+h1,
+h2,
+h3 {
+  hyphens: none;
+}
+
 .full-text-box {
   width: 100vw;
   height: 100vh;
@@ -627,6 +630,8 @@ a.button {
     font-family: $font-stack-title;
     font-size: 4em;
     font-weight: bold;
+
+    hyphens: none;
   }
 
   .content-wrapper {
@@ -759,7 +764,8 @@ h2 {
 }
 
 .ghostHotels {
-  margin: 3em auto;
+  padding: 3em 1em;
+  background-color: white;
 
   img {
     width: 60vw;
@@ -988,25 +994,62 @@ h2 {
 
 .tooltip {
   position: fixed;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
+  background-color: rgba(255, 255, 255, 0.99);
+  border: 1px solid black;
+  color: rgb(0, 0, 0);
   padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
+  border-radius: 3px;
+  font-size: 0.75em;
   z-index: 1000;
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out, transform 0.2s ease-in-out;
-  transform: translateX(-50%) translateY(5px);
+  transform: translateX(0%) translateY(5px);
+  max-width: 400px;
 
   &.visible {
     opacity: 1;
     visibility: visible;
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(0%) translateY(0);
   }
 }
 
 .pin-spacer {
   pointer-events: none;
+}
+
+// Markers loading indicator
+.markers-loading {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 1000;
+  font-size: 14px;
+
+  .loading-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

@@ -256,13 +256,20 @@ export const switchCity = (
     ? cityDefinitions[newCity].boundingBoxMobile || cityDefinitions[newCity].boundingBox
     : cityDefinitions[newCity].boundingBox
   setBoundaryBox(bounds)
-  map.fitBounds(bounds, { duration: 1000 })
+  map.fitBounds(bounds, { duration: 300 })
 }
 
 export const addCentroidMarkers = (map, data, properties) => {
   const markers = []
   if (data && data.features) {
-    data.features.forEach(feature => {
+    // Sort features by propAL from higher to smaller values
+    const sortedFeatures = [...data.features].sort((a, b) => {
+      const propALa = a.properties.propAL || 0
+      const propALb = b.properties.propAL || 0
+      return propALb - propALa // Higher values first
+    })
+
+    sortedFeatures.forEach(feature => {
       const bbox = turf.bbox(feature)
       const centroid = [(bbox[0] + bbox[2]) / 2, (bbox[1] + bbox[3]) / 2]
 
@@ -341,16 +348,24 @@ export const updateMarkerValues = (markers, properties) => {
   })
 }
 
-export const setMarkerVisibility = (markers, visibility) => {
-  markers.forEach(marker => {
+export const setMarkerVisibility = (markers, visibility, gradually = false) => {
+  markers.forEach((marker, index) => {
     const element = marker.getElement()
     const wrapper = element.querySelector('.animation-wrapper')
+
     if (visibility === 'block') {
-      wrapper.classList.add('visible')
-      wrapper.classList.remove('hidden')
-      element.classList.add('visible')
-      element.classList.remove('hidden')
+      // Add staggered delay for sequential appearance (higher propAL first)
+
+      const delay = gradually ? index * 100 : 0 // 100ms delay between each marker if gradually, else zero
+
+      setTimeout(() => {
+        wrapper.classList.add('visible')
+        wrapper.classList.remove('hidden')
+        element.classList.add('visible')
+        element.classList.remove('hidden')
+      }, delay)
     } else {
+      // Hide all markers immediately
       wrapper.classList.add('hidden')
       wrapper.classList.remove('visible')
       element.classList.add('hidden')

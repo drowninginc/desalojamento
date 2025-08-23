@@ -65,6 +65,8 @@ export const alPaintMegaHost: mapboxgl.CirclePaint = {
     ['interpolate', ['linear'], ['get', 'weight'], 0, 2, 1, 6],
   ],
   'circle-color': ['case', ['>=', ['get', 'host_listings_number'], 2], '#ff1654', '#012169'],
+  'circle-opacity': 0,
+  'circle-opacity-transition': { duration: 500 },
 }
 
 // Map 2

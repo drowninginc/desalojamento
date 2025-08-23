@@ -18,8 +18,14 @@ const setLayerVisibility = (
 
     if (layerId === `${city}-freguesia` && visibility === 'visible') {
       map.setPaintProperty(layerId, 'fill-color', paintProperty || freguesiaPaint['fill-color'])
-    } else if (layerId === `${city}-al-megahosts` && visibility === 'visible') {
-      map.setPaintProperty(layerId, 'circle-color', alPaintMegaHost['circle-color'])
+    } else if (layerId === `${city}-al-megahosts`) {
+      if (visibility === 'visible') {
+        map.setPaintProperty(layerId, 'circle-color', alPaintMegaHost['circle-color'])
+        map.setPaintProperty(layerId, 'circle-opacity', 1)
+      } else {
+        // Prepare layer to fade in next time by keeping opacity at 0
+        map.setPaintProperty(layerId, 'circle-opacity', 0)
+      }
     }
   })
 
@@ -44,6 +50,7 @@ export const createScrollTriggers = (
   actionFreguesiaPop,
   actionFreguesiaAL,
   actionLineChart,
+  actionRooms,
   actionMegaHosts,
   actionFullAirbnb,
   setNormalizedDate,
@@ -162,7 +169,7 @@ export const createScrollTriggers = (
       gsap.to('.plot-full-screen', { opacity: 0, duration: 0.5 })
       setLayerVisibility(city, map.current, `${city}-freguesia`)
       updateMarkerValues(markers, ['propAL'])
-      setMarkerVisibility(markers, 'block')
+      setMarkerVisibility(markers, 'block', true)
       changeBoundaryBox(
         map.current,
         setBoundaryBox,
@@ -271,7 +278,9 @@ export const createScrollTriggers = (
         scrub: true,
         pin: true,
         onEnter: () => {
-          setLayerVisibility(city, map.current, `${city}-al-megahosts`)
+          setLayerVisibility(city, map.current, `${city}-al`)
+          map.current.setLayoutProperty(`${city}-hotels`, 'visibility', 'none')
+
           setMarkerVisibility(markers, 'none')
           changeBoundaryBox(
             map.current,
@@ -280,7 +289,7 @@ export const createScrollTriggers = (
           )
         },
         onLeave: () => {
-          setLayerVisibility(city, map.current, `${city}-al-megahosts`)
+          setLayerVisibility(city, map.current, `${city}-al`)
           setMarkerVisibility(markers, 'none')
           changeBoundaryBox(
             map.current,
@@ -305,6 +314,8 @@ export const createScrollTriggers = (
           )
         },
         onLeaveBack: () => {
+          map.current.setLayoutProperty(`${city}-hotels`, 'visibility', 'visible')
+
           setLayerVisibility(
             city,
             map.current,
@@ -337,11 +348,68 @@ export const createScrollTriggers = (
   }
 
   ScrollTrigger.create({
+    trigger: actionRooms.current,
+    start: 'top 90%',
+    end: 'top 20%',
+    onEnter: () => {
+      setLayerVisibility(city, map.current, `${city}-al`)
+      // Filter to show only rooms (Quartos) while preserving date filter
+      if (map.current && map.current.getLayer(`${city}-al`)) {
+        const currentFilter = map.current.getFilter(`${city}-al`)
+        if (currentFilter) {
+          // Combine date filter with modalidade filter
+          map.current.setFilter(`${city}-al`, [
+            'all',
+            currentFilter,
+            ['==', ['get', 'modalidade'], 'Quartos'],
+          ])
+        } else {
+          // Just filter by modalidade if no date filter
+          map.current.setFilter(`${city}-al`, ['==', ['get', 'modalidade'], 'Quartos'])
+        }
+      }
+    },
+
+    onEnterBack: () => {
+      setLayerVisibility(city, map.current, `${city}-al`)
+      // Filter to show only rooms (Quartos) while preserving date filter
+      if (map.current && map.current.getLayer(`${city}-al`)) {
+        const currentFilter = map.current.getFilter(`${city}-al`)
+        if (currentFilter) {
+          // Combine date filter with modalidade filter
+          map.current.setFilter(`${city}-al`, [
+            'all',
+            currentFilter,
+            ['==', ['get', 'modalidade'], 'Quartos'],
+          ])
+        } else {
+          // Just filter by modalidade if no date filter
+          map.current.setFilter(`${city}-al`, ['==', ['get', 'modalidade'], 'Quartos'])
+        }
+      }
+    },
+    onLeaveBack: () => {
+      // Restore only the date filter when leaving
+      if (map.current && map.current.getLayer(`${city}-al`)) {
+        const currentFilter = map.current.getFilter(`${city}-al`)
+        if (currentFilter && currentFilter[0] === 'all' && currentFilter.length === 3) {
+          // Extract the date filter from the combined filter
+          map.current.setFilter(`${city}-al`, currentFilter[1])
+        } else {
+          // Clear the filter if no date filter was present
+          map.current.setFilter(`${city}-al`, null)
+        }
+      }
+    },
+  })
+
+  ScrollTrigger.create({
     trigger: actionMegaHosts.current,
     start: 'top 90%',
     end: 'top 20%',
     onEnter: () => {
       setTriggerMegaHostAnimation(true)
+      setLayerVisibility(city, map.current, `${city}-al-megahosts`)
     },
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-al-megahosts`)
