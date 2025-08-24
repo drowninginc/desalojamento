@@ -5,6 +5,86 @@ gsap.registerPlugin(ScrollTrigger)
 
 import { updateMarkerValues, setMarkerVisibility, changeBoundaryBox } from './helpers'
 
+// Utility function to validate and clean filters
+const validateFilter = (filter: any): any => {
+  if (!filter) return null
+
+  // First fix any nested arrays
+  const fixedFilter = fixNestedArrays(filter)
+
+  // If it's already a valid filter structure, return as is
+  if (Array.isArray(fixedFilter) && fixedFilter.length > 0) {
+    // Check if it's a valid Mapbox filter
+    if (fixedFilter[0] === 'all' || fixedFilter[0] === 'any' || fixedFilter[0] === 'none') {
+      // Validate that all elements are valid filters
+      const validElements = fixedFilter
+        .slice(1)
+        .every(element => Array.isArray(element) && element.length >= 2)
+
+      if (validElements) {
+        return fixedFilter
+      }
+    } else if (fixedFilter.length >= 2) {
+      // Single filter condition
+      return fixedFilter
+    }
+  }
+
+  console.warn('Invalid filter structure detected:', filter)
+  return null
+}
+
+// Utility function to log filter state for debugging
+const logFilterState = (action: string, filter: any, city: string) => {
+  console.log(`[${action}] ${city}-al filter:`, filter)
+  if (filter && Array.isArray(filter)) {
+    console.log(`  Filter type: ${filter[0]}`)
+    console.log(`  Filter length: ${filter.length}`)
+    console.log(`  Filter structure:`, JSON.stringify(filter, null, 2))
+  }
+}
+
+// Utility function to check for and fix nested arrays in filters
+const fixNestedArrays = (filter: any): any => {
+  if (!filter || !Array.isArray(filter)) return filter
+
+  // Check if this filter contains nested arrays that shouldn't be there
+  if (filter[0] === 'all' || filter[0] === 'any' || filter[0] === 'none') {
+    const fixedElements = filter
+      .slice(1)
+      .map(element => {
+        if (
+          Array.isArray(element) &&
+          (element[0] === 'all' || element[0] === 'any' || element[0] === 'none')
+        ) {
+          // This is a nested logical operator, flatten it
+          console.warn('Detected nested logical operator in filter, flattening:', element)
+          return element.slice(1)
+        }
+        return element
+      })
+      .flat()
+
+    return [filter[0], ...fixedElements]
+  }
+
+  return filter
+}
+
+// Utility function to safely combine filters
+const combineFilters = (existingFilter: any, newFilter: any): any => {
+  if (!existingFilter) return newFilter
+  if (!newFilter) return existingFilter
+
+  // If existing filter is already an 'all' filter, add the new filter to it
+  if (existingFilter[0] === 'all') {
+    return ['all', ...existingFilter.slice(1), newFilter]
+  }
+
+  // Otherwise, create a new 'all' filter combining both
+  return ['all', existingFilter, newFilter]
+}
+
 const setLayerVisibility = (
   city: string,
   map: mapboxgl.Map,
@@ -18,9 +98,11 @@ const setLayerVisibility = (
 
     if (layerId === `${city}-freguesia` && visibility === 'visible') {
       map.setPaintProperty(layerId, 'fill-color', paintProperty || freguesiaPaint['fill-color'])
-    } else if (layerId === `${city}-al-megahosts`) {
+    } else if (layerId === `${city}-al-megahosts` || layerId === `${city}-al`) {
       if (visibility === 'visible') {
-        map.setPaintProperty(layerId, 'circle-color', alPaintMegaHost['circle-color'])
+        if (layerId === `${city}-al-megahosts`) {
+          map.setPaintProperty(layerId, 'circle-color', alPaintMegaHost['circle-color'])
+        }
         map.setPaintProperty(layerId, 'circle-opacity', 1)
       } else {
         // Prepare layer to fade in next time by keeping opacity at 0
@@ -298,6 +380,9 @@ export const createScrollTriggers = (
           )
         },
         onEnterBack: () => {
+          if (map.current && map.current.getLayer(`${city}-al`)) {
+            map.current.setFilter(`${city}-al`, null)
+          }
           setLayerVisibility(
             city,
             map.current,
@@ -353,52 +438,17 @@ export const createScrollTriggers = (
     end: 'top 20%',
     onEnter: () => {
       setLayerVisibility(city, map.current, `${city}-al`)
-      // Filter to show only rooms (Quartos) while preserving date filter
+      // Show only rooms (Quartos)
       if (map.current && map.current.getLayer(`${city}-al`)) {
-        const currentFilter = map.current.getFilter(`${city}-al`)
-        if (currentFilter) {
-          // Combine date filter with modalidade filter
-          map.current.setFilter(`${city}-al`, [
-            'all',
-            currentFilter,
-            ['==', ['get', 'modalidade'], 'Quartos'],
-          ])
-        } else {
-          // Just filter by modalidade if no date filter
-          map.current.setFilter(`${city}-al`, ['==', ['get', 'modalidade'], 'Quartos'])
-        }
+        map.current.setFilter(`${city}-al`, ['==', ['get', 'modalidade'], 'Quartos'])
       }
     },
 
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-al`)
-      // Filter to show only rooms (Quartos) while preserving date filter
+      // Show only rooms (Quartos)
       if (map.current && map.current.getLayer(`${city}-al`)) {
-        const currentFilter = map.current.getFilter(`${city}-al`)
-        if (currentFilter) {
-          // Combine date filter with modalidade filter
-          map.current.setFilter(`${city}-al`, [
-            'all',
-            currentFilter,
-            ['==', ['get', 'modalidade'], 'Quartos'],
-          ])
-        } else {
-          // Just filter by modalidade if no date filter
-          map.current.setFilter(`${city}-al`, ['==', ['get', 'modalidade'], 'Quartos'])
-        }
-      }
-    },
-    onLeaveBack: () => {
-      // Restore only the date filter when leaving
-      if (map.current && map.current.getLayer(`${city}-al`)) {
-        const currentFilter = map.current.getFilter(`${city}-al`)
-        if (currentFilter && currentFilter[0] === 'all' && currentFilter.length === 3) {
-          // Extract the date filter from the combined filter
-          map.current.setFilter(`${city}-al`, currentFilter[1])
-        } else {
-          // Clear the filter if no date filter was present
-          map.current.setFilter(`${city}-al`, null)
-        }
+        map.current.setFilter(`${city}-al`, ['==', ['get', 'modalidade'], 'Quartos'])
       }
     },
   })
