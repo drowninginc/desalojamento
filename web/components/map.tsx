@@ -4,7 +4,6 @@ import React, { useRef, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
-import { debounce } from 'lodash'
 import Casas from './casas'
 import Linechart from './linechart'
 import translation, { getTranslationString } from '../libs/translation'
@@ -92,6 +91,7 @@ const Map = ({ language, city }: Props) => {
   const [showTooltip, setShowTooltip] = React.useState(false)
   const [tooltipPosition, setTooltipPosition] = React.useState({ x: 0, y: 0 })
   const [isLoadingMarkers, setIsLoadingMarkers] = React.useState(false)
+  const monthsTotalRef = useRef<number>(132)
 
   const formatDate = value => {
     const startDate = new Date('2014-01-01')
@@ -116,21 +116,62 @@ const Map = ({ language, city }: Props) => {
 
   gsap.registerPlugin(ScrollTrigger)
 
+  const lastFilterValueRef = useRef<number>(-1)
+  const rafIdRef = useRef<number | null>(null)
+
   const debouncedSetFilter = useCallback(
-    debounce((map, dateValue, currentCity) => {
-      if (map && map.getLayer(`${currentCity}-al`)) {
-        map.setFilter(`${currentCity}-al`, ['<=', ['get', 'normalized_date'], dateValue])
+    (mapInstance, dateValue, currentCity) => {
+      // Quantize to monthly steps to avoid excessive filter churn while staying smooth
+      const totalMonths = Math.max(1, monthsTotalRef.current)
+      const steps = Math.max(1, totalMonths - 1)
+      const rounded = Math.max(0, Math.min(1, Math.round(dateValue * steps) / steps))
+
+      if (rounded === lastFilterValueRef.current) return
+      lastFilterValueRef.current = rounded
+
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current)
       }
-    }, 10),
+
+      rafIdRef.current = requestAnimationFrame(() => {
+        if (mapInstance && mapInstance.getLayer(`${currentCity}-al`)) {
+          mapInstance.setFilter(`${currentCity}-al`, ['<=', ['get', 'normalized_date'], rounded])
+        }
+        rafIdRef.current = null
+      })
+    },
     [city],
   )
 
-  // Cleanup debounced function on unmount
+  // Cleanup any pending rAF on unmount
   useEffect(() => {
     return () => {
-      debouncedSetFilter.cancel()
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current)
+        rafIdRef.current = null
+      }
     }
-  }, [debouncedSetFilter])
+  }, [])
+
+  // Derive total months from loaded data for current city (fallback to date math)
+  useEffect(() => {
+    const currentCityData = citiesData[city]?.monthlyCountsData
+    if (currentCityData) {
+      const keys = Object.keys(currentCityData)
+      if (keys.length > 0) {
+        monthsTotalRef.current = keys.length
+        return
+      }
+    }
+    // Fallback using the same date domain used elsewhere
+    const startDate = new Date('2014-01-01')
+    const endDate = new Date('2024-12-30')
+    const monthsDiff =
+      (endDate.getFullYear() - startDate.getFullYear()) * 12 +
+      (endDate.getMonth() - startDate.getMonth()) +
+      1
+    monthsTotalRef.current = Math.max(1, monthsDiff)
+  }, [citiesData.isLoaded, city])
 
   // Initialize map only once when all data is loaded
   useEffect(() => {
@@ -155,6 +196,7 @@ const Map = ({ language, city }: Props) => {
     setTriggerAnimation(false)
     setTriggerMegaHostAnimation(false)
     setBoundaryBox([])
+    lastFilterValueRef.current = -1
 
     // Clear map container
     if (mapContainer.current) {
@@ -289,6 +331,8 @@ const Map = ({ language, city }: Props) => {
 
     // Show loading state for markers
     setIsLoadingMarkers(true)
+    // Reset filter scheduler cache for new city
+    lastFilterValueRef.current = -1
 
     // OPTIMIZATION: Defer marker creation and ScrollTrigger recreation to avoid blocking the map animation
     // This ensures the map fly-to animation remains smooth and responsive, even when many markers need to be created
@@ -479,9 +523,13 @@ const Map = ({ language, city }: Props) => {
           <div ref={mapContainer} className="map-container" />
         </div>
         <div ref={divTrigger} className="text-boxes-container">
-          <div className="text-box glassy">{translation('map1', language, city)}</div>
           <div className="text-box glassy">
-            {translation('map2', language, city)}
+            <h2>{translation('map1-revised-title', language, city)}</h2>
+            {translation('map1-revised', language, city)}
+          </div>
+          <div className="text-box glassy">
+            <h2>{translation('map2-revised-title', language, city)}</h2>
+            {translation('map2-revised', language, city)}
             <div className="text-box-note">
               <div className="text-box-note-text">{translation('map2-note', language, city)}</div>
               <svg className="circle-legend-svg" width="22.66" height="21.66">
@@ -490,6 +538,27 @@ const Map = ({ language, city }: Props) => {
               </svg>
             </div>
           </div>
+          <div className="text-box glassy">
+            <h2>{translation('map3-revised-title', language, city)}</h2>
+            {translation('map3-revised', language, city)}
+          </div>
+          <div className="text-box glassy">
+            <h2>{translation('map4-revised-title', language, city)}</h2>
+            {translation('map4-revised', language, city)}
+          </div>
+          <div className="text-box glassy">
+            <h2>{translation('map5-revised-title', language, city)}</h2>
+            {translation('map5-revised', language, city)}
+          </div>
+          <div className="text-box glassy">
+            <h2>{translation('map6-revised-title', language, city)}</h2>
+            {translation('map6-revised', language, city)}
+          </div>
+          <div className="text-box glassy">
+            <h2>{translation('map7-revised-title', language, city)}</h2>
+            {translation('map7-revised', language, city)}
+          </div>
+
           <div ref={actionIntro} className="text-box glassy">
             <h2>{translation('actionIntro-title', language, city)}</h2>
             {translation('actionIntro', language, city)}

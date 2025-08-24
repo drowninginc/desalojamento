@@ -26,7 +26,6 @@ const GhostHotels = ({ language, city }: Props) => {
           Liiiving
         </a>
       </div>
-      <div className="paragraphIntro">{translation('actionManagers-2', language, city)}</div>
       <Image
         id="servicos"
         src="/static/images/servicos.png"
@@ -41,6 +40,7 @@ const GhostHotels = ({ language, city }: Props) => {
           Lovely Stay
         </a>
       </div>
+      <div className="paragraphIntro">{translation('actionManagers-2', language, city)}</div>
     </Container>
   )
 }
