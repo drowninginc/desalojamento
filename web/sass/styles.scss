@@ -314,6 +314,8 @@ a.button {
   border-bottom: $color-blue-al 2px solid;
   border-top: $color-blue-al 2px solid;
   opacity: 0;
+  font-weight: bold;
+
   pointer-events: none;
 }
 
@@ -329,6 +331,7 @@ a.button {
 
 .progress-fill-text {
   padding-left: 20px;
+  font-weight: bold;
 }
 
 .text-boxes-container {

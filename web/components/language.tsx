@@ -7,7 +7,12 @@ type Props = {
 
 const update = (language: string, setLanguage: any) => {
   setLanguage(language)
-  ScrollTrigger.getAll().forEach(trigger => trigger.refresh())
+  // Defer refresh until after the DOM reflows with new text sizes
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh()
+    })
+  })
 }
 
 const Language = ({ language, setLanguage }: Props) => {

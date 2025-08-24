@@ -98,7 +98,15 @@ const Map = ({ language, city }: Props) => {
     const endDate = new Date('2024-12-30')
     const timeRange = endDate.valueOf() - startDate.valueOf()
     const date = new Date(startDate.getTime() + value * timeRange)
-    return date.toLocaleDateString('pt-pt', { year: 'numeric', month: 'long' })
+
+    if (language === 'en') {
+      return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long' })
+    } else {
+      // Portuguese format without "de" between month and year
+      const month = date.toLocaleDateString('pt-PT', { month: 'long' })
+      const year = date.getFullYear()
+      return `${month} ${year}`
+    }
   }
 
   const getMonthlyCount = value => {
@@ -540,11 +548,19 @@ const Map = ({ language, city }: Props) => {
           </div>
           <div className="text-box glassy">
             <h2>{translation('map3-revised-title', language, city)}</h2>
-            {translation('map3-revised', language, city)}
+            <div
+              dangerouslySetInnerHTML={{
+                __html: getTranslationString('map3-revised', language, city),
+              }}
+            />
           </div>
           <div className="text-box glassy">
             <h2>{translation('map4-revised-title', language, city)}</h2>
-            {translation('map4-revised', language, city)}
+            <div
+              dangerouslySetInnerHTML={{
+                __html: getTranslationString('map4-revised', language, city),
+              }}
+            />
           </div>
           <div className="text-box glassy">
             <h2>{translation('map5-revised-title', language, city)}</h2>
@@ -552,7 +568,11 @@ const Map = ({ language, city }: Props) => {
           </div>
           <div className="text-box glassy">
             <h2>{translation('map6-revised-title', language, city)}</h2>
-            {translation('map6-revised', language, city)}
+            <div
+              dangerouslySetInnerHTML={{
+                __html: getTranslationString('map6-revised', language, city),
+              }}
+            />
           </div>
           <div className="text-box glassy">
             <h2>{translation('map7-revised-title', language, city)}</h2>
