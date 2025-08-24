@@ -3,87 +3,12 @@ import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 import { cityDefinitions, freguesiaPaint, alPaintMegaHost } from './mapStyles'
 gsap.registerPlugin(ScrollTrigger)
 
-import { updateMarkerValues, setMarkerVisibility, changeBoundaryBox } from './helpers'
-
-// Utility function to validate and clean filters
-const validateFilter = (filter: any): any => {
-  if (!filter) return null
-
-  // First fix any nested arrays
-  const fixedFilter = fixNestedArrays(filter)
-
-  // If it's already a valid filter structure, return as is
-  if (Array.isArray(fixedFilter) && fixedFilter.length > 0) {
-    // Check if it's a valid Mapbox filter
-    if (fixedFilter[0] === 'all' || fixedFilter[0] === 'any' || fixedFilter[0] === 'none') {
-      // Validate that all elements are valid filters
-      const validElements = fixedFilter
-        .slice(1)
-        .every(element => Array.isArray(element) && element.length >= 2)
-
-      if (validElements) {
-        return fixedFilter
-      }
-    } else if (fixedFilter.length >= 2) {
-      // Single filter condition
-      return fixedFilter
-    }
-  }
-
-  console.warn('Invalid filter structure detected:', filter)
-  return null
-}
-
-// Utility function to log filter state for debugging
-const logFilterState = (action: string, filter: any, city: string) => {
-  console.log(`[${action}] ${city}-al filter:`, filter)
-  if (filter && Array.isArray(filter)) {
-    console.log(`  Filter type: ${filter[0]}`)
-    console.log(`  Filter length: ${filter.length}`)
-    console.log(`  Filter structure:`, JSON.stringify(filter, null, 2))
-  }
-}
-
-// Utility function to check for and fix nested arrays in filters
-const fixNestedArrays = (filter: any): any => {
-  if (!filter || !Array.isArray(filter)) return filter
-
-  // Check if this filter contains nested arrays that shouldn't be there
-  if (filter[0] === 'all' || filter[0] === 'any' || filter[0] === 'none') {
-    const fixedElements = filter
-      .slice(1)
-      .map(element => {
-        if (
-          Array.isArray(element) &&
-          (element[0] === 'all' || element[0] === 'any' || element[0] === 'none')
-        ) {
-          // This is a nested logical operator, flatten it
-          console.warn('Detected nested logical operator in filter, flattening:', element)
-          return element.slice(1)
-        }
-        return element
-      })
-      .flat()
-
-    return [filter[0], ...fixedElements]
-  }
-
-  return filter
-}
-
-// Utility function to safely combine filters
-const combineFilters = (existingFilter: any, newFilter: any): any => {
-  if (!existingFilter) return newFilter
-  if (!newFilter) return existingFilter
-
-  // If existing filter is already an 'all' filter, add the new filter to it
-  if (existingFilter[0] === 'all') {
-    return ['all', ...existingFilter.slice(1), newFilter]
-  }
-
-  // Otherwise, create a new 'all' filter combining both
-  return ['all', existingFilter, newFilter]
-}
+import {
+  updateMarkerValues,
+  setMarkerVisibility,
+  changeBoundaryBox,
+  abortMarkerAnimations,
+} from './helpers'
 
 const setLayerVisibility = (
   city: string,
@@ -125,7 +50,6 @@ export const createScrollTriggers = (
   divTrigger,
   mapPin,
   progressBar,
-  alCount,
   actionIntro,
   actionFreguesia,
   actionFreguesiaZoom,
@@ -266,6 +190,10 @@ export const createScrollTriggers = (
         setBoundaryBox,
         isMobile ? cityDefinitions[city].boundingBoxMobile : cityDefinitions[city].boundingBox,
       )
+    },
+    onLeaveBack: () => {
+      // Abort any pending staggered marker animations when scrolling back before completion
+      abortMarkerAnimations(markers)
     },
   })
 

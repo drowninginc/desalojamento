@@ -358,18 +358,50 @@ export const setMarkerVisibility = (markers, visibility, gradually = false) => {
 
       const delay = gradually ? index * 100 : 0 // 100ms delay between each marker if gradually, else zero
 
-      setTimeout(() => {
+      // If there is a pending timeout for this element, clear it first
+      const existingTimeoutId = element.getAttribute('data-timeout-id')
+      if (existingTimeoutId) {
+        clearTimeout(Number(existingTimeoutId))
+        element.removeAttribute('data-timeout-id')
+      }
+
+      if (delay === 0) {
         wrapper.classList.add('visible')
         wrapper.classList.remove('hidden')
         element.classList.add('visible')
         element.classList.remove('hidden')
-      }, delay)
+      } else {
+        const timeoutId = window.setTimeout(() => {
+          wrapper.classList.add('visible')
+          wrapper.classList.remove('hidden')
+          element.classList.add('visible')
+          element.classList.remove('hidden')
+          element.removeAttribute('data-timeout-id')
+        }, delay)
+        element.setAttribute('data-timeout-id', String(timeoutId))
+      }
     } else {
       // Hide all markers immediately
+      const existingTimeoutId = element.getAttribute('data-timeout-id')
+      if (existingTimeoutId) {
+        clearTimeout(Number(existingTimeoutId))
+        element.removeAttribute('data-timeout-id')
+      }
       wrapper.classList.add('hidden')
       wrapper.classList.remove('visible')
       element.classList.add('hidden')
       element.classList.remove('visible')
+    }
+  })
+}
+
+export const abortMarkerAnimations = markers => {
+  markers.forEach(marker => {
+    const element = marker.getElement()
+    const existingTimeoutId = element.getAttribute('data-timeout-id')
+    if (existingTimeoutId) {
+      clearTimeout(Number(existingTimeoutId))
+      element.removeAttribute('data-timeout-id')
     }
   })
 }
