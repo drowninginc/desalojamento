@@ -150,6 +150,7 @@ export const createScrollTriggers = (
     onEnterBack: () => {
       gsap.to('.plot-full-screen', { opacity: 1, duration: 0.5 })
       setLayerVisibility(city, map.current, `${city}-al`)
+      abortMarkerAnimations(markers)
       setMarkerVisibility(markers, 'none')
     },
   })
@@ -190,10 +191,6 @@ export const createScrollTriggers = (
         setBoundaryBox,
         isMobile ? cityDefinitions[city].boundingBoxMobile : cityDefinitions[city].boundingBox,
       )
-    },
-    onLeaveBack: () => {
-      // Abort any pending staggered marker animations when scrolling back before completion
-      abortMarkerAnimations(markers)
     },
   })
 

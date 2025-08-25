@@ -533,11 +533,19 @@ const Map = ({ language, city }: Props) => {
         <div ref={divTrigger} className="text-boxes-container">
           <div className="text-box glassy">
             <h2>{translation('map1-revised-title', language, city)}</h2>
-            {translation('map1-revised', language, city)}
+            <div
+              dangerouslySetInnerHTML={{
+                __html: getTranslationString('map1-revised', language, city),
+              }}
+            />
           </div>
           <div className="text-box glassy">
             <h2>{translation('map2-revised-title', language, city)}</h2>
-            {translation('map2-revised', language, city)}
+            <div
+              dangerouslySetInnerHTML={{
+                __html: getTranslationString('map2-revised', language, city),
+              }}
+            />
             <div className="text-box-note">
               <div className="text-box-note-text">{translation('map2-note', language, city)}</div>
               <svg className="circle-legend-svg" width="22.66" height="21.66">
@@ -564,7 +572,11 @@ const Map = ({ language, city }: Props) => {
           </div>
           <div className="text-box glassy">
             <h2>{translation('map5-revised-title', language, city)}</h2>
-            {translation('map5-revised', language, city)}
+            <div
+              dangerouslySetInnerHTML={{
+                __html: getTranslationString('map5-revised', language, city),
+              }}
+            />
           </div>
           <div className="text-box glassy">
             <h2>{translation('map6-revised-title', language, city)}</h2>
@@ -576,16 +588,28 @@ const Map = ({ language, city }: Props) => {
           </div>
           <div className="text-box glassy">
             <h2>{translation('map7-revised-title', language, city)}</h2>
-            {translation('map7-revised', language, city)}
+            <div
+              dangerouslySetInnerHTML={{
+                __html: getTranslationString('map7-revised', language, city),
+              }}
+            />
           </div>
 
           <div ref={actionIntro} className="text-box glassy">
             <h2>{translation('actionIntro-title', language, city)}</h2>
-            {translation('actionIntro', language, city)}
+            <div
+              dangerouslySetInnerHTML={{
+                __html: getTranslationString('actionIntro', language, city),
+              }}
+            />
           </div>
           <div ref={actionFreguesia} className="text-box glassy">
             <h2>{translation('actionFreguesia-title', language, city)}</h2>
-            {translation('actionFreguesia', language, city)}
+            <div
+              dangerouslySetInnerHTML={{
+                __html: getTranslationString('actionFreguesia', language, city),
+              }}
+            />
             <div className="heatmap-label">
               <span className="label-center">
                 <span
