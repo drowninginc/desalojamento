@@ -463,7 +463,7 @@ const Map = ({ language, city }: Props) => {
       const span = map2ContainerRef.current.querySelector('span')
       if (span && !span.classList.contains('processed')) {
         // Get the original text content before any modifications
-        let originalText = 'oferta de AL'
+        const originalText = 'oferta de AL'
 
         // Clear any existing content and recreate the structure
         span.innerHTML = ''
@@ -520,7 +520,7 @@ const Map = ({ language, city }: Props) => {
   }, [language, city]) // Re-run when language or city changes
 
   // Tooltip handlers
-  const handleMouseEnter = (event: React.MouseEvent, tooltipKey: string = 'tooltip-content') => {
+  const handleMouseEnter = (event: React.MouseEvent, tooltipKey = 'tooltip-content') => {
     const rect = event.currentTarget.getBoundingClientRect()
 
     // Get tooltip height, fallback to 30 if not available
