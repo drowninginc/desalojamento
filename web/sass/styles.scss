@@ -44,6 +44,363 @@ header {
   }
 }
 
+// Explore page
+.explore-wrapper {
+  position: relative;
+}
+
+.explore-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+}
+
+.explore-controls {
+  position: fixed;
+  top: 40px; // match Mapbox NavigationControl default margin
+  left: 20px;
+  z-index: 2;
+}
+
+.explore-filters {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  padding: 16px 18px;
+  border-radius: 16px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+.explore-filters__title {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.explore-logo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+  width: 100%;
+  gap: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.explore-logo:hover {
+  transform: translateX(-2px);
+}
+
+.explore-logo:hover .explore-back-arrow {
+  color: #001a5c;
+}
+
+.explore-back-arrow {
+  color: #012169;
+  font-size: 24px;
+  font-weight: 900;
+  padding-left: 4px;
+  padding-bottom: 6px;
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+.explore-filters__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0;
+}
+
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  cursor: pointer;
+  gap: 16px;
+}
+
+.toggle-switch__label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toggle-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.toggle-icon--megahost {
+  background: #ff1654;
+  width: 12px;
+  height: 12px;
+  margin: 2px;
+}
+
+.toggle-icon--hotel {
+  background: #012169;
+  border-radius: 3px;
+  opacity: 0.4;
+}
+
+.toggle-icon--marker {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.46);
+  border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: 500;
+  color: #012169;
+}
+
+.toggle-switch__track {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background: #ccc;
+  border-radius: 12px;
+  transition: background 0.3s ease;
+}
+
+.toggle-switch__track.is-active {
+  background: #012169;
+}
+
+.toggle-switch__thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch__track.is-active .toggle-switch__thumb {
+  transform: translateX(20px);
+}
+
+.explore-button-wrapper {
+  margin-top: 32px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 40px;
+  border-radius: 99em;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  position: relative;
+  overflow: hidden;
+  min-width: 180px;
+  height: 56px;
+}
+
+.btn-primary {
+  background-color: color-mix(in srgb, #ffffff40 62%, transparent);
+  color: #224;
+  backdrop-filter: blur(8px) saturate(150%);
+  -webkit-backdrop-filter: blur(8px) saturate(150%);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, rgba(255, 255, 255, 0.9) 10%, transparent),
+    inset 1.8px 3px 0px -2px color-mix(in srgb, rgba(255, 255, 255, 0.9) 90%, transparent),
+    inset -2px -2px 0px -2px color-mix(in srgb, rgba(255, 255, 255, 0.8) 80%, transparent),
+    inset -3px -8px 1px -6px color-mix(in srgb, rgba(255, 255, 255, 0.6) 60%, transparent),
+    inset -0.3px -1px 4px 0px color-mix(in srgb, rgba(0, 0, 0, 0.18) 18%, transparent),
+    inset -1.5px 2.5px 0px -2px color-mix(in srgb, rgba(0, 0, 0, 0.3) 30%, transparent),
+    inset 0px 3px 4px -2px color-mix(in srgb, rgba(0, 0, 0, 0.3) 30%, transparent),
+    inset 2px -6.5px 1px -4px color-mix(in srgb, rgba(0, 0, 0, 0.15) 15%, transparent),
+    0px 1px 5px 0px color-mix(in srgb, rgba(0, 0, 0, 0.15) 15%, transparent),
+    0px 6px 16px 0px color-mix(in srgb, rgba(0, 0, 0, 0.12) 12%, transparent);
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s ease;
+  border-radius: 99em;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px) scale(1.02);
+  background-color: color-mix(in srgb, #ffffff60 70%, transparent);
+  color: #0052f5;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, rgba(255, 255, 255, 0.95) 15%, transparent),
+    inset 2px 4px 0px -2px color-mix(in srgb, rgba(255, 255, 255, 0.95) 95%, transparent),
+    inset -3px -3px 0px -2px color-mix(in srgb, rgba(255, 255, 255, 0.85) 85%, transparent),
+    inset -4px -10px 1px -6px color-mix(in srgb, rgba(255, 255, 255, 0.7) 70%, transparent),
+    inset -0.5px -1px 5px 0px color-mix(in srgb, rgba(0, 0, 0, 0.2) 20%, transparent),
+    inset -2px 3px 0px -2px color-mix(in srgb, rgba(0, 0, 0, 0.35) 35%, transparent),
+    inset 0px 4px 5px -2px color-mix(in srgb, rgba(0, 0, 0, 0.35) 35%, transparent),
+    inset 3px -8px 1px -4px color-mix(in srgb, rgba(0, 0, 0, 0.18) 18%, transparent),
+    0px 2px 8px 0px color-mix(in srgb, rgba(0, 0, 0, 0.18) 18%, transparent),
+    0px 8px 24px 0px color-mix(in srgb, rgba(0, 0, 0, 0.15) 15%, transparent);
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-primary:active {
+  transform: translateY(0px) scale(0.98);
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Footer with grainy gradient
+.footer {
+  position: relative;
+  width: 100vw;
+  height: 200px;
+  margin-top: 60px;
+  margin-left: calc(-50vw + 50%);
+  overflow: hidden;
+}
+
+.footer__gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(240, 248, 255, 0.9) 25%,
+    rgba(200, 230, 255, 0.8) 50%,
+    rgba(150, 200, 255, 0.7) 75%,
+    rgba(100, 150, 255, 0.6) 100%
+  );
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(
+        circle at 20% 30%,
+        rgba(255, 255, 255, 0.1) 1px,
+        transparent 1px
+      ),
+      radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+      radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+      radial-gradient(circle at 90% 20%, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+      radial-gradient(circle at 60% 50%, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+      radial-gradient(circle at 10% 60%, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+      radial-gradient(circle at 70% 10%, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      radial-gradient(circle at 30% 90%, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 50px 50px, 60px 60px, 40px 40px, 70px 70px, 45px 45px, 55px 55px, 35px 35px,
+      65px 65px;
+    animation: grain 8s linear infinite;
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle at 15% 25%, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+      radial-gradient(circle at 85% 75%, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+      radial-gradient(circle at 35% 85%, rgba(0, 0, 0, 0.015) 1px, transparent 1px),
+      radial-gradient(circle at 95% 15%, rgba(0, 0, 0, 0.015) 1px, transparent 1px);
+    background-size: 30px 30px, 45px 45px, 25px 25px, 50px 50px;
+    animation: grain 12s linear infinite reverse;
+    opacity: 0.3;
+    pointer-events: none;
+  }
+}
+
+@keyframes grain {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-5%, -5%);
+  }
+  20% {
+    transform: translate(-10%, 5%);
+  }
+  30% {
+    transform: translate(5%, -10%);
+  }
+  40% {
+    transform: translate(-5%, 15%);
+  }
+  50% {
+    transform: translate(-10%, 5%);
+  }
+  60% {
+    transform: translate(15%, 0%);
+  }
+  70% {
+    transform: translate(0%, 10%);
+  }
+  80% {
+    transform: translate(-15%, 0%);
+  }
+  90% {
+    transform: translate(10%, 5%);
+  }
+}
+
+// Ensure city switcher stays above map and mirrors homepage position
+.city-switcher {
+  z-index: 3;
+}
+
+// Explore-specific city switcher visibility (no scroll animations on this page)
+.explore-wrapper .city-switcher {
+  opacity: 1;
+  transform: none;
+  position: relative;
+  bottom: auto;
+  right: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 16px;
+}
+
 .parallaxWrapper {
   position: relative;
   top: 0;
@@ -767,7 +1124,7 @@ h2 {
 }
 
 .ghostHotels {
-  padding: 3em 1em;
+  padding: 3em 1em 0 1em;
   background-color: white;
 
   #servicos {
@@ -990,6 +1347,14 @@ h2 {
     right: auto;
     transform: translateX(-50%) translateY(120px);
     bottom: 20px;
+  }
+  .explore-wrapper .city-switcher {
+    transform: none;
+    opacity: 1;
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
   }
 }
 

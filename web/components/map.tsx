@@ -90,8 +90,10 @@ const Map = ({ language, city }: Props) => {
   const [boundaryBox, setBoundaryBox] = React.useState<[number, number][]>([])
   const [showTooltip, setShowTooltip] = React.useState(false)
   const [tooltipPosition, setTooltipPosition] = React.useState({ x: 0, y: 0 })
+  const [currentTooltipKey, setCurrentTooltipKey] = React.useState('tooltip-content')
   const [isLoadingMarkers, setIsLoadingMarkers] = React.useState(false)
   const monthsTotalRef = useRef<number>(132)
+  const map2ContainerRef = useRef<HTMLDivElement>(null)
 
   const formatDate = value => {
     const startDate = new Date('2014-01-01')
@@ -455,8 +457,70 @@ const Map = ({ language, city }: Props) => {
 
   useResize(onResize)
 
+  // Add event listeners to map2 span after content is rendered
+  useEffect(() => {
+    if (map2ContainerRef.current) {
+      const span = map2ContainerRef.current.querySelector('span')
+      if (span && !span.classList.contains('processed')) {
+        // Get the original text content before any modifications
+        let originalText = 'oferta de AL'
+
+        // Clear any existing content and recreate the structure
+        span.innerHTML = ''
+
+        // Create text node
+        const textNode = document.createTextNode(originalText)
+        span.appendChild(textNode)
+
+        // Add question mark SVG icon
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+        svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+        svg.setAttribute('width', '16')
+        svg.setAttribute('height', '16')
+        svg.setAttribute('viewBox', '0 0 16 16')
+        svg.setAttribute('fill', 'none')
+        svg.style.marginLeft = '6px'
+
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+        circle.setAttribute('cx', '8')
+        circle.setAttribute('cy', '8')
+        circle.setAttribute('r', '7')
+        circle.setAttribute('stroke', '#888')
+        circle.setAttribute('stroke-width', '1.5')
+        circle.setAttribute('fill', '#fff')
+
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text')
+        text.setAttribute('x', '8')
+        text.setAttribute('y', '11')
+        text.setAttribute('text-anchor', 'middle')
+        text.setAttribute('font-size', '10')
+        text.setAttribute('fill', '#888')
+        text.setAttribute('font-family', 'Arial')
+        text.setAttribute('font-weight', 'bold')
+        text.textContent = '?'
+
+        svg.appendChild(circle)
+        svg.appendChild(text)
+        span.appendChild(svg)
+
+        // Apply the same styling as the existing hover-tooltip
+        span.style.cursor = 'help'
+        span.style.borderBottom = '1px dashed #888'
+        span.style.textDecoration = 'none'
+        span.style.display = 'inline-flex'
+        span.style.alignItems = 'center'
+
+        span.onmouseenter = e => handleMouseEnter(e as any, 'tooltip-map2-span')
+        span.onmouseleave = handleMouseLeave
+
+        // Mark as processed to prevent double processing
+        span.classList.add('processed')
+      }
+    }
+  }, [language, city]) // Re-run when language or city changes
+
   // Tooltip handlers
-  const handleMouseEnter = (event: React.MouseEvent) => {
+  const handleMouseEnter = (event: React.MouseEvent, tooltipKey: string = 'tooltip-content') => {
     const rect = event.currentTarget.getBoundingClientRect()
 
     // Get tooltip height, fallback to 30 if not available
@@ -466,6 +530,7 @@ const Map = ({ language, city }: Props) => {
       x: rect.left,
       y: rect.top - tooltipHeight,
     })
+    setCurrentTooltipKey(tooltipKey)
     setShowTooltip(true)
   }
 
@@ -506,7 +571,7 @@ const Map = ({ language, city }: Props) => {
           top: tooltipPosition.y,
         }}
         dangerouslySetInnerHTML={{
-          __html: getTranslationString('tooltip-content', language, city),
+          __html: getTranslationString(currentTooltipKey, language, city),
         }}></div>
       <div className="whole-container">
         <div ref={progressBar} className="progress-bar">
@@ -542,6 +607,7 @@ const Map = ({ language, city }: Props) => {
           <div className="text-box glassy">
             <h2>{translation('map2-revised-title', language, city)}</h2>
             <div
+              ref={map2ContainerRef}
               dangerouslySetInnerHTML={{
                 __html: getTranslationString('map2-revised', language, city),
               }}
@@ -615,7 +681,7 @@ const Map = ({ language, city }: Props) => {
                 <span
                   className="hover-tooltip"
                   id="hover_1"
-                  onMouseEnter={handleMouseEnter}
+                  onMouseEnter={e => handleMouseEnter(e, 'tooltip-content')}
                   onMouseLeave={handleMouseLeave}
                   style={{ display: 'inline-flex', alignItems: 'center', cursor: 'pointer' }}>
                   {translation('actionFreguesia-label', language, city)}
@@ -754,6 +820,7 @@ const Map = ({ language, city }: Props) => {
                 __html: getTranslationString('actionRooms-title', language, city),
               }}
             />
+            {translation('actionRooms', language, city)}
           </div>
           <div ref={actionMegaHosts} className="text-box glassy">
             <h2>{translation('actionMegaHosts-title', language, city)}</h2>

@@ -1,6 +1,6 @@
 import Container from './container'
 import Paragraph from './paragraph'
-import translation from '../libs/translation'
+import translation, { getTranslationString } from '../libs/translation'
 import Image from 'next/image'
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 const GhostHotels = ({ language, city }: Props) => {
   return (
     <Container className="ghostHotels">
-      <h1>Alojamento Local ou Hotel-Fantasma?</h1>
+      <h1>{translation('actionManagers-title', language, city)}</h1>
       <div className="paragraphIntro">{translation('actionManagers-1', language, city)}</div>
       <Image
         src="/static/images/torneseproprietario.png"
@@ -40,7 +40,12 @@ const GhostHotels = ({ language, city }: Props) => {
           Lovely Stay
         </a>
       </div>
-      <div className="paragraphIntro">{translation('actionManagers-2', language, city)}</div>
+      <div
+        className="paragraphIntro"
+        dangerouslySetInnerHTML={{
+          __html: getTranslationString('actionManagers-2', language, city),
+        }}
+      />
     </Container>
   )
 }

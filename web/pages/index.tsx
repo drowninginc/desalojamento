@@ -1,6 +1,7 @@
 import Layout from '../components/layout'
 import Map from '../components/map'
 import GhostHotels from '../components/ghostHotels'
+import Footer from '../components/footer'
 
 import { useState } from 'react'
 
@@ -14,6 +15,7 @@ const Index = () => {
         <Map language={language} city={city} />
         <GhostHotels language={language} city={city} />
       </Layout>
+      <Footer language={language} city={city} />
     </>
   )
 }
