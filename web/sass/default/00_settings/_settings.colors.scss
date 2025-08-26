@@ -4,7 +4,8 @@
 
 // Color palette
 
-$color-blue-al:#012169;
+$color-blue-al: #012169;
+$background-color: rgb(255, 255, 255);
 
 $color-light-blue: #88d8dd;
 $color-lighter-blue: #eaeaf4;
@@ -15,7 +16,6 @@ $color-grey-1: #bababa;
 $color-grey-2: #989898;
 $color-grey-3: #594a4e;
 $color-grey-4: #33272a;
-
 
 // Ruas do Género colors
 
@@ -39,5 +39,5 @@ $color-selection: $color-blue-al;
 
 ::selection {
   background-color: $color-selection;
-  color: #fff ;
+  color: #fff;
 }

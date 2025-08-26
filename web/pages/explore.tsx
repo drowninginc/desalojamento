@@ -33,6 +33,7 @@ mapboxgl.accessToken =
 const Explore = () => {
   const [language, setLanguage] = useState('pt')
   const [city, setCity] = useState<'Lisbon' | 'Porto'>('Lisbon')
+  const [controlsOpen, setControlsOpen] = useState(false)
 
   const mapContainer = useRef<HTMLDivElement>(null)
   const mapRef = useRef<mapboxgl.Map | null>(null)
@@ -397,8 +398,32 @@ const Explore = () => {
       <div className="explore-wrapper">
         <div ref={mapContainer} className="map-container explore-fullscreen" />
 
-        <div className="explore-controls">
-          <div className="explore-filters glassy">
+        <div
+          className={`explore-controls ${isMobile ? 'is-mobile' : ''} ${
+            controlsOpen ? 'is-open' : ''
+          }`}>
+          {isMobile && (
+            <button
+              type="button"
+              className={`controls-toggle glassy`}
+              aria-expanded={controlsOpen}
+              aria-controls="explore-controls-panel"
+              onClick={() => setControlsOpen(v => !v)}>
+              {language === 'pt'
+                ? controlsOpen
+                  ? 'Esconder filtros'
+                  : 'Mostrar filtros'
+                : controlsOpen
+                ? 'Hide controls'
+                : 'Show controls'}
+            </button>
+          )}
+
+          <div
+            id="explore-controls-panel"
+            className={`explore-controls-panel explore-filters glassy ${
+              controlsOpen ? 'is-open' : ''
+            }`}>
             <a href="/" className="explore-logo" title="Voltar à página principal">
               <span className="explore-back-arrow">←</span>
               <Image src={logoImage} alt="Desalojamento" height={40} layout="intrinsic" priority />
@@ -430,8 +455,10 @@ const Explore = () => {
                 <div className="toggle-switch__thumb"></div>
               </div>
             </div>
+            {isMobile && <CitySwitcher city={city} setCity={setCity} />}
           </div>
-          <CitySwitcher city={city} setCity={setCity} />
+
+          {!isMobile && <CitySwitcher city={city} setCity={setCity} />}
         </div>
       </div>
     </>
