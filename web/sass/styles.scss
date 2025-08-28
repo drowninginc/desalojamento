@@ -21,6 +21,7 @@ p {
   backdrop-filter: blur(5.9px);
   -webkit-backdrop-filter: blur(5.9px);
   border: 1px solid rgba(255, 255, 255, 0.46);
+  touch-action: pan-y;
 }
 
 header {
@@ -593,7 +594,7 @@ header {
   margin: $global-spacing-md auto;
   font-family: $font-stack-primary;
   line-height: 2;
-  font-size: 1.1em;
+  font-size: 1.2em;
 }
 
 .logo {
@@ -1142,6 +1143,10 @@ h3 {
       flex-direction: column;
       align-items: flex-start;
       justify-content: center;
+
+      p {
+        font-size: 1.2em;
+      }
 
       * {
         opacity: 0;
