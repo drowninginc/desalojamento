@@ -382,7 +382,6 @@ header {
 .footer {
   position: relative;
   width: 100vw;
-  margin-top: 60px;
   margin-left: calc(-50vw + 50%);
   overflow: hidden;
 }
@@ -1264,6 +1263,10 @@ h2 {
 .ghostHotels {
   padding: 3em 1em 0 1em;
   background-color: $background-color;
+
+  .paragraphIntro:last-child {
+    margin-bottom: 0;
+  }
 
   #servicos {
     margin-top: 30px;
