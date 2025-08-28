@@ -527,7 +527,7 @@ const Map = ({ language, city }: Props) => {
     const tooltipHeight = tooltipRef.current?.offsetHeight || 30
 
     setTooltipPosition({
-      x: rect.left,
+      x: rect.left / 2,
       y: rect.top - tooltipHeight,
     })
     setCurrentTooltipKey(tooltipKey)
