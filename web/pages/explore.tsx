@@ -19,7 +19,6 @@ import {
   createMap,
   addSourcesAndLayersForBothCities,
   addCentroidMarkers,
-  switchCity,
   setMarkerVisibility,
   updateMarkerValues,
 } from '../components/extras/helpers'
@@ -81,20 +80,6 @@ const Explore = () => {
     ] as unknown as [number, number][]
   }, [])
 
-  const padBounds = useCallback(
-    (b: [number, number][], factor = 0.12) => {
-      if (!b || b.length !== 2) return b
-      const [sw, ne] = normalizeBounds(b)
-      const dx = (ne[0] - sw[0]) * factor
-      const dy = (ne[1] - sw[1]) * factor
-      return [
-        [sw[0] - dx, sw[1] - dy],
-        [ne[0] + dx, ne[1] + dy],
-      ] as unknown as [number, number][]
-    },
-    [normalizeBounds],
-  )
-
   const initializeMap = useCallback(() => {
     if (!citiesData.isLoaded || mapRef.current) return
 
@@ -103,39 +88,6 @@ const Explore = () => {
 
     const [minPop, maxPop] = getMinMax(initialCityData.freguesiaData, 'diff_pop_2011')
     const [minAloj, maxAloj] = getMinMax(initialCityData.freguesiaData, 'diff_alojamentos_2011')
-
-    // Derive contextual paints (kept similar to main map)
-    const freguesiaPaintPop: mapboxgl.FillPaint = {
-      'fill-color': [
-        'interpolate',
-        ['linear'],
-        ['get', 'diff_pop_2011'],
-        minPop,
-        '#b3589a',
-        0,
-        '#FFFFFF',
-        maxPop,
-        '#b8ffcb',
-      ],
-      'fill-opacity': 0.1,
-      'fill-color-transition': { duration: 500 },
-    }
-
-    const freguesiaPaintAL: mapboxgl.FillPaint = {
-      'fill-color': [
-        'interpolate',
-        ['linear'],
-        ['get', 'diff_alojamentos_2011'],
-        minAloj,
-        '#b3589a',
-        0,
-        '#FFFFFF',
-        maxAloj,
-        '#b8ffcb',
-      ],
-      'fill-opacity': 0.1,
-      'fill-color-transition': { duration: 500 },
-    }
 
     mapRef.current = createMap(
       mapContainer.current,

@@ -6,7 +6,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 import Casas from './casas'
 import Linechart from './linechart'
-import translation, { getTranslationString } from '../libs/translation'
+import { getTranslationString } from '../libs/translation'
 
 import anuncioImage from './images/airbnb/anuncio.jpeg'
 import paginaImage from './images/airbnb/descricaoPagina.png'
@@ -597,7 +597,7 @@ const Map = ({ language, city }: Props) => {
         </div>
         <div ref={divTrigger} className="text-boxes-container">
           <div className="text-box glassy">
-            <h2>{translation('map1-revised-title', language, city)}</h2>
+            <h2>{getTranslationString('map1-revised-title', language, city)}</h2>
             <div
               dangerouslySetInnerHTML={{
                 __html: getTranslationString('map1-revised', language, city),
@@ -605,7 +605,7 @@ const Map = ({ language, city }: Props) => {
             />
           </div>
           <div className="text-box glassy">
-            <h2>{translation('map2-revised-title', language, city)}</h2>
+            <h2>{getTranslationString('map2-revised-title', language, city)}</h2>
             <div
               ref={map2ContainerRef}
               dangerouslySetInnerHTML={{
@@ -613,7 +613,9 @@ const Map = ({ language, city }: Props) => {
               }}
             />
             <div className="text-box-note">
-              <div className="text-box-note-text">{translation('map2-note', language, city)}</div>
+              <div className="text-box-note-text">
+                {getTranslationString('map2-note', language, city)}
+              </div>
               <svg className="circle-legend-svg" width="22.66" height="21.66">
                 <circle className="circleBig" cx="11.33" cy="11.33" r="10.33" />
                 <circle className="circleSmall" cx="11.33" cy="16" r="5" />
@@ -621,7 +623,7 @@ const Map = ({ language, city }: Props) => {
             </div>
           </div>
           <div className="text-box glassy">
-            <h2>{translation('map3-revised-title', language, city)}</h2>
+            <h2>{getTranslationString('map3-revised-title', language, city)}</h2>
             <div
               dangerouslySetInnerHTML={{
                 __html: getTranslationString('map3-revised', language, city),
@@ -629,7 +631,7 @@ const Map = ({ language, city }: Props) => {
             />
           </div>
           <div className="text-box glassy">
-            <h2>{translation('map4-revised-title', language, city)}</h2>
+            <h2>{getTranslationString('map4-revised-title', language, city)}</h2>
             <div
               dangerouslySetInnerHTML={{
                 __html: getTranslationString('map4-revised', language, city),
@@ -637,7 +639,7 @@ const Map = ({ language, city }: Props) => {
             />
           </div>
           <div className="text-box glassy">
-            <h2>{translation('map5-revised-title', language, city)}</h2>
+            <h2>{getTranslationString('map5-revised-title', language, city)}</h2>
             <div
               dangerouslySetInnerHTML={{
                 __html: getTranslationString('map5-revised', language, city),
@@ -645,7 +647,7 @@ const Map = ({ language, city }: Props) => {
             />
           </div>
           <div className="text-box glassy">
-            <h2>{translation('map6-revised-title', language, city)}</h2>
+            <h2>{getTranslationString('map6-revised-title', language, city)}</h2>
             <div
               dangerouslySetInnerHTML={{
                 __html: getTranslationString('map6-revised', language, city),
@@ -653,16 +655,21 @@ const Map = ({ language, city }: Props) => {
             />
           </div>
           <div className="text-box glassy">
-            <h2>{translation('map7-revised-title', language, city)}</h2>
+            <h2>{getTranslationString('map7-revised-title', language, city)}</h2>
             <div
               dangerouslySetInnerHTML={{
                 __html: getTranslationString('map7-revised', language, city),
               }}
             />
+            <div className="text-box-note">
+              <div className="text-box-note-text">
+                {getTranslationString('map7-revised-note', language, city)}
+              </div>
+            </div>
           </div>
 
           <div ref={actionIntro} className="text-box glassy">
-            <h2>{translation('actionIntro-title', language, city)}</h2>
+            <h2>{getTranslationString('actionIntro-title', language, city)}</h2>
             <div
               dangerouslySetInnerHTML={{
                 __html: getTranslationString('actionIntro', language, city),
@@ -670,7 +677,7 @@ const Map = ({ language, city }: Props) => {
             />
           </div>
           <div ref={actionFreguesia} className="text-box glassy">
-            <h2>{translation('actionFreguesia-title', language, city)}</h2>
+            <h2>{getTranslationString('actionFreguesia-title', language, city)}</h2>
             <div
               dangerouslySetInnerHTML={{
                 __html: getTranslationString('actionFreguesia', language, city),
@@ -684,7 +691,7 @@ const Map = ({ language, city }: Props) => {
                   onMouseEnter={e => handleMouseEnter(e, 'tooltip-content')}
                   onMouseLeave={handleMouseLeave}
                   style={{ display: 'inline-flex', alignItems: 'center', cursor: 'pointer' }}>
-                  {translation('actionFreguesia-label', language, city)}
+                  {getTranslationString('actionFreguesia-label', language, city)}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -710,24 +717,24 @@ const Map = ({ language, city }: Props) => {
               <div className="heatmap-rectangle heatmap-al"></div>
               <div className="heatmap-labels">
                 <span className="label-left">
-                  {translation('actionFreguesia-label-left', language, city)}
+                  {getTranslationString('actionFreguesia-label-left', language, city)}
                 </span>
                 <span className="label-right">
-                  {translation('actionFreguesia-label-right', language, city)}
+                  {getTranslationString('actionFreguesia-label-right', language, city)}
                 </span>
               </div>
             </div>
           </div>
           <div ref={actionFreguesiaZoom} className="text-box glassy">
-            {translation('actionFreguesia-zoom', language, city)}
+            {getTranslationString('actionFreguesia-zoom', language, city)}
           </div>
           <div ref={actionFreguesiaAL} className="text-box glassy">
-            <h2>{translation('actionFreguesiaAL-title', language, city)}</h2>
-            {translation('actionFreguesiaAL', language, city)}
+            <h2>{getTranslationString('actionFreguesiaAL-title', language, city)}</h2>
+            {getTranslationString('actionFreguesiaAL', language, city)}
 
             <div className="heatmap-label">
               <span className="label-center">
-                {translation('actionFreguesia-label', language, city)}
+                {getTranslationString('actionFreguesiaAl-label', language, city)}
               </span>
               <div className="heatmap-rectangle heatmap-population">
                 <div className="category category-1"></div>
@@ -737,35 +744,38 @@ const Map = ({ language, city }: Props) => {
               </div>
               <div className="heatmap-labels">
                 <span className="label-left">
-                  {translation('actionFreguesiaAl-label-left', language, city)}
+                  {getTranslationString('actionFreguesiaAl-label-left', language, city)}
                 </span>
                 <span className="label-right">
-                  {translation('actionFreguesiaAl-label-right', language, city)}
+                  {getTranslationString('actionFreguesiaAl-label-right', language, city)}
                 </span>
               </div>
             </div>
           </div>
           <div ref={actionFreguesiaPop} className="text-box glassy">
-            <h2>{translation('actionFreguesiaPop-title', language, city)}</h2>
-            {translation('actionFreguesiaPop', language, city)}
+            <h2>{getTranslationString('actionFreguesiaPop-title', language, city)}</h2>
+            {getTranslationString('actionFreguesiaPop', language, city)}
             <div className="heatmap-label">
               <span className="label-center">
-                {translation('actionFreguesiaPop-label', language, city)}
+                {getTranslationString('actionFreguesiaPop-label', language, city)}
               </span>
               <div className="heatmap-rectangle heatmap-population"></div>
               <div className="heatmap-labels">
                 <span className="label-left">
-                  {translation('actionFreguesiaPop-label-left', language, city)}
+                  {getTranslationString('actionFreguesiaPop-label-left', language, city)}
                 </span>
                 <span className="label-right">
-                  {translation('actionFreguesiaPop-label-right', language, city)}
+                  {getTranslationString('actionFreguesiaPop-label-right', language, city)}
                 </span>
               </div>
             </div>
           </div>
           <div ref={actionLineChart} className="text-box glassy">
-            <h2>{translation('actionLineChart-title', language, city)}</h2>
-            {translation('actionLineChart', language, city)}
+            <h2>{getTranslationString('actionLineChart-title', language, city)}</h2>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: getTranslationString('actionLineChart', language, city),
+              }}></div>
             <Linechart
               language={language}
               city={city}
@@ -773,14 +783,17 @@ const Map = ({ language, city }: Props) => {
           </div>
 
           <div className="full-text-box" ref={actionFullAirbnb}>
-            <div className="full-text-title"> {translation('airbnbAds-title', language, city)}</div>
+            <div className="full-text-title">
+              {' '}
+              {getTranslationString('airbnbAds-title', language, city)}
+            </div>
             <div className="content-wrapper">
               <div className="text-container">
                 <p className="timeline-order-first">
-                  {translation('airbnbAds-intro', language, city)}
+                  {getTranslationString('airbnbAds-intro', language, city)}
                 </p>
                 <h2 className="timeline-order-final ">
-                  {translation('airbnbAds-conclusion', language, city)}
+                  {getTranslationString('airbnbAds-conclusion', language, city)}
                 </h2>
               </div>
               <div className="images-container">
@@ -820,22 +833,29 @@ const Map = ({ language, city }: Props) => {
                 __html: getTranslationString('actionRooms-title', language, city),
               }}
             />
-            {translation('actionRooms', language, city)}
+            {getTranslationString('actionRooms', language, city)}
           </div>
           <div ref={actionMegaHosts} className="text-box glassy">
-            <h2>{translation('actionMegaHosts-title', language, city)}</h2>
+            <h2>{getTranslationString('actionMegaHosts-title', language, city)}</h2>
 
             <Casas
               key={`megahosts-${city}`}
               percentage={megahostsData.megahosts[city]}
-              title={translation('actionMegaHosts-label-1', language, city) as string}
+              title={getTranslationString('actionMegaHosts-label-1', language, city) as string}
               triggerAnimation={triggerMegaHostAnimation}></Casas>
 
             <Casas
               key={`companies-${city}`}
               percentage={megahostsData.companies[city]}
-              title={translation('actionMegaHosts-label-2', language, city) as string}
+              title={getTranslationString('actionMegaHosts-label-2', language, city) as string}
               triggerAnimation={triggerMegaHostAnimation}></Casas>
+
+            <div className="text-box-note text-box-note-megahosts">
+              <div className="text-box-note-text">
+                Os pontos a magenta são ALs cujos titulares registaram múltiplas licenças
+              </div>{' '}
+              <div className="toggle-icon toggle-icon--megahost"></div>
+            </div>
           </div>
         </div>
       </div>

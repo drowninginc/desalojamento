@@ -1,6 +1,6 @@
 import Container from './container'
 import Paragraph from './paragraph'
-import translation, { getTranslationString } from '../libs/translation'
+import { getTranslationString } from '../libs/translation'
 import Image from 'next/image'
 
 type Props = {
@@ -11,8 +11,10 @@ type Props = {
 const GhostHotels = ({ language, city }: Props) => {
   return (
     <Container className="ghostHotels">
-      <h1>{translation('actionManagers-title', language, city)}</h1>
-      <div className="paragraphIntro">{translation('actionManagers-1', language, city)}</div>
+      <h1>{getTranslationString('actionManagers-title', language, city)}</h1>
+      <div className="paragraphIntro">
+        {getTranslationString('actionManagers-1', language, city)}
+      </div>
       <Image
         src="/static/images/torneseproprietario.png"
         alt="Proprietário"
@@ -21,7 +23,7 @@ const GhostHotels = ({ language, city }: Props) => {
         priority
       />
       <div className="image-legend">
-        {translation('source', language, city)}{' '}
+        {getTranslationString('source', language, city)}{' '}
         <a href="https://www.liiiving.pt" target="_blank" rel="noopener noreferrer">
           Liiiving
         </a>
@@ -35,7 +37,7 @@ const GhostHotels = ({ language, city }: Props) => {
         priority
       />
       <div className="image-legend">
-        {translation('source', language, city)}{' '}
+        {getTranslationString('source', language, city)}{' '}
         <a href="https://www.lovelystay.com" target="_blank" rel="noopener noreferrer">
           Lovely Stay
         </a>

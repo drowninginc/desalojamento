@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Language from './language'
-import translation, { getTranslationString } from '../libs/translation'
+import { getTranslationString } from '../libs/translation'
 
 import logoImage from './images/desalojamento_logo.png'
 import housesShorter from './images/houses_porto_shorter.png'
@@ -193,7 +193,9 @@ const Header = ({ language, setLanguage, city, setCity }: Props) => {
               <a href="https://www.linkedin.com/in/joaobernardonarciso/">João Bernardo Narciso</a>
             </div>
 
-            <div className="introDescription">{translation('subtitle', language, city)}</div>
+            <div className="introDescription">
+              {getTranslationString('subtitle', language, city)}
+            </div>
           </div>
 
           <div id="layer3" className="parallaxLayer">

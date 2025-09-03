@@ -1,5 +1,6 @@
 import React from 'react'
-import translation from '../libs/translation'
+import Link from 'next/link'
+import translation, { getTranslationString } from '../libs/translation'
 
 type Props = {
   language: string
@@ -9,16 +10,19 @@ type Props = {
 const Footer = ({ language, city }: Props) => {
   return (
     <footer className="footer">
-      <div className="footer__gradient">
-        <div className="footer__opacity-gradient"></div>
+      <div className="footer__content">
         <div className="explore-button-wrapper">
-          <a className="btn btn-primary" href="/explore">
-            {translation('explore-button', language, city)}
-          </a>
+          <Link href="/explore" className="btn btn-primary">
+            {getTranslationString('explore-button', language, city)}
+          </Link>
         </div>
         <div className="methodology-content">
-          <h3>Methodology</h3>
-          <p>Content about the methodology will go here.</p>
+          <h3>{getTranslationString('methodology-title', language, city).toUpperCase()}</h3>
+          <div
+            className="methodology-text"
+            dangerouslySetInnerHTML={{
+              __html: getTranslationString('methodology', language, city),
+            }}></div>
         </div>
       </div>
     </footer>
