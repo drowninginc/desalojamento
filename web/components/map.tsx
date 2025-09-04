@@ -80,6 +80,7 @@ const Map = ({ language, city, regulationRef }: Props) => {
   const actionRooms = React.useRef(null!)
   const actionMegaHosts = React.useRef(null!)
   const actionFullAirbnb = React.useRef(null!)
+  const actionMap3 = React.useRef(null!)
 
   const imageWrappers = [useRef(null), useRef(null), useRef(null)]
 
@@ -295,6 +296,7 @@ const Map = ({ language, city, regulationRef }: Props) => {
           actionRooms,
           actionMegaHosts,
           actionFullAirbnb,
+          actionMap3,
           setNormalizedDate,
           setBarWidth,
           debouncedSetFilter,
@@ -414,6 +416,7 @@ const Map = ({ language, city, regulationRef }: Props) => {
           actionRooms,
           actionMegaHosts,
           actionFullAirbnb,
+          actionMap3,
           setNormalizedDate,
           setBarWidth,
           debouncedSetFilter,
@@ -625,7 +628,7 @@ const Map = ({ language, city, regulationRef }: Props) => {
               </svg>
             </div>
           </div>
-          <div className="text-box glassy">
+          <div className="text-box glassy" ref={actionMap3}>
             <h2>{getTranslationString('map3-revised-title', language, city)}</h2>
             <div
               dangerouslySetInnerHTML={{

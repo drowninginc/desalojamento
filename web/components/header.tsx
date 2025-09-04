@@ -149,34 +149,38 @@ const Header = ({ language, setLanguage, city, setCity }: Props) => {
 
   return (
     <>
-      <fieldset className="city-switcher">
-        <legend className="city-switcher__legend">Choose city</legend>
-        <label className="city-switcher__option">
-          <input
-            className="city-switcher__input"
-            type="radio"
-            name="city"
-            value="Lisbon"
-            c-option="1"
-            checked={city === 'Lisbon'}
-            onChange={() => setCity('Lisbon')}
-          />
-          <span className="city-switcher__text">Lisboa</span>
-        </label>
-        <label className="city-switcher__option">
-          <input
-            className="city-switcher__input"
-            type="radio"
-            name="city"
-            value="Porto"
-            c-option="2"
-            checked={city === 'Porto'}
-            onChange={() => setCity('Porto')}
-          />
-          <span className="city-switcher__text">Porto</span>
-        </label>
-      </fieldset>
-
+      <div className="city-switcher-wrapper">
+        <div className="help-bubble">
+          <p>{getTranslationString('help-bubble', language, city)}</p>
+        </div>
+        <fieldset className="city-switcher">
+          <legend className="city-switcher__legend">Choose city</legend>
+          <label className="city-switcher__option">
+            <input
+              className="city-switcher__input"
+              type="radio"
+              name="city"
+              value="Lisbon"
+              c-option="1"
+              checked={city === 'Lisbon'}
+              onChange={() => setCity('Lisbon')}
+            />
+            <span className="city-switcher__text">Lisboa</span>
+          </label>
+          <label className="city-switcher__option">
+            <input
+              className="city-switcher__input"
+              type="radio"
+              name="city"
+              value="Porto"
+              c-option="2"
+              checked={city === 'Porto'}
+              onChange={() => setCity('Porto')}
+            />
+            <span className="city-switcher__text">Porto</span>
+          </label>
+        </fieldset>
+      </div>
       <header>
         <Language language={language} setLanguage={setLanguage} />
         <div className="parallaxWrapper">

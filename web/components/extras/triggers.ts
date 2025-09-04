@@ -59,6 +59,7 @@ export const createScrollTriggers = (
   actionRooms,
   actionMegaHosts,
   actionFullAirbnb,
+  actionMap3,
   setNormalizedDate,
   setBarWidth,
   debouncedSetFilter,
@@ -116,12 +117,19 @@ export const createScrollTriggers = (
     },
     onEnter: () => {
       gsap.to('.progress-bar', { opacity: 1, duration: 0.5, delay: 0.2 })
-      gsap.to('.city-switcher', {
+      gsap.to('.city-switcher-wrapper', {
         opacity: 1,
         transform: isMobile ? 'translateX(-50%) translateY(0px)' : 'translateY(0px)',
         duration: 0.6,
         delay: 0.2,
         ease: 'back.out(1.7)',
+      })
+      // Sequential animation: help-bubble appears after city-switcher
+      gsap.to('.help-bubble', {
+        opacity: 1,
+        duration: 0.5,
+        delay: 0.8, // 0.2 (city-switcher delay) + 0.6 (city-switcher duration)
+        ease: 'power2.out',
       })
     },
     onLeave: () => {
@@ -132,7 +140,14 @@ export const createScrollTriggers = (
     },
     onLeaveBack: () => {
       gsap.to('.progress-bar', { opacity: 0, duration: 0.5, delay: 0.2 })
-      gsap.to('.city-switcher', {
+      // Hide help-bubble first, then city-switcher
+      gsap.to('.help-bubble', {
+        opacity: 0,
+        duration: 0.3,
+        delay: 0.1,
+        ease: 'power2.in',
+      })
+      gsap.to('.city-switcher-wrapper', {
         opacity: 0,
         transform: isMobile ? 'translateX(-50%) translateY(120px)' : 'translateY(120px)',
         duration: 0.4,
@@ -252,13 +267,43 @@ export const createScrollTriggers = (
     },
   })
 
+  // City switcher visibility control for actionMap3
+  ScrollTrigger.create({
+    trigger: actionMap3.current,
+    start: 'top 80%',
+    end: 'top 20%',
+    onEnter: () => {
+      // Hide help-bubble
+      gsap.to('.help-bubble', {
+        opacity: 0,
+        duration: 0.3,
+        ease: 'power2.in',
+      })
+    },
+    onLeaveBack: () => {
+      // Show help-bubble
+      gsap.to('.help-bubble', {
+        opacity: 1,
+        duration: 0.5,
+        ease: 'power2.out',
+      })
+    },
+  })
+
   // City switcher visibility control for actionFullAirbnb
   ScrollTrigger.create({
     trigger: actionFullAirbnb.current,
     start: 'top bottom',
     end: 'top bottom',
     onEnter: () => {
-      gsap.to('.city-switcher', {
+      // Hide help-bubble first, then city-switcher
+      gsap.to('.help-bubble', {
+        opacity: 0,
+        duration: 0.3,
+        delay: 0.1,
+        ease: 'power2.in',
+      })
+      gsap.to('.city-switcher-wrapper', {
         opacity: 0,
         transform: isMobile ? 'translateX(-50%) translateY(120px)' : 'translateY(120px)',
         duration: 0.4,
@@ -267,12 +312,19 @@ export const createScrollTriggers = (
       })
     },
     onLeaveBack: () => {
-      gsap.to('.city-switcher', {
+      gsap.to('.city-switcher-wrapper', {
         opacity: 1,
         transform: isMobile ? 'translateX(-50%) translateY(0px)' : 'translateY(0px)',
         duration: 0.6,
         delay: 0.2,
         ease: 'back.out(1.7)',
+      })
+      // Sequential animation: help-bubble appears after city-switcher
+      gsap.to('.help-bubble', {
+        opacity: 1,
+        duration: 0.5,
+        delay: 0.8, // 0.2 (city-switcher delay) + 0.6 (city-switcher duration)
+        ease: 'power2.out',
       })
     },
   })

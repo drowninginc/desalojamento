@@ -107,12 +107,13 @@ header {
 }
 
 // Ensure the city-switcher is centered inside the mobile panel
-.explore-controls.is-mobile .explore-controls-panel .city-switcher {
+.explore-controls.is-mobile .explore-controls-panel .city-switcher-wrapper {
   position: relative;
   left: auto;
   right: auto;
   bottom: auto;
   transform: none;
+  align-items: center;
   margin: 16px auto 0 auto;
 }
 
@@ -474,12 +475,13 @@ header {
 }
 
 // Explore-specific city switcher visibility (no scroll animations on this page)
-.explore-wrapper .city-switcher {
+.explore-wrapper .city-switcher-wrapper {
   opacity: 1;
   transform: none;
   position: relative;
   bottom: auto;
   right: auto;
+  align-items: center;
   left: 50%;
   transform: translateX(-50%);
   margin-top: 16px;
@@ -1244,18 +1246,60 @@ h2 {
   }
 }
 
-// City Switcher Glass Morphism Styles
-.city-switcher {
+.city-switcher-wrapper {
   position: fixed;
   bottom: 40px;
   right: 30px;
   z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  opacity: 0;
+  transform: translateY(120px);
+
+  .help-bubble {
+    text-align: center;
+    background: #0045db;
+    color: #fff;
+    padding: 0.6em 0.6em;
+    border-radius: 5px;
+    opacity: 0;
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.25), 0 2px 8px rgba(0, 0, 0, 0.15);
+    display: block;
+    margin-bottom: 0.8em;
+    position: relative;
+    min-width: 192px;
+    margin-right: 10px;
+
+    p {
+      font-size: 0.9em;
+
+      margin-bottom: 0;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      right: 10%;
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 8px solid #0045db;
+    }
+  }
+}
+
+// City Switcher Glass Morphism Styles
+.city-switcher {
   display: flex;
   text-align: center;
   justify-content: space-between;
   gap: 0;
   width: 192px;
   max-width: 192px;
+  min-width: 192px;
   height: 70px;
   box-sizing: border-box;
   padding: 8px 12px 10px;
@@ -1265,6 +1309,7 @@ h2 {
   background-color: color-mix(in srgb, #ffffff40 62%, transparent);
   backdrop-filter: blur(8px) saturate(150%);
   -webkit-backdrop-filter: blur(8px) saturate(150%);
+  flex-shrink: 0;
   box-shadow: inset 0 0 0 1px color-mix(in srgb, rgba(255, 255, 255, 0.9) 10%, transparent),
     inset 1.8px 3px 0px -2px color-mix(in srgb, rgba(255, 255, 255, 0.9) 90%, transparent),
     inset -2px -2px 0px -2px color-mix(in srgb, rgba(255, 255, 255, 0.8) 80%, transparent),
@@ -1277,8 +1322,8 @@ h2 {
     0px 6px 16px 0px color-mix(in srgb, rgba(0, 0, 0, 0.12) 12%, transparent);
   transition: background-color 400ms cubic-bezier(1, 0, 0.4, 1),
     box-shadow 400ms cubic-bezier(1, 0, 0.4, 1);
-  opacity: 0;
-  transform: translateY(120px);
+  opacity: 1;
+  transform: translateY(0px);
 
   &::after {
     content: '';
@@ -1419,13 +1464,22 @@ h2 {
 
 // Mobile responsive city switcher
 @media (max-width: 750px) {
-  .city-switcher {
+  .city-switcher-wrapper {
     left: 50%;
     right: auto;
     transform: translateX(-50%) translateY(120px);
     bottom: 20px;
+    align-items: center;
   }
-  .explore-wrapper .city-switcher {
+
+  .city-switcher {
+    left: auto;
+    right: auto;
+    transform: none;
+    bottom: auto;
+  }
+
+  .explore-wrapper .city-switcher-wrapper {
     transform: none;
     opacity: 1;
     position: relative;
