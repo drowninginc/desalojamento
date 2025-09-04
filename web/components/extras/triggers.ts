@@ -69,6 +69,7 @@ export const createScrollTriggers = (
   setBoundaryBox,
   setTriggerMegaHostAnimation,
   imageWrappers,
+  regulationSection,
 ) => {
   ScrollTrigger.create({
     id: 'map-pin',
@@ -395,4 +396,38 @@ export const createScrollTriggers = (
       )
     },
   })
+
+  // Regulation section scroll triggers
+  if (regulationSection && regulationSection.current) {
+    // Create triggers for each regulation item (1-6)
+    for (let i = 1; i <= 6; i++) {
+      const itemSel = `.reg-item--${i}`
+      const houseSel = `.reg-house--${i}`
+      const blueSel = `${houseSel} .reg-house__img--blue`
+      const greenSel = `${houseSel} .reg-house__img--green`
+      const textSel = `.reg-textbox--${i}`
+
+      ScrollTrigger.create({
+        id: `regulation-${i}`,
+        trigger: itemSel,
+        start: 'top 80%',
+        end: 'top 20%',
+        onEnter: () => {
+          gsap.to(textSel, { opacity: 1, y: 0, duration: 0.6, ease: 'power1.out' })
+          gsap.to(blueSel, { opacity: 0, duration: 0.3, ease: 'power1.out' })
+          gsap.to(greenSel, { opacity: 1, duration: 0.3, ease: 'power1.out' })
+        },
+        onEnterBack: () => {
+          gsap.to(textSel, { opacity: 1, y: 0, duration: 0.6, ease: 'power1.out' })
+          gsap.to(blueSel, { opacity: 0, duration: 0.3, ease: 'power1.out' })
+          gsap.to(greenSel, { opacity: 1, duration: 0.3, ease: 'power1.out' })
+        },
+        onLeaveBack: () => {
+          gsap.to(textSel, { opacity: 0, y: 20, duration: 0.4, ease: 'power1.in' })
+          gsap.to(blueSel, { opacity: 1, duration: 0.25, ease: 'power1.in' })
+          gsap.to(greenSel, { opacity: 0, duration: 0.25, ease: 'power1.in' })
+        },
+      })
+    }
+  }
 }

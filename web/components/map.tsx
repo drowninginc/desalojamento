@@ -53,9 +53,10 @@ mapboxgl.accessToken =
 type Props = {
   city: string
   language: string
+  regulationRef: React.RefObject<HTMLDivElement>
 }
 
-const Map = ({ language, city }: Props) => {
+const Map = ({ language, city, regulationRef }: Props) => {
   const citiesData = getBothCitiesData()
   const divTrigger = React.useRef(null!)
   const mapPin = React.useRef(null!)
@@ -304,6 +305,7 @@ const Map = ({ language, city }: Props) => {
           setBoundaryBox,
           setTriggerMegaHostAnimation,
           imageWrappers,
+          regulationRef,
         )
 
         isMapInitialized.current = true
@@ -422,6 +424,7 @@ const Map = ({ language, city }: Props) => {
           setBoundaryBox,
           setTriggerMegaHostAnimation,
           imageWrappers,
+          regulationRef,
         )
       }
 
