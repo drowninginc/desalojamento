@@ -140,7 +140,8 @@ export const createScrollTriggers = (
     },
     onLeaveBack: () => {
       gsap.to('.progress-bar', { opacity: 0, duration: 0.5, delay: 0.2 })
-      // Hide help-bubble first, then city-switcher
+      // Kill any ongoing help-bubble animations and hide it first, then city-switcher
+      gsap.killTweensOf('.help-bubble')
       gsap.to('.help-bubble', {
         opacity: 0,
         duration: 0.3,
@@ -273,7 +274,8 @@ export const createScrollTriggers = (
     start: 'top 80%',
     end: 'top 20%',
     onEnter: () => {
-      // Hide help-bubble
+      // Kill any ongoing help-bubble animations and hide it
+      gsap.killTweensOf('.help-bubble')
       gsap.to('.help-bubble', {
         opacity: 0,
         duration: 0.3,
@@ -296,13 +298,6 @@ export const createScrollTriggers = (
     start: 'top bottom',
     end: 'top bottom',
     onEnter: () => {
-      // Hide help-bubble first, then city-switcher
-      gsap.to('.help-bubble', {
-        opacity: 0,
-        duration: 0.3,
-        delay: 0.1,
-        ease: 'power2.in',
-      })
       gsap.to('.city-switcher-wrapper', {
         opacity: 0,
         transform: isMobile ? 'translateX(-50%) translateY(120px)' : 'translateY(120px)',
@@ -318,13 +313,6 @@ export const createScrollTriggers = (
         duration: 0.6,
         delay: 0.2,
         ease: 'back.out(1.7)',
-      })
-      // Sequential animation: help-bubble appears after city-switcher
-      gsap.to('.help-bubble', {
-        opacity: 1,
-        duration: 0.5,
-        delay: 0.8, // 0.2 (city-switcher delay) + 0.6 (city-switcher duration)
-        ease: 'power2.out',
       })
     },
   })
