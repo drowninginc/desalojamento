@@ -427,6 +427,7 @@ export const createScrollTriggers = (
       setTriggerMegaHostAnimation(true)
       setLayerVisibility(city, map.current, `${city}-al-megahosts`)
       gsap.to('.footer', { opacity: 1, duration: 0.5 })
+      gsap.to('.language-selector', { opacity: 0, duration: 0.5 })
     },
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-al-megahosts`)
@@ -439,6 +440,7 @@ export const createScrollTriggers = (
 
     onLeaveBack: () => {
       gsap.to('.footer', { opacity: 0, duration: 0.5 })
+      gsap.to('.language-selector', { opacity: 1, duration: 0.5 })
     },
   })
 
