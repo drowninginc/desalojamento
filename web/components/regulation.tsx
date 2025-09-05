@@ -77,6 +77,12 @@ const Regulation = forwardRef<HTMLDivElement, Props>(({ language, city }, ref) =
             </div>
           ))}
         </div>
+        <hr></hr>
+        <div
+          className="conclusion paragraphIntro"
+          dangerouslySetInnerHTML={{
+            __html: getTranslationString('conclusion', language, city),
+          }}></div>
       </Container>
     </div>
   )

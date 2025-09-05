@@ -1198,7 +1198,8 @@ h2 {
 }
 
 .ghostHotels {
-  padding: 3em 1em 3em 1em;
+  padding-top: 3em;
+  margin-bottom: 6em;
 
   background-color: $background-color;
 
@@ -1559,16 +1560,31 @@ h2 {
 
 .regulation {
   background-color: $background-color;
-  padding: 60px 0;
+  padding-bottom: 6em;
   min-height: 100vh;
+
+  p {
+    font-size: 1.2em;
+  }
+
+  .paragraphIntro p {
+    font-size: inherit;
+  }
+
+  hr {
+    margin-top: 8em;
+    margin-bottom: 6em;
+    color: $color-blue-al;
+  }
 }
 
 .regulation-stage {
   display: flex;
   flex-direction: column;
   gap: 80px;
-  padding: 40px 0;
+  padding-top: 2em;
   align-items: center;
+  margin-bottom: 6em;
 }
 
 .reg-item {
