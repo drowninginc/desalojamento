@@ -30,6 +30,10 @@ p {
 .text-box-note-megahosts {
   justify-content: space-between !important;
   margin-top: 30px !important;
+
+  &:last-child {
+    margin-top: 10px !important;
+  }
 }
 
 .glassy {
@@ -452,6 +456,19 @@ header {
   .footer .footer__content {
     padding-bottom: 2rem;
   }
+}
+
+.footer__logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 4em;
+}
+
+.footer-logo {
+  max-width: 150px;
+  height: auto;
+  opacity: 0.8;
 }
 
 @keyframes grain {
@@ -1579,7 +1596,7 @@ h2 {
 
 .regulation {
   background-color: $background-color;
-  padding-bottom: 6em;
+  padding-bottom: 4em;
   min-height: 100vh;
 
   p {
@@ -1655,4 +1672,10 @@ h2 {
   opacity: 0;
   transform: translateY(20px);
   font-size: 15px;
+}
+
+@media (max-width: 768px) {
+  .timeline-order-final {
+    margin: -0.5em;
+  }
 }

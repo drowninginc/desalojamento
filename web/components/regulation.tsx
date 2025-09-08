@@ -2,6 +2,7 @@ import Container from './container'
 import { useMemo, forwardRef } from 'react'
 import Image from 'next/image'
 import { getTranslationString } from '../libs/translation'
+import logoImage from './images/desalojamento_logo.png'
 
 type Props = {
   language: string
@@ -83,6 +84,9 @@ const Regulation = forwardRef<HTMLDivElement, Props>(({ language, city }, ref) =
           dangerouslySetInnerHTML={{
             __html: getTranslationString('conclusion', language, city),
           }}></div>
+        <div className="footer__logo">
+          <Image className="footer-logo" src={logoImage} alt="Logo Image" width={150} height={75} />
+        </div>
       </Container>
     </div>
   )
