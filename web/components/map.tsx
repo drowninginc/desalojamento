@@ -676,11 +676,6 @@ const Map = ({ language, city, regulationRef }: Props) => {
                 __html: getTranslationString('map7-revised', language, city),
               }}
             />
-            <div className="text-box-note">
-              <div className="text-box-note-text">
-                {getTranslationString('map7-revised-note', language, city)}
-              </div>
-            </div>
           </div>
 
           <div ref={actionIntro} className="text-box glassy">
@@ -737,6 +732,11 @@ const Map = ({ language, city, regulationRef }: Props) => {
                 <span className="label-right">
                   {getTranslationString('actionFreguesia-label-right', language, city)}
                 </span>
+              </div>
+            </div>
+            <div className="text-box-note">
+              <div className="text-box-note-text">
+                {getTranslationString('map7-revised-note', language, city)}
               </div>
             </div>
           </div>
