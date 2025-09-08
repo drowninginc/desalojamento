@@ -1103,14 +1103,12 @@ h3 {
   .content-wrapper {
     display: flex; // Align text and images horizontally
     flex-direction: row;
-    padding: 0 1.5em;
 
     width: 100%;
     height: 100%;
 
     .text-container {
       width: 30vw; // Set width to 30%
-      height: 80%;
       display: flex; // Center text vertically and horizontally
       flex-direction: column;
       align-items: flex-start;
@@ -1125,7 +1123,7 @@ h3 {
       }
 
       h2 {
-        font-size: 3em;
+        font-size: 2.5em;
       }
     }
 
@@ -1677,5 +1675,6 @@ h2 {
 @media (max-width: 768px) {
   .timeline-order-final {
     margin: -0.5em;
+    width: 100vw;
   }
 }
