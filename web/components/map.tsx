@@ -12,6 +12,13 @@ import anuncioImage from './images/airbnb/anuncio.jpeg'
 import paginaImage from './images/airbnb/descricaoPagina.png'
 import outdoorImage from './images/airbnb/outdoor.png'
 
+const airbnbData = {
+  missingLicense: {
+    Porto: 14,
+    Lisbon: 15,
+  },
+}
+
 const megahostsData = {
   supermegahost: {
     Porto: 48,
@@ -19,11 +26,11 @@ const megahostsData = {
   },
   megahosts: {
     Porto: 72,
-    Lisbon: 68,
+    Lisbon: 67,
   },
   companies: {
     Porto: 60,
-    Lisbon: 50,
+    Lisbon: 51,
   },
 }
 
@@ -34,6 +41,7 @@ import {
   freguesiaPaint,
   hotelsPaint,
 } from './extras/mapStyles'
+
 import {
   getBothCitiesData,
   getMinMax,
@@ -42,6 +50,7 @@ import {
   addCentroidMarkers,
   switchCity,
 } from './extras/helpers'
+
 import { createScrollTriggers } from './extras/triggers'
 
 // @ts-ignore
@@ -99,7 +108,7 @@ const Map = ({ language, city, regulationRef }: Props) => {
 
   const formatDate = value => {
     const startDate = new Date('2014-01-01')
-    const endDate = new Date('2024-12-30')
+    const endDate = new Date('2025-08-31')
     const timeRange = endDate.valueOf() - startDate.valueOf()
     const date = new Date(startDate.getTime() + value * timeRange)
 
@@ -118,7 +127,7 @@ const Map = ({ language, city, regulationRef }: Props) => {
     if (!currentCityData) return 0
 
     const startDate = new Date('2014-01-01')
-    const endDate = new Date('2024-12-30')
+    const endDate = new Date('2025-08-31')
     const timeRange = endDate.valueOf() - startDate.valueOf()
     const date = new Date(startDate.getTime() + value * timeRange)
 
@@ -177,7 +186,7 @@ const Map = ({ language, city, regulationRef }: Props) => {
     }
     // Fallback using the same date domain used elsewhere
     const startDate = new Date('2014-01-01')
-    const endDate = new Date('2024-12-30')
+    const endDate = new Date('2025-08-31')
     const monthsDiff =
       (endDate.getFullYear() - startDate.getFullYear()) * 12 +
       (endDate.getMonth() - startDate.getMonth()) +
@@ -858,10 +867,30 @@ const Map = ({ language, city, regulationRef }: Props) => {
 
             <div className="text-box-note text-box-note-megahosts">
               <div className="text-box-note-text">
-                Os pontos a magenta são ALs cujos titulares registaram múltiplas licenças
-              </div>{' '}
+                {getTranslationString('megahosts-label-1', language, city)}
+              </div>
               <div className="toggle-icon toggle-icon--megahost"></div>
             </div>
+            <div className="text-box-note text-box-note-megahosts">
+              <div className="text-box-note-text">
+                {getTranslationString('megahosts-label-2', language, city)}
+              </div>
+              <div className="toggle-icon toggle-icon--gigahost"></div>
+            </div>
+          </div>
+          <div className="text-box glassy">
+            <h2>{getTranslationString('period-title', language, city)}</h2>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: getTranslationString('period-text', language, city),
+              }}></div>
+          </div>
+          <div className="text-box glassy">
+            <h2>{getTranslationString('airbnb-title', language, city)}</h2>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: getTranslationString('airbnb-text', language, city),
+              }}></div>
           </div>
         </div>
       </div>
