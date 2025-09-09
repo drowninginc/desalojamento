@@ -307,3 +307,7 @@ airbnb-text;pt;Porto;<p>Apesar da lei estabelecer que é obrigatório indicar o 
 airbnb-text;pt;Lisbon;<p>Apesar da lei estabelecer que é obrigatório indicar o número de registo na publicidade ao Alojamento Local, existem <mark>cerca de 1500</mark> anúncios na Airbnb em Lisboa sem especificar esse número, ou com um número que não costa da base de dados oficial.</p><p>Tal como noutras cidades, a plataforma poderia ser obrigada a validar que as propriedades que anuncia estão a operar legalmente.</p>;
 airbnb-text;en;Porto;;
 airbnb-text;en;Lisbon;;
+actionIntro-note;pt;Porto;Os polígonos a azul representam hotéis e outros empreendimentos turísticos;
+actionIntro-note;pt;Lisbon;Os polígonos a azul representam hotéis e outros empreendimentos turísticos;
+actionIntro-note;en;Porto;;
+actionIntro-note;en;Lisbon;;

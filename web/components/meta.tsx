@@ -13,11 +13,10 @@ const Meta = () => {
       <meta property="og:title" content="Desalojamento Local" />
       <meta
         property="og:description"
-        content="Um ensaio visual sobre o Alojamento Local no Porto e em Lisboa"
+        content="Alguns dados e mapas sobre o Alojamento Local no Porto e em Lisboa"
       />
       <meta property="og:image" content="/thumb.jpg" />
     </Head>
   )
 }
 export default Meta
-
