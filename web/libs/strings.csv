@@ -311,3 +311,7 @@ actionIntro-note;pt;Porto;Os polígonos a azul representam hotéis e outros empr
 actionIntro-note;pt;Lisbon;Os polígonos a azul representam hotéis e outros empreendimentos turísticos;
 actionIntro-note;en;Porto;;
 actionIntro-note;en;Lisbon;;
+loading-message;pt;Porto;Carregando mapa…;
+loading-message;pt;Lisbon;Carregando mapa…;
+loading-message;en;Porto;Loading map…;
+loading-message;en;Lisbon;Loading map…;

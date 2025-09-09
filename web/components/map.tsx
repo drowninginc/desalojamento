@@ -63,9 +63,10 @@ type Props = {
   city: string
   language: string
   regulationRef: React.RefObject<HTMLDivElement>
+  onMapLoad?: (isLoaded: boolean) => void
 }
 
-const Map = ({ language, city, regulationRef }: Props) => {
+const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
   const citiesData = getBothCitiesData()
   const divTrigger = React.useRef(null!)
   const mapPin = React.useRef(null!)
@@ -268,6 +269,7 @@ const Map = ({ language, city, regulationRef }: Props) => {
 
       map.current.on('load', () => {
         console.log('Map loaded successfully')
+        onMapLoad?.(true)
 
         // Add sources and layers for both cities
         addSourcesAndLayersForBothCities(

@@ -9,7 +9,7 @@ const Meta = () => {
       <link rel="shortcut icon" href="/favicon.ico" />
       <meta name="theme-color" content="#eee5e9" />
       <meta name="Desalojamento Local" content="Desalojamento Local" />
-      <title>Desalojamento Local</title>
+      <title>DesALojamento</title>
       <meta property="og:title" content="Desalojamento Local" />
       <meta
         property="og:description"

@@ -6,7 +6,7 @@ import logoImage from './images/desalojamento_logo.png'
 import housesShorter from './images/houses_porto_shorter.png'
 import ALPlaque from './images/ALBlock.png'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 
 type Props = {
@@ -14,9 +14,21 @@ type Props = {
   setLanguage: any
   city: string
   setCity: any
+  isMapLoaded?: boolean
 }
 
-const Header = ({ language, setLanguage, city, setCity }: Props) => {
+const Header = ({ language, setLanguage, city, setCity, isMapLoaded = false }: Props) => {
+  const [showArrow, setShowArrow] = useState(false)
+
+  // Show arrow after 3 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowArrow(true)
+    }, 3000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
   useEffect(() => {
     const layers = document.getElementsByClassName('parallaxLayer')
 
@@ -199,6 +211,13 @@ const Header = ({ language, setLanguage, city, setCity }: Props) => {
 
             <div className="introDescription">
               {getTranslationString('subtitle', language, city)}
+            </div>
+            <div className={`arrow-container ${showArrow && isMapLoaded ? 'visible' : ''}`}>
+              <div className="arrow"></div>
+              <div className="arrow"></div>
+            </div>
+            <div className={`loading-message ${showArrow && !isMapLoaded ? 'visible' : ''}`}>
+              {getTranslationString('loading-message', language, city)}
             </div>
           </div>
 

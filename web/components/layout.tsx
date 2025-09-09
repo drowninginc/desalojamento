@@ -8,13 +8,20 @@ type Props = {
   setLanguage: any
   city: string
   setCity: any
+  isMapLoaded: boolean
 }
 
-const Layout = ({ children, language, setLanguage, city, setCity }: Props) => {
+const Layout = ({ children, language, setLanguage, city, setCity, isMapLoaded }: Props) => {
   return (
     <>
       <Meta />
-      <Header language={language} setLanguage={setLanguage} city={city} setCity={setCity} />
+      <Header
+        language={language}
+        setLanguage={setLanguage}
+        city={city}
+        setCity={setCity}
+        isMapLoaded={isMapLoaded}
+      />
       <main>{children}</main>
     </>
   )

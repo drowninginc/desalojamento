@@ -9,12 +9,23 @@ import { useState, useRef } from 'react'
 const Index = () => {
   const [language, setLanguage] = useState('pt')
   const [city, setCity] = useState('Lisbon')
+  const [isMapLoaded, setIsMapLoaded] = useState(false)
   const regulationRef = useRef<HTMLDivElement>(null)
 
   return (
     <>
-      <Layout language={language} setLanguage={setLanguage} city={city} setCity={setCity}>
-        <Map language={language} city={city} regulationRef={regulationRef} />
+      <Layout
+        language={language}
+        setLanguage={setLanguage}
+        city={city}
+        setCity={setCity}
+        isMapLoaded={isMapLoaded}>
+        <Map
+          language={language}
+          city={city}
+          regulationRef={regulationRef}
+          onMapLoad={setIsMapLoaded}
+        />
         <GhostHotels language={language} city={city} />
         <Regulation language={language} city={city} ref={regulationRef} />
       </Layout>
