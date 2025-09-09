@@ -1359,7 +1359,7 @@ h2 {
   min-width: 192px;
   height: 70px;
   box-sizing: border-box;
-  padding: 8px 12px 10px;
+  padding: 0px 12px 0px;
   border: none;
   border-radius: 99em;
   font-size: 1rem;
@@ -1389,7 +1389,7 @@ h2 {
     top: 4px;
     display: block;
     width: 88px;
-    height: calc(100% - 8px);
+    height: 62px; /* Fixed height instead of calc(100% - 8px) for better Chrome compatibility */
     border-radius: 99em;
     background-color: color-mix(in srgb, rgba(200, 200, 200, 0.36) 80%, transparent);
     z-index: -1;
@@ -1440,11 +1440,17 @@ h2 {
 }
 
 .city-switcher__text {
-  display: block;
+  display: block; /* Simple block display for grid child */
   font-size: 1.4rem;
   font-weight: 500;
   color: var(--c);
   transition: all 200ms cubic-bezier(0.5, 0, 0, 1);
+  line-height: 70px; /* Match the parent's height for vertical centering */
+  margin: 0; /* Remove any default margins */
+  padding: 0; /* Remove any default padding */
+  text-align: center; /* Center text horizontally */
+  height: 70px; /* Match parent height */
+  /* This method uses line-height to center text vertically */
 }
 
 .city-switcher__filter {
@@ -1466,6 +1472,7 @@ h2 {
   border-radius: 99em;
   opacity: 1;
   transition: all 160ms;
+  position: relative; /* Ensure proper positioning context */
 
   &:hover {
     --c: #0052f5;
