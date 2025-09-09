@@ -73,7 +73,7 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
   const mapContainer = React.useRef(null!)
   const progressBar = React.useRef(null!)
   const alCount = React.useRef(null!)
-  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768
+  const [isMobile, setIsMobile] = React.useState(false)
 
   const map = useRef<mapboxgl.Map | null>(null)
   const centroidMarkersRef = useRef<any[]>([])
@@ -106,6 +106,11 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
   const [isLoadingMarkers, setIsLoadingMarkers] = React.useState(false)
   const monthsTotalRef = useRef<number>(132)
   const map2ContainerRef = useRef<HTMLDivElement>(null)
+
+  // Set isMobile state after component mounts to avoid hydration mismatch
+  useEffect(() => {
+    setIsMobile(window.innerWidth <= 768)
+  }, [])
 
   const formatDate = value => {
     const startDate = new Date('2014-01-01')

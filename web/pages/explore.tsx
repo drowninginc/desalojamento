@@ -38,7 +38,7 @@ const Explore = () => {
   const mapRef = useRef<mapboxgl.Map | null>(null)
   const centroidMarkersRef = useRef<any[]>([])
   const boundaryBoxRef = useRef<[number, number][]>([])
-  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768
+  const [isMobile, setIsMobile] = useState(false)
   const previousCityRef = useRef<string | null>(null)
 
   const [showFreguesiaMarkers, setShowFreguesiaMarkers] = useState(false)
@@ -46,6 +46,11 @@ const Explore = () => {
   const [showHotels, setShowHotels] = useState(false)
 
   const citiesData = getBothCitiesData()
+
+  // Set isMobile state after component mounts to avoid hydration mismatch
+  useEffect(() => {
+    setIsMobile(window.innerWidth <= 768)
+  }, [])
 
   // Override bounds for Explore using external city bounding boxes (Nominatim/OSM),
   // expressed as [[west, south], [east, north]]. We add padding later.
@@ -409,7 +414,8 @@ const Explore = () => {
             </div>
             {isMobile && <CitySwitcher city={city} setCity={setCity} />}
           </div>
-
+        </div>
+        <div className="city-switcher-wrapper">
           {!isMobile && <CitySwitcher city={city} setCity={setCity} />}
         </div>
       </div>

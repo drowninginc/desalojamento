@@ -510,19 +510,6 @@ header {
   z-index: 3;
 }
 
-// Explore-specific city switcher visibility (no scroll animations on this page)
-.explore-wrapper .city-switcher-wrapper {
-  opacity: 1;
-  transform: none;
-  position: relative;
-  bottom: auto;
-  right: auto;
-  align-items: center;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top: 16px;
-}
-
 .parallaxWrapper {
   position: relative;
   top: 0;
@@ -1549,14 +1536,16 @@ h2 {
     bottom: auto;
   }
 
-  .explore-wrapper .city-switcher-wrapper {
+  .explore-wrapper .city-switcher {
     transform: none;
     opacity: 1;
-    position: relative;
-    left: auto;
-    right: auto;
-    bottom: auto;
+    margin: 0 auto;
   }
+}
+
+.explore-wrapper .city-switcher-wrapper {
+  transform: none;
+  opacity: 1;
 }
 
 .hover-tooltip {
