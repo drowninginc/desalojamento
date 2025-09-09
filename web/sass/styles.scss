@@ -662,7 +662,7 @@ a {
     margin-right: auto;
   }
   #layer3 {
-    margin-top: 40vh;
+    margin-top: 50vh;
   }
   .logo {
     margin: 0 auto;
@@ -969,6 +969,37 @@ a.button {
         .negative-number {
           transform: translateX(0);
           opacity: 1;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .centroid-marker {
+    .animation-wrapper {
+      width: 60px;
+      padding: 0.15em 0.25em;
+      font-size: 100%;
+
+      .freg-name {
+        font-size: x-small;
+      }
+
+      .marker-cell {
+        margin: 3px 0;
+
+        &.visible {
+          margin: 3px 0;
+          max-height: 60px;
+        }
+
+        .cell-icon {
+          transform: scale(0.6);
+        }
+
+        &.visible .cell-icon {
+          transform: scale(0.7);
         }
       }
     }
@@ -1699,6 +1730,12 @@ h2 {
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .arrow-container {
+    top: 2em;
   }
 }
 
