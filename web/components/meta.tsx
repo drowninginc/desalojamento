@@ -15,7 +15,7 @@ const Meta = () => {
       <meta property="og:title" content="desALojamento" />
       <meta
         property="og:description"
-        content="Alguns dados e mapas sobre o Alojamento Local no Porto e em Lisboa"
+        content="Alguns dados e mapas sobre o Alojamento Local em Lisboa e no Porto"
       />
       <meta property="og:image" content="/thumb.jpg" />
       <meta property="og:image:width" content="2880" />
@@ -30,7 +30,7 @@ const Meta = () => {
       <meta name="twitter:title" content="desALojamento" />
       <meta
         name="twitter:description"
-        content="Alguns dados e mapas sobre o Alojamento Local no Porto e em Lisboa"
+        content="Alguns dados e mapas sobre o Alojamento Local em Lisboa e no Porto"
       />
       <meta name="twitter:image" content="/thumb.jpg" />
     </Head>
