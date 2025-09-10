@@ -8,9 +8,9 @@ const Meta = () => {
       <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
       <link rel="shortcut icon" href="/favicon.ico" />
       <meta name="theme-color" content="#eee5e9" />
-      <meta name="Desalojamento Local" content="Desalojamento Local" />
-      <title>DesALojamento</title>
-      <meta property="og:title" content="Desalojamento Local" />
+      <meta name="desALojamento" content="desALojamento" />
+      <title>desALojamento</title>
+      <meta property="og:title" content="desALojamento" />
       <meta
         property="og:description"
         content="Alguns dados e mapas sobre o Alojamento Local no Porto e em Lisboa"
