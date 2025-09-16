@@ -27,6 +27,69 @@ $font-size-h5: 1.3rem;
 
 $font-size-h6: 1.1rem;
 
+// Additional font sizes for specific components
+$font-size-xs: 0.75em; // tooltip
+$font-size-sm: 0.9em; // image legend, help bubble
+$font-size-base: 1rem; // city switcher, base size
+$font-size-lg: 1.2em; // paragraph intro, regulation
+$font-size-xl: 1.3em; // intro description mobile
+$font-size-2xl: 1.4rem; // city switcher text
+$font-size-3xl: 1.8em; // intro description
+$font-size-4xl: 2em; // al count, full text box h2
+$font-size-5xl: 2.5em; // full text box h2
+$font-size-6xl: 3em; // full text title mobile
+$font-size-7xl: 4em; // full text title
+
+// Specific component font sizes
+$font-size-language-selector: 1.2rem;
+$font-size-controls-toggle: 15px;
+$font-size-explore-arrow: 24px;
+$font-size-toggle-label: 14px;
+$font-size-toggle-icon: 8px;
+$font-size-btn: 16px;
+$font-size-footer-h3: 2rem;
+$font-size-logo-legend: large;
+$font-size-logo-legend-mobile: medium;
+$font-size-text-box-note: small;
+$font-size-animation-wrapper: 140%;
+$font-size-animation-wrapper-mobile: 100%;
+$font-size-freg-name: small;
+$font-size-freg-name-mobile: x-small;
+$font-size-heatmap-label: 12px;
+$font-size-casas-title: 12px;
+$font-size-markers-loading: 14px;
+$font-size-reg-textbox: 15px;
+
+// Responsive font sizes for small desktop screens
+// Small desktop (max-width: 1280px)
+$font-size-body-small-desktop: 1.4rem;
+$font-size-h1-small-desktop: 2.6rem;
+$font-size-h2-small-desktop: 2rem;
+$font-size-h3-small-desktop: 1.6rem;
+$font-size-h4-small-desktop: 1.4rem;
+$font-size-h5-small-desktop: 1.2rem;
+$font-size-h6-small-desktop: 1rem;
+
+// Small desktop responsive component sizes
+$font-size-language-selector-small-desktop: 1.1rem;
+$font-size-controls-toggle-small-desktop: 14px;
+$font-size-explore-arrow-small-desktop: 22px;
+$font-size-toggle-label-small-desktop: 13px;
+$font-size-btn-small-desktop: 15px;
+$font-size-footer-h3-small-desktop: 1.8rem;
+$font-size-al-count-small-desktop: 1.8em;
+$font-size-full-text-title-small-desktop: 3.2em;
+$font-size-full-text-h2-small-desktop: 2.2em;
+$font-size-intro-description-small-desktop: 1.6em;
+$font-size-paragraph-intro-small-desktop: 1.1em;
+$font-size-city-switcher-small-desktop: 0.95rem;
+$font-size-city-switcher-text-small-desktop: 1.3rem;
+$font-size-tooltip-small-desktop: 0.7em;
+$font-size-markers-loading-small-desktop: 13px;
+$font-size-regulation-small-desktop: 1.1em;
+$font-size-reg-textbox-small-desktop: 14px;
+$font-size-loading-message-small-desktop: 1.1em;
+
 // Font line heights
 // Divide the the given line height by the font size to give an unitless line height
 // @example {design line height} / {font size} = {unitless lineheight}
