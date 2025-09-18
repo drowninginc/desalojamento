@@ -448,7 +448,10 @@ export const setMapLanguage = (map: mapboxgl.Map, language: string) => {
         // Check if this is likely a place label layer
         const isLabelLayer = labelLayerPatterns.some(
           pattern =>
-            layer.id.includes(pattern) || (layer.source && typeof layer.source === 'string' && layer.source.includes('composite')),
+            layer.id.includes(pattern) ||
+            (layer.source &&
+              typeof layer.source === 'string' &&
+              layer.source.includes('composite')),
         )
 
         if (isLabelLayer) {
