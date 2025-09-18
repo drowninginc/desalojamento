@@ -49,6 +49,7 @@ import {
   addSourcesAndLayersForBothCities,
   addCentroidMarkers,
   switchCity,
+  setMapLanguage,
 } from './extras/helpers'
 
 import { createScrollTriggers } from './extras/triggers'
@@ -276,6 +277,9 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
         console.log('Map loaded successfully')
         onMapLoad?.(true)
 
+        // Set initial map language
+        setMapLanguage(map.current, language)
+
         // Add sources and layers for both cities
         addSourcesAndLayersForBothCities(
           map.current,
@@ -333,6 +337,14 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
       checkMapLoaded()
     }
   }, [citiesData.isLoaded, isMobile])
+
+  // Handle language changes
+  useEffect(() => {
+    if (isMapInitialized.current && map.current && map.current.loaded()) {
+      console.log(`Changing map language to: ${language}`)
+      setMapLanguage(map.current, language)
+    }
+  }, [language])
 
   // Handle city changes without recreating the map
   useEffect(() => {

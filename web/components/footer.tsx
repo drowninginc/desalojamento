@@ -12,7 +12,7 @@ const Footer = ({ language, city }: Props) => {
     <footer className="footer">
       <div className="footer__content">
         <div className="explore-button-wrapper">
-          <Link href="/explore" className="btn btn-primary">
+          <Link href={`/explore?language=${language}&city=${city}`} className="btn btn-primary">
             {getTranslationString('explore-button', language, city)}
           </Link>
         </div>

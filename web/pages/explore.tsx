@@ -2,6 +2,7 @@ import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import translation from '../libs/translation'
 import CitySwitcher from '../components/citySwitcher'
 import * as turf from '@turf/turf'
@@ -21,6 +22,8 @@ import {
   addCentroidMarkers,
   setMarkerVisibility,
   updateMarkerValues,
+  setMapLanguage,
+  debugMapLayers,
 } from '../components/extras/helpers'
 
 // @ts-ignore
@@ -30,8 +33,25 @@ mapboxgl.accessToken =
   'pk.eyJ1Ijoiam9hb2Jlcm5hcmNpc28iLCJhIjoiY2xlNjFmdWo5MDFnZTNvcHBoZmtwa2gyMSJ9.yDJ6Z-4Ig2XJC4IK4CJ4MQ'
 
 const Explore = () => {
-  const [language, setLanguage] = useState('pt')
-  const [city, setCity] = useState<'Lisbon' | 'Porto'>('Lisbon')
+  const router = useRouter()
+
+  // Get language and city from URL parameters, with fallbacks
+  const getInitialLanguage = () => {
+    if (typeof window !== 'undefined' && router.query.language) {
+      return router.query.language as string
+    }
+    return 'pt' // fallback
+  }
+
+  const getInitialCity = () => {
+    if (typeof window !== 'undefined' && router.query.city) {
+      return router.query.city as 'Lisbon' | 'Porto'
+    }
+    return 'Lisbon' // fallback
+  }
+
+  const [language, setLanguage] = useState(getInitialLanguage())
+  const [city, setCity] = useState<'Lisbon' | 'Porto'>(getInitialCity())
   const [controlsOpen, setControlsOpen] = useState(false)
 
   const mapContainer = useRef<HTMLDivElement>(null)
@@ -51,6 +71,18 @@ const Explore = () => {
   useEffect(() => {
     setIsMobile(window.innerWidth <= 768)
   }, [])
+
+  // Update state when router query changes
+  useEffect(() => {
+    if (router.isReady) {
+      if (router.query.language && router.query.language !== language) {
+        setLanguage(router.query.language as string)
+      }
+      if (router.query.city && router.query.city !== city) {
+        setCity(router.query.city as 'Lisbon' | 'Porto')
+      }
+    }
+  }, [router.isReady, router.query.language, router.query.city])
 
   // Override bounds for Explore using external city bounding boxes (Nominatim/OSM),
   // expressed as [[west, south], [east, north]]. We add padding later.
@@ -161,6 +193,29 @@ const Explore = () => {
         hotelsPaint,
       )
 
+      // Set initial map language after sources and layers are added
+      // Wait for the styledata event to ensure the map is fully ready
+      const setLanguageOnStyleLoad = () => {
+        if (mapRef.current && mapRef.current.loaded()) {
+          console.log('Setting initial explore map language to:', language)
+          debugMapLayers(mapRef.current)
+          setMapLanguage(mapRef.current, language)
+          // Remove the event listener after first use
+          mapRef.current.off('styledata', setLanguageOnStyleLoad)
+        }
+      }
+
+      // Listen for styledata event
+      mapRef.current.on('styledata', setLanguageOnStyleLoad)
+
+      // Also set a fallback timeout in case styledata doesn't fire
+      setTimeout(() => {
+        if (mapRef.current && mapRef.current.loaded()) {
+          console.log('Fallback: Setting initial explore map language to:', language)
+          setMapLanguage(mapRef.current, language)
+        }
+      }, 500)
+
       // Show all AL points (no date filter) for both cities
       ;(['Lisbon', 'Porto'] as const).forEach(c => {
         if (mapRef.current && mapRef.current.getLayer(`${c}-al`)) {
@@ -202,6 +257,19 @@ const Explore = () => {
   useEffect(() => {
     initializeMap()
   }, [initializeMap])
+
+  // Handle language changes
+  useEffect(() => {
+    if (mapRef.current && mapRef.current.loaded()) {
+      console.log(`Changing explore map language to: ${language}`)
+      // Add a small delay to ensure the map is fully ready
+      setTimeout(() => {
+        if (mapRef.current && mapRef.current.loaded()) {
+          setMapLanguage(mapRef.current, language)
+        }
+      }, 50)
+    }
+  }, [language])
 
   // City switching (custom for Explore to avoid internal fits)
   useEffect(() => {
@@ -381,7 +449,10 @@ const Explore = () => {
             className={`explore-controls-panel explore-filters glassy ${
               controlsOpen ? 'is-open' : ''
             }`}>
-            <a href="/" className="explore-logo" title="Voltar à página principal">
+            <a
+              href={`/?language=${language}&city=${city}`}
+              className="explore-logo"
+              title="Voltar à página principal">
               <span className="explore-back-arrow">←</span>
               <Image src={logoImage} alt="Desalojamento" height={40} layout="intrinsic" priority />
             </a>

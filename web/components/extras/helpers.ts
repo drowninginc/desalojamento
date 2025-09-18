@@ -411,6 +411,81 @@ export const formatNumber = (value: number, language: string) => {
   return language === 'en' ? `${roundedValue}k` : `${roundedValue} mil`
 }
 
+// Function to change map language using setLayoutProperty
+export const setMapLanguage = (map: mapboxgl.Map, language: string) => {
+  if (!map || !map.loaded()) {
+    console.warn('Map not loaded, cannot set language')
+    return
+  }
+
+  // Get all layers in the map
+  const style = map.getStyle()
+  if (!style || !style.layers) {
+    console.warn('Map style or layers not available')
+    return
+  }
+
+  // List of common place label layer IDs in Mapbox styles
+  const labelLayerPatterns = [
+    'country-label',
+    'state-label',
+    'settlement-major-label',
+    'settlement-minor-label',
+    'settlement-subdivision-label',
+    'place-city-label',
+    'place-town-label',
+    'place-village-label',
+    'place',
+    'place-label',
+    'water-label',
+    'waterway-label',
+  ]
+
+  let updatedLayersCount = 0
+
+  // Update text-field for all symbol layers that have text-field property
+  style.layers.forEach(layer => {
+    if (layer.type === 'symbol' && layer.layout && layer.layout['text-field']) {
+      try {
+        // Check if this is likely a place label layer
+        const isLabelLayer = labelLayerPatterns.some(
+          pattern =>
+            layer.id.includes(pattern) || (layer.source && layer.source.includes('composite')),
+        )
+
+        if (isLabelLayer) {
+          // Set language based on Mapbox Streets v8 tileset language codes
+          // Portuguese uses 'pt' code, English uses 'en' code
+          const languageExpression =
+            language === 'pt'
+              ? ['coalesce', ['get', 'name_pt'], ['get', 'name']]
+              : ['coalesce', ['get', 'name_en'], ['get', 'name']]
+
+          map.setLayoutProperty(layer.id, 'text-field', languageExpression)
+          updatedLayersCount++
+        }
+      } catch (error) {
+        // If the specific language field doesn't exist, continue with next layer
+        console.warn(`Could not set language for layer ${layer.id}:`, error)
+      }
+    }
+  })
+}
+
+// Debug function to list all available layers
+export const debugMapLayers = (map: mapboxgl.Map) => {
+  if (!map || !map.loaded()) {
+    console.warn('Map not loaded, cannot debug layers')
+    return
+  }
+
+  const style = map.getStyle()
+  if (!style || !style.layers) {
+    console.warn('Map style or layers not available')
+    return
+  }
+}
+
 export const changeBoundaryBox = (map, setBoundaryBox, boundaryBox) => {
   map.fitBounds(boundaryBox)
   setBoundaryBox(boundaryBox)
