@@ -1,6 +1,6 @@
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
-import { cityDefinitions, freguesiaPaint, alPaintMegaHost } from './mapStyles'
+import { cityDefinitions, freguesiaPaint, alPaintMegaHost, hotelsPaint } from './mapStyles'
 gsap.registerPlugin(ScrollTrigger)
 
 import {
@@ -71,6 +71,7 @@ export const createScrollTriggers = (
   setTriggerMegaHostAnimation,
   imageWrappers,
   regulationSection,
+  actionLastRegulationZoom,
 ) => {
   ScrollTrigger.create({
     id: 'map-pin',
@@ -173,15 +174,72 @@ export const createScrollTriggers = (
   })
 
   ScrollTrigger.create({
-    id: 'hotels-visibility',
-    trigger: actionIntro.current,
+    id: 'last-regulation-zoom',
+    trigger: actionLastRegulationZoom.current,
     start: 'top 70%',
     end: 'top 20%',
+    onLeave: () => {
+      changeBoundaryBox(
+        map.current,
+        setBoundaryBox,
+        isMobile
+          ? cityDefinitions[city].center.boundingBoxMobile
+          : cityDefinitions[city].center.boundingBox,
+      )
+    },
+    onEnterBack: () => {
+      changeBoundaryBox(
+        map.current,
+        setBoundaryBox,
+        isMobile ? cityDefinitions[city].boundingBoxMobile : cityDefinitions[city].boundingBox,
+      )
+    },
+  })
+
+  ScrollTrigger.create({
+    id: 'hotels-visibility',
+    trigger: actionIntro.current,
+    start: 'top 95%',
+    end: 'top 20%',
+    markers: true,
+
     onEnter: () => {
-      map.current.setLayoutProperty(`${city}-hotels`, 'visibility', 'visible')
+      // Make AL points a bit faded by reducing their opacity
+      // Set the circle-opacity property for the AL layer to 0.3 (or adjust as needed)
+      if (map.current.getLayer(`${city}-al`)) {
+        map.current.setPaintProperty(`${city}-al`, 'circle-opacity', 0.1)
+      }
+      if (map.current.getLayer(`${city}-hotels`)) {
+        map.current.setPaintProperty(`${city}-hotels`, 'fill-opacity', 1)
+      }
+    },
+    onEnterBack: () => {
+      console.log('onEnterBack')
+      // Use setTimeout to ensure this runs after other triggers that might override the opacity
+      setTimeout(() => {
+        if (map.current.getLayer(`${city}-al`)) {
+          map.current.setPaintProperty(`${city}-al`, 'circle-opacity', 0.1)
+        }
+        if (map.current.getLayer(`${city}-hotels`)) {
+          map.current.setPaintProperty(`${city}-hotels`, 'fill-opacity', 1)
+        }
+      }, 10)
+    },
+    onLeave: () => {
+      if (map.current.getLayer(`${city}-al`)) {
+        map.current.setPaintProperty(`${city}-al`, 'circle-opacity', 1)
+      }
+      if (map.current.getLayer(`${city}-hotels`)) {
+        map.current.setPaintProperty(`${city}-hotels`, 'fill-opacity', hotelsPaint['fill-opacity'])
+      }
     },
     onLeaveBack: () => {
-      map.current.setLayoutProperty(`${city}-hotels`, 'visibility', 'none')
+      if (map.current.getLayer(`${city}-hotels`)) {
+        map.current.setPaintProperty(`${city}-hotels`, 'fill-opacity', 0)
+      }
+      if (map.current.getLayer(`${city}-al`)) {
+        map.current.setPaintProperty(`${city}-al`, 'circle-opacity', 1)
+      }
     },
   })
 
@@ -194,20 +252,10 @@ export const createScrollTriggers = (
       setLayerVisibility(city, map.current, `${city}-freguesia`)
       updateMarkerValues(markers, ['propAL'])
       setMarkerVisibility(markers, 'block', true)
-      changeBoundaryBox(
-        map.current,
-        setBoundaryBox,
-        isMobile ? cityDefinitions[city].boundingBoxMobile : cityDefinitions[city].boundingBox,
-      )
     },
     onEnterBack: () => {
       gsap.to('.plot-full-screen', { opacity: 0, duration: 0.5 })
       updateMarkerValues(markers, ['propAL'])
-      changeBoundaryBox(
-        map.current,
-        setBoundaryBox,
-        isMobile ? cityDefinitions[city].boundingBoxMobile : cityDefinitions[city].boundingBox,
-      )
     },
   })
 
@@ -215,15 +263,6 @@ export const createScrollTriggers = (
     trigger: actionFreguesiaZoom.current,
     start: 'top 70%',
     end: 'top 20%',
-    onEnter: () => {
-      changeBoundaryBox(
-        map.current,
-        setBoundaryBox,
-        isMobile
-          ? cityDefinitions[city].center.boundingBoxMobile
-          : cityDefinitions[city].center.boundingBox,
-      )
-    },
     onEnterBack: () => {
       setLayerVisibility(city, map.current, `${city}-freguesia`)
       updateMarkerValues(markers, ['propAL'])
@@ -327,7 +366,9 @@ export const createScrollTriggers = (
         pin: true,
         onEnter: () => {
           setLayerVisibility(city, map.current, `${city}-al`)
-          map.current.setLayoutProperty(`${city}-hotels`, 'visibility', 'none')
+          if (map.current.getLayer(`${city}-hotels`)) {
+            map.current.setPaintProperty(`${city}-hotels`, 'fill-opacity', 0)
+          }
 
           setMarkerVisibility(markers, 'none')
           changeBoundaryBox(
@@ -365,7 +406,13 @@ export const createScrollTriggers = (
           )
         },
         onLeaveBack: () => {
-          map.current.setLayoutProperty(`${city}-hotels`, 'visibility', 'visible')
+          if (map.current.getLayer(`${city}-hotels`)) {
+            map.current.setPaintProperty(
+              `${city}-hotels`,
+              'fill-opacity',
+              hotelsPaint['fill-opacity'],
+            )
+          }
 
           setLayerVisibility(
             city,

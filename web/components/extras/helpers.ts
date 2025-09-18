@@ -92,9 +92,12 @@ export const addSourcesAndLayersForBothCities = (
       type: 'fill',
       source: `${city}-hotels`,
       layout: {
-        visibility: city === 'Lisbon' ? 'none' : 'none', // Initially hidden for both
+        visibility: 'visible', // Always visible, controlled by opacity
       },
-      paint: hotelsPaint,
+      paint: {
+        ...hotelsPaint,
+        'fill-opacity': 0, // Start with opacity 0 for smooth transitions
+      },
     })
 
     map.addLayer({
@@ -176,9 +179,12 @@ export const addSourcesAndLayers = (
     type: 'fill',
     source: `${city}-hotels`,
     layout: {
-      visibility: 'none',
+      visibility: 'visible', // Always visible, controlled by opacity
     },
-    paint: hotelsPaint,
+    paint: {
+      ...hotelsPaint,
+      'fill-opacity': 0, // Start with opacity 0 for smooth transitions
+    },
   })
 
   map.addLayer({

@@ -657,6 +657,15 @@ a {
   }
 }
 
+@media (min-width: 768px) and (max-width: 1440px) {
+  main {
+    margin-bottom: 85vh !important;
+  }
+  .full-text-box .content-wrapper .text-container h2 {
+    font-size: 2em !important;
+  }
+}
+
 @media (max-width: 768px) {
   .logoLegend {
     font-size: $font-size-logo-legend-mobile;
@@ -677,6 +686,32 @@ a {
 .map-container {
   height: 100vh;
   width: 100%;
+  /* Fix Safari scrollbar issue by ensuring full width coverage */
+  width: 100vw;
+  max-width: 100vw;
+  overflow: hidden;
+}
+
+/* Ensure mapboxgl-canvas fills the entire container */
+.map-container .mapboxgl-canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Safari-specific fix for scrollbar width issues */
+@supports (-webkit-appearance: none) {
+  .map-container {
+    /* Force full viewport width in Safari */
+    width: 100vw !important;
+    max-width: 100vw !important;
+  }
+
+  .map-container .mapboxgl-canvas {
+    /* Ensure canvas covers the full container */
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 100% !important;
+  }
 }
 
 .whole-container {

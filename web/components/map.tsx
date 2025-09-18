@@ -92,6 +92,7 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
   const actionMegaHosts = React.useRef(null!)
   const actionFullAirbnb = React.useRef(null!)
   const actionMap3 = React.useRef(null!)
+  const actionLastRegulationZoom = React.useRef(null!)
 
   const imageWrappers = [useRef(null), useRef(null), useRef(null)]
 
@@ -111,6 +112,33 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
   // Set isMobile state after component mounts to avoid hydration mismatch
   useEffect(() => {
     setIsMobile(window.innerWidth <= 768)
+  }, [])
+
+  // Fix Safari scrollbar issue by handling scrollbar changes
+  useEffect(() => {
+    const handleScrollbarChange = () => {
+      if (map.current && map.current.loaded()) {
+        // Force resize to account for scrollbar changes
+        map.current.resize()
+      }
+    }
+
+    // Listen for scroll events that might indicate scrollbar changes
+    window.addEventListener('scroll', handleScrollbarChange, { passive: true })
+
+    // Also listen for resize events
+    window.addEventListener('resize', handleScrollbarChange)
+
+    // Handle initial scrollbar state after a short delay
+    const timeoutId = setTimeout(() => {
+      handleScrollbarChange()
+    }, 100)
+
+    return () => {
+      window.removeEventListener('scroll', handleScrollbarChange)
+      window.removeEventListener('resize', handleScrollbarChange)
+      clearTimeout(timeoutId)
+    }
   }, [])
 
   const formatDate = value => {
@@ -274,6 +302,13 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
       map.current.on('load', () => {
         onMapLoad?.(true)
 
+        // Fix Safari scrollbar issue by ensuring proper sizing
+        setTimeout(() => {
+          if (map.current) {
+            map.current.resize()
+          }
+        }, 50)
+
         // Set initial map language
         setMapLanguage(map.current, language)
 
@@ -325,6 +360,7 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
           setTriggerMegaHostAnimation,
           imageWrappers,
           regulationRef,
+          actionLastRegulationZoom,
         )
 
         isMapInitialized.current = true
@@ -450,6 +486,7 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
           setTriggerMegaHostAnimation,
           imageWrappers,
           regulationRef,
+          actionLastRegulationZoom,
         )
       }
 
@@ -682,7 +719,7 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
               }}
             />
           </div>
-          <div className="text-box glassy">
+          <div className="text-box glassy" ref={actionLastRegulationZoom}>
             <h2>{getTranslationString('map7-revised-title', language, city)}</h2>
             <div
               dangerouslySetInnerHTML={{
