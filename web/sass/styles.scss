@@ -6,6 +6,8 @@ body {
 }
 
 main {
+  overflow-x: hidden !important;
+
   background-color: $background-color;
   position: relative;
   z-index: 1;
@@ -545,8 +547,7 @@ header {
 
 #layer2 {
   width: 90vw;
-  margin: 10vh auto 0 auto;
-  margin-bottom: 20vh;
+  margin: 10vh auto 20vh auto;
   max-width: 1350px;
 }
 
@@ -581,17 +582,15 @@ header {
 
 .logo {
   padding: 0 2vw;
-  pointer-events: none;
 }
 
 .logoLegend {
   text-align: right;
-  font-family: 'Cooper Lt';
   font-weight: light;
 
   font-size: $font-size-logo-legend;
   color: $color-blue-al;
-  margin-top: -3vw;
+  margin-top: -3vh;
   position: relative;
   z-index: 2;
   pointer-events: auto;
@@ -607,10 +606,16 @@ header {
   text-align: center;
   color: $color-blue-al;
   font-family: 'Cooper Lt';
-  margin-top: 2em;
+  margin: 2em auto 0;
   letter-spacing: 0.01em;
   word-break: normal;
   hyphens: none;
+}
+
+@media (min-width: 768px) {
+  .introDescription {
+    max-width: 80vw;
+  }
 }
 
 @media (max-width: 768px) {
@@ -645,35 +650,17 @@ a {
     right: $global-spacing-sm;
     z-index: 1;
   }
-  #layer2 {
-    position: fixed;
-    top: 0;
-    left: 50%; /* Center horizontally */
-    transform: translateX(-50%) translate3d(0, 0, 0) !important; /* Adjust transform */
-    width: 90%;
-    z-index: -1;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  #layer3 {
-    margin-top: 50vh;
-  }
+
   .logo {
     margin: 0 auto;
     padding: 0;
-  }
-
-  .logoLegend {
-    position: relative;
-    z-index: 2;
-    pointer-events: auto;
   }
 }
 
 @media (max-width: 768px) {
   .logoLegend {
     font-size: $font-size-logo-legend-mobile;
-    margin-top: 2vh;
+    margin-top: 0vh;
   }
 }
 
@@ -970,6 +957,9 @@ a.button {
 }
 
 @media (max-width: 768px) {
+  #layer2 {
+    margin-bottom: 10vh;
+  }
   .centroid-marker {
     .animation-wrapper {
       width: 60px;
@@ -1736,7 +1726,7 @@ h2 {
 
 @media (max-width: 768px) {
   .arrow-container {
-    top: 2em;
+    top: 6vh;
   }
 }
 
