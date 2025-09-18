@@ -441,8 +441,6 @@ export const setMapLanguage = (map: mapboxgl.Map, language: string) => {
     'waterway-label',
   ]
 
-  let updatedLayersCount = 0
-
   // Update text-field for all symbol layers that have text-field property
   style.layers.forEach(layer => {
     if (layer.type === 'symbol' && layer.layout && layer.layout['text-field']) {
@@ -450,7 +448,7 @@ export const setMapLanguage = (map: mapboxgl.Map, language: string) => {
         // Check if this is likely a place label layer
         const isLabelLayer = labelLayerPatterns.some(
           pattern =>
-            layer.id.includes(pattern) || (layer.source && layer.source.includes('composite')),
+            layer.id.includes(pattern) || (layer.source && typeof layer.source === 'string' && layer.source.includes('composite')),
         )
 
         if (isLabelLayer) {
@@ -462,7 +460,6 @@ export const setMapLanguage = (map: mapboxgl.Map, language: string) => {
               : ['coalesce', ['get', 'name_en'], ['get', 'name']]
 
           map.setLayoutProperty(layer.id, 'text-field', languageExpression)
-          updatedLayersCount++
         }
       } catch (error) {
         // If the specific language field doesn't exist, continue with next layer

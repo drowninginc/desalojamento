@@ -216,8 +216,6 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
       return
     }
 
-    console.log('Initializing map with both cities data')
-
     // Reset state
     setNormalizedDate(0)
     setBarWidth('0%')
@@ -274,7 +272,6 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
       map.current = createMap(mapContainer.current, cityDefinitions, setBoundaryBox, city, isMobile)
 
       map.current.on('load', () => {
-        console.log('Map loaded successfully')
         onMapLoad?.(true)
 
         // Set initial map language
@@ -341,7 +338,6 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
   // Handle language changes
   useEffect(() => {
     if (isMapInitialized.current && map.current && map.current.loaded()) {
-      console.log(`Changing map language to: ${language}`)
       setMapLanguage(map.current, language)
     }
   }, [language])
@@ -351,8 +347,6 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
     if (!isMapInitialized.current || !map.current || previousCityRef.current === city) {
       return
     }
-
-    console.log(`Switching from ${previousCityRef.current} to ${city}`)
 
     // Clean up previous markers
     centroidMarkersRef.current.forEach(marker => {

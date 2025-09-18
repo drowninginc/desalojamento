@@ -169,7 +169,6 @@ const Explore = () => {
         const c = mapRef.current.getCenter()
         const z = mapRef.current.getZoom()
         // eslint-disable-next-line no-console
-        console.log('Explore center/zoom (load):', { center: [c.lng, c.lat], zoom: z })
       } catch (e) {}
 
       // Log after each interaction-driven move
@@ -179,7 +178,6 @@ const Explore = () => {
           const z = mapRef.current?.getZoom()
           if (c != null && z != null) {
             // eslint-disable-next-line no-console
-            console.log('Explore center/zoom (moveend):', { center: [c.lng, c.lat], zoom: z })
           }
         } catch (e) {}
       })
@@ -197,7 +195,6 @@ const Explore = () => {
       // Wait for the styledata event to ensure the map is fully ready
       const setLanguageOnStyleLoad = () => {
         if (mapRef.current && mapRef.current.loaded()) {
-          console.log('Setting initial explore map language to:', language)
           debugMapLayers(mapRef.current)
           setMapLanguage(mapRef.current, language)
           // Remove the event listener after first use
@@ -211,7 +208,6 @@ const Explore = () => {
       // Also set a fallback timeout in case styledata doesn't fire
       setTimeout(() => {
         if (mapRef.current && mapRef.current.loaded()) {
-          console.log('Fallback: Setting initial explore map language to:', language)
           setMapLanguage(mapRef.current, language)
         }
       }, 500)
@@ -261,7 +257,6 @@ const Explore = () => {
   // Handle language changes
   useEffect(() => {
     if (mapRef.current && mapRef.current.loaded()) {
-      console.log(`Changing explore map language to: ${language}`)
       // Add a small delay to ensure the map is fully ready
       setTimeout(() => {
         if (mapRef.current && mapRef.current.loaded()) {
