@@ -201,7 +201,6 @@ export const createScrollTriggers = (
     trigger: actionIntro.current,
     start: 'top 95%',
     end: 'top 20%',
-    markers: true,
 
     onEnter: () => {
       // Make AL points a bit faded by reducing their opacity
