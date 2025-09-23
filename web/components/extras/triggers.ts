@@ -167,9 +167,6 @@ export const createScrollTriggers = (
     onEnter: () => gsap.to('.plot-full-screen', { opacity: 1, duration: 0.5 }),
     onEnterBack: () => {
       gsap.to('.plot-full-screen', { opacity: 1, duration: 0.5 })
-      setLayerVisibility(city, map.current, `${city}-al`)
-      abortMarkerAnimations(markers)
-      setMarkerVisibility(markers, 'none')
     },
   })
 
@@ -212,26 +209,7 @@ export const createScrollTriggers = (
         map.current.setPaintProperty(`${city}-hotels`, 'fill-opacity', 1)
       }
     },
-    onEnterBack: () => {
-      console.log('onEnterBack')
-      // Use setTimeout to ensure this runs after other triggers that might override the opacity
-      setTimeout(() => {
-        if (map.current.getLayer(`${city}-al`)) {
-          map.current.setPaintProperty(`${city}-al`, 'circle-opacity', 0.1)
-        }
-        if (map.current.getLayer(`${city}-hotels`)) {
-          map.current.setPaintProperty(`${city}-hotels`, 'fill-opacity', 1)
-        }
-      }, 10)
-    },
-    onLeave: () => {
-      if (map.current.getLayer(`${city}-al`)) {
-        map.current.setPaintProperty(`${city}-al`, 'circle-opacity', 1)
-      }
-      if (map.current.getLayer(`${city}-hotels`)) {
-        map.current.setPaintProperty(`${city}-hotels`, 'fill-opacity', hotelsPaint['fill-opacity'])
-      }
-    },
+
     onLeaveBack: () => {
       if (map.current.getLayer(`${city}-hotels`)) {
         map.current.setPaintProperty(`${city}-hotels`, 'fill-opacity', 0)
@@ -247,6 +225,12 @@ export const createScrollTriggers = (
     start: 'top 70%',
     end: 'top 20%',
     onEnter: () => {
+      if (map.current.getLayer(`${city}-al`)) {
+        map.current.setPaintProperty(`${city}-al`, 'circle-opacity', 1)
+      }
+      if (map.current.getLayer(`${city}-hotels`)) {
+        map.current.setPaintProperty(`${city}-hotels`, 'fill-opacity', hotelsPaint['fill-opacity'])
+      }
       gsap.to('.plot-full-screen', { opacity: 0, duration: 0.5 })
       setLayerVisibility(city, map.current, `${city}-freguesia`)
       updateMarkerValues(markers, ['propAL'])
@@ -255,6 +239,19 @@ export const createScrollTriggers = (
     onEnterBack: () => {
       gsap.to('.plot-full-screen', { opacity: 0, duration: 0.5 })
       updateMarkerValues(markers, ['propAL'])
+    },
+    onLeaveBack: () => {
+      setLayerVisibility(city, map.current, `${city}-al`)
+      abortMarkerAnimations(markers)
+      setMarkerVisibility(markers, 'none')
+      setTimeout(() => {
+        if (map.current.getLayer(`${city}-al`)) {
+          map.current.setPaintProperty(`${city}-al`, 'circle-opacity', 0.1)
+        }
+        if (map.current.getLayer(`${city}-hotels`)) {
+          map.current.setPaintProperty(`${city}-hotels`, 'fill-opacity', 1)
+        }
+      }, 10)
     },
   })
 
