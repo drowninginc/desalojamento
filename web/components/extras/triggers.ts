@@ -36,6 +36,11 @@ const setLayerVisibility = (
     }
   })
 
+  // Ensure hotels layer is always visible (controlled by opacity, not visibility)
+  if (map.getLayer(`${city}-hotels`)) {
+    map.setLayoutProperty(`${city}-hotels`, 'visibility', 'visible')
+  }
+
   if (visibleLayerId != `${city}-al-megahosts`) {
     map.setLayoutProperty(`${city}-al`, 'visibility', 'visible')
     map.setPaintProperty(`${city}-al`, 'circle-opacity', visibleLayerId === `${city}-al` ? 1 : 0.2)

@@ -106,6 +106,7 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
   const [tooltipPosition, setTooltipPosition] = React.useState({ x: 0, y: 0 })
   const [currentTooltipKey, setCurrentTooltipKey] = React.useState('tooltip-content')
   const [isLoadingMarkers, setIsLoadingMarkers] = React.useState(false)
+  const [isCitySwitching, setIsCitySwitching] = React.useState(false)
   const monthsTotalRef = useRef<number>(132)
   const map2ContainerRef = useRef<HTMLDivElement>(null)
 
@@ -113,6 +114,32 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
   useEffect(() => {
     setIsMobile(window.innerWidth <= 768)
   }, [])
+
+  // Prevent scroll jumping during city switching
+  useEffect(() => {
+    if (isCitySwitching) {
+      // Store current scroll position
+      const currentScrollY = window.scrollY
+
+      // Prevent scrolling by setting overflow hidden temporarily
+      const originalOverflow = document.body.style.overflow
+      document.body.style.overflow = 'hidden'
+
+      // Force scroll position to stay the same
+      const preventScroll = () => {
+        window.scrollTo(0, currentScrollY)
+      }
+
+      // Add scroll prevention
+      window.addEventListener('scroll', preventScroll, { passive: false })
+
+      return () => {
+        // Clean up scroll prevention
+        window.removeEventListener('scroll', preventScroll)
+        document.body.style.overflow = originalOverflow
+      }
+    }
+  }, [isCitySwitching])
 
   // Fix Safari scrollbar issue by handling scrollbar changes
   useEffect(() => {
@@ -384,6 +411,12 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
       return
     }
 
+    // Set city switching state to prevent scroll jumping
+    setIsCitySwitching(true)
+
+    // Store current scroll position before making changes
+    const currentScrollY = window.scrollY
+
     // Clean up previous markers
     centroidMarkersRef.current.forEach(marker => {
       if (marker && marker.remove) {
@@ -421,7 +454,17 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
         centroidMarkersRef.current = centroidMarkers
 
         // Update scroll triggers for new city
+        // Kill all existing triggers first
         ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+
+        // Ensure hotels layer is properly initialized for the new city
+        if (map.current.getLayer(`${city}-hotels`)) {
+          map.current.setLayoutProperty(`${city}-hotels`, 'visibility', 'visible')
+          map.current.setPaintProperty(`${city}-hotels`, 'fill-opacity', 0)
+        }
+
+        // Refresh ScrollTrigger to clear any cached calculations
+        ScrollTrigger.refresh()
 
         const [minPop, maxPop] = getMinMax(newCityData.freguesiaData, 'diff_pop_2011')
         const [minAloj, maxAloj] = getMinMax(newCityData.freguesiaData, 'diff_alojamentos_2011')
@@ -488,6 +531,19 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
           regulationRef,
           actionLastRegulationZoom,
         )
+
+        // Restore scroll position after ScrollTriggers are recreated
+        // Use requestAnimationFrame to ensure DOM is updated
+        requestAnimationFrame(() => {
+          window.scrollTo(0, currentScrollY)
+          // Refresh ScrollTrigger again to ensure proper positioning
+          ScrollTrigger.refresh()
+
+          // Add a small delay before allowing scroll again to ensure all animations are complete
+          setTimeout(() => {
+            setIsCitySwitching(false)
+          }, 100)
+        })
       }
 
       // Hide loading state
@@ -650,7 +706,7 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
         <div ref={alCount} className="al-count">
           {getMonthlyCount(normalizedDate) + ' ALs'}
         </div>
-        {isLoadingMarkers && (
+        {(isLoadingMarkers || isCitySwitching) && (
           <div className="markers-loading">
             <div className="loading-spinner"></div>
           </div>

@@ -257,6 +257,13 @@ export const switchCity = (
   // Show AL layer for new city (others stay hidden until scroll triggers activate them)
   map.setLayoutProperty(`${newCity}-al`, 'visibility', 'visible')
 
+  // Show hotels layer for new city (always visible, controlled by opacity)
+  if (map.getLayer(`${newCity}-hotels`)) {
+    map.setLayoutProperty(`${newCity}-hotels`, 'visibility', 'visible')
+    // Reset hotels opacity to 0 initially (will be controlled by scroll triggers)
+    map.setPaintProperty(`${newCity}-hotels`, 'fill-opacity', 0)
+  }
+
   // Update map bounds to new city
   const bounds = isMobile
     ? cityDefinitions[newCity].boundingBoxMobile || cityDefinitions[newCity].boundingBox
