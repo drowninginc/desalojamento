@@ -107,6 +107,7 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
   const [currentTooltipKey, setCurrentTooltipKey] = React.useState('tooltip-content')
   const [isLoadingMarkers, setIsLoadingMarkers] = React.useState(false)
   const [isCitySwitching, setIsCitySwitching] = React.useState(false)
+  const [helpBubbleDismissed, setHelpBubbleDismissed] = React.useState(false)
   const monthsTotalRef = useRef<number>(132)
   const map2ContainerRef = useRef<HTMLDivElement>(null)
 
@@ -388,6 +389,8 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
           imageWrappers,
           regulationRef,
           actionLastRegulationZoom,
+          helpBubbleDismissed,
+          setHelpBubbleDismissed,
         )
 
         isMapInitialized.current = true
@@ -530,6 +533,8 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
           imageWrappers,
           regulationRef,
           actionLastRegulationZoom,
+          helpBubbleDismissed,
+          setHelpBubbleDismissed,
         )
 
         // Restore scroll position after ScrollTriggers are recreated

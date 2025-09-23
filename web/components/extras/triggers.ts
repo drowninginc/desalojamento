@@ -77,6 +77,8 @@ export const createScrollTriggers = (
   imageWrappers,
   regulationSection,
   actionLastRegulationZoom,
+  helpBubbleDismissed,
+  setHelpBubbleDismissed,
 ) => {
   ScrollTrigger.create({
     id: 'map-pin',
@@ -130,13 +132,19 @@ export const createScrollTriggers = (
         delay: 0.2,
         ease: 'back.out(1.7)',
       })
-      // Sequential animation: help-bubble appears after city-switcher
-      gsap.to('.help-bubble', {
-        opacity: 1,
-        duration: 0.5,
-        delay: 0.8, // 0.2 (city-switcher delay) + 0.6 (city-switcher duration)
-        ease: 'power2.out',
-      })
+      // Only show help-bubble if it hasn't been dismissed yet
+      console.log('help-bubble', helpBubbleDismissed)
+
+      if (!helpBubbleDismissed) {
+        console.log('help-bubble', helpBubbleDismissed)
+
+        gsap.to('.help-bubble', {
+          opacity: 1,
+          duration: 0.5,
+          delay: 0.8, // 0.2 (city-switcher delay) + 0.6 (city-switcher duration)
+          ease: 'power2.out',
+        })
+      }
     },
     onLeave: () => {
       gsap.to('.progress-bar', { opacity: 0, duration: 0.5, delay: 0.2 })
@@ -146,8 +154,8 @@ export const createScrollTriggers = (
     },
     onLeaveBack: () => {
       gsap.to('.progress-bar', { opacity: 0, duration: 0.5, delay: 0.2 })
-      // Kill any ongoing help-bubble animations and hide it first, then city-switcher
       gsap.killTweensOf('.help-bubble')
+      setHelpBubbleDismissed(true)
       gsap.to('.help-bubble', {
         opacity: 0,
         duration: 0.3,
@@ -316,18 +324,11 @@ export const createScrollTriggers = (
     onEnter: () => {
       // Kill any ongoing help-bubble animations and hide it
       gsap.killTweensOf('.help-bubble')
+      setHelpBubbleDismissed(true)
       gsap.to('.help-bubble', {
         opacity: 0,
         duration: 0.3,
         ease: 'power2.in',
-      })
-    },
-    onLeaveBack: () => {
-      // Show help-bubble
-      gsap.to('.help-bubble', {
-        opacity: 1,
-        duration: 0.5,
-        ease: 'power2.out',
       })
     },
   })
