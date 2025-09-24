@@ -88,7 +88,7 @@ const Linechart = ({ language, city, triggerAnimation }: Props) => {
                     x={d => xScale(getX(d))}
                     y={d => yScale(getY(d))}
                     stroke={'#012169'}
-                    strokeWidth={4}
+                    strokeWidth={3}
                     strokeDasharray="10,15"
                     style={animationProps}
                   />
@@ -98,7 +98,7 @@ const Linechart = ({ language, city, triggerAnimation }: Props) => {
                     x={d => xScale(getX(d))}
                     y={d => yScale(getY(d))}
                     stroke="#26603a"
-                    strokeWidth={4}
+                    strokeWidth={3}
                     strokeDasharray={lineLength}
                     style={animationProps}
                   />

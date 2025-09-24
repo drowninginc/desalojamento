@@ -858,9 +858,7 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
               </div>
             </div>
           </div>
-          <div ref={actionFreguesiaZoom} className="text-box glassy">
-            {getTranslationString('actionFreguesia-zoom', language, city)}
-          </div>
+
           <div ref={actionFreguesiaAL} className="text-box glassy">
             <h2>{getTranslationString('actionFreguesiaAL-title', language, city)}</h2>
             {getTranslationString('actionFreguesiaAL', language, city)}

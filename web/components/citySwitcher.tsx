@@ -79,7 +79,9 @@ const CitySwitcher = ({ city, setCity }: Props) => {
           value="Lisbon"
           c-option="1"
           checked={city === 'Lisbon'}
-          onChange={() => {}} // Controlled by touch/click handlers
+          onChange={() => {
+            /* Controlled by touch/click handlers */
+          }}
           tabIndex={-1} // Remove from tab order since label handles interaction
         />
         <span className="city-switcher__text">Lisboa</span>
@@ -95,7 +97,9 @@ const CitySwitcher = ({ city, setCity }: Props) => {
           value="Porto"
           c-option="2"
           checked={city === 'Porto'}
-          onChange={() => {}} // Controlled by touch/click handlers
+          onChange={() => {
+            /* Controlled by touch/click handlers */
+          }}
           tabIndex={-1} // Remove from tab order since label handles interaction
         />
         <span className="city-switcher__text">Porto</span>
