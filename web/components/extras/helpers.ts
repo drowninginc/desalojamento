@@ -311,7 +311,15 @@ export const addCentroidMarkers = (map, data, properties) => {
         } else if (property === 'diff_pop_2011') {
           iconElement.innerText = '👪'
         } else if (property === 'diff_alojamentos_2011') {
-          iconElement.innerText = '🏠'
+          const houseImg = document.createElement('img')
+          houseImg.src = './static/images/casa_verde.png'
+          houseImg.alt = 'House'
+          houseImg.style.width = '1.2em'
+          houseImg.style.height = '1.2em'
+          houseImg.style.display = 'block'
+          houseImg.style.objectFit = 'contain'
+          houseImg.style.margin = '0 auto'
+          iconElement.appendChild(houseImg)
         }
 
         const textElement = document.createElement('div')
