@@ -89,7 +89,7 @@ const Linechart = ({ language, city, triggerAnimation }: Props) => {
                     y={d => yScale(getY(d))}
                     stroke={'#012169'}
                     strokeWidth={4}
-                    strokeDasharray={lineLength}
+                    strokeDasharray="10,15"
                     style={animationProps}
                   />
                   <AnimatedLinePath

@@ -40,7 +40,7 @@ p {
 
 .glassy {
   background: rgba(255, 255, 255, 0.3);
-  border-radius: 5px;
+  border-radius: 8px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(5.9px);
   -webkit-backdrop-filter: blur(5.9px);
@@ -168,7 +168,7 @@ header {
   width: 100%;
   background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(10px);
-  border-radius: 16px;
+  border-radius: 8px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
   padding: 12px 14px;
 }
@@ -832,7 +832,7 @@ a.button {
   z-index: 20; // Ensure it's above other elements
   background: rgba(255, 255, 255, 0.8); // Optional: Add a background for better visibility
   padding: 10px;
-  border-radius: 5px;
+  border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   opacity: 0; // Start hidden
   transition: opacity 0.5s ease-in-out;
@@ -867,7 +867,7 @@ a.button {
 .centroid-marker {
   opacity: 0;
   background: rgba(255, 255, 255, 0.7);
-  border-radius: 5px;
+  border-radius: 8px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
@@ -1350,7 +1350,7 @@ h2 {
     background: #0045db;
     color: #fff;
     padding: 0.6em 0.6em;
-    border-radius: 5px;
+    border-radius: 8px;
     opacity: 0;
     box-shadow: 0 4px 20px rgba(37, 99, 235, 0.25), 0 2px 8px rgba(0, 0, 0, 0.15);
     display: block;
@@ -1391,6 +1391,7 @@ h2 {
   height: 70px;
   box-sizing: border-box;
   padding: 0px 12px 0px;
+  touch-action: manipulation; /* Improve touch response */
   border: none;
   border-radius: 99em;
   font-size: $font-size-base;
@@ -1502,15 +1503,31 @@ h2 {
   box-sizing: border-box;
   border-radius: 99em;
   opacity: 1;
+  touch-action: manipulation; /* Prevents double-tap zoom and improves touch response */
+  -webkit-tap-highlight-color: transparent; /* Remove highlight on mobile */
   transition: all 160ms;
   position: relative; /* Ensure proper positioning context */
 
-  &:hover {
-    --c: #0052f5;
-    cursor: pointer;
+  // Only apply hover effects on devices that can actually hover (non-touch)
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      --c: #0052f5;
+      cursor: pointer;
 
-    .city-switcher__text {
-      transform: scale(1.2);
+      .city-switcher__text {
+        transform: scale(1.2);
+      }
+    }
+  }
+
+  // Active/pressed state for touch devices
+  @media (hover: none) and (pointer: coarse) {
+    &:active {
+      --c: #0052f5;
+
+      .city-switcher__text {
+        transform: scale(1.1);
+      }
     }
   }
 
