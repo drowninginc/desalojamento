@@ -9,8 +9,8 @@ import * as turf from '@turf/turf'
 import logoImage from '../components/images/desalojamento_logo.png'
 import {
   cityDefinitions,
-  alPaint,
-  alPaintMegaHost,
+  alPaintExplore,
+  alPaintMegaHostExplore,
   freguesiaPaint,
   hotelsPaint,
 } from '../components/extras/mapStyles'
@@ -185,9 +185,9 @@ const Explore = () => {
       addSourcesAndLayersForBothCities(
         mapRef.current,
         citiesData,
-        alPaint,
+        alPaintExplore,
         freguesiaPaint,
-        alPaintMegaHost,
+        alPaintMegaHostExplore,
         hotelsPaint,
       )
 
@@ -334,15 +334,27 @@ const Explore = () => {
       'visibility',
       showMegahostColors ? 'visible' : 'none',
     )
+    // Set megahost opacity
+    if (mapRef.current.getLayer(`${city}-al-megahosts`)) {
+      mapRef.current.setPaintProperty(
+        `${city}-al-megahosts`,
+        'circle-opacity',
+        showMegahostColors ? 1 : 0,
+      )
+    }
     mapRef.current.setLayoutProperty(
       `${city}-hotels`,
       'visibility',
       showHotels ? 'visible' : 'none',
     )
+    // Also set the opacity when switching cities
+    if (mapRef.current.getLayer(`${city}-hotels`)) {
+      mapRef.current.setPaintProperty(`${city}-hotels`, 'fill-opacity', showHotels ? 0.4 : 0)
+    }
     // Ensure AL layer shows all points for the newly selected city
     if (mapRef.current.getLayer(`${city}-al`)) {
       mapRef.current.setFilter(`${city}-al`, ['<=', ['get', 'normalized_date'], 1])
-      mapRef.current.setPaintProperty(`${city}-al`, 'circle-opacity', 1)
+      mapRef.current.setPaintProperty(`${city}-al`, 'circle-opacity', showMegahostColors ? 0.3 : 1)
     }
 
     previousCityRef.current = city
@@ -399,6 +411,15 @@ const Explore = () => {
         showMegahostColors ? 1 : 0,
       )
     }
+
+    // Also adjust the regular AL layer opacity when megahosts are shown
+    if (mapRef.current.getLayer(`${targetCity}-al`)) {
+      mapRef.current.setPaintProperty(
+        `${targetCity}-al`,
+        'circle-opacity',
+        showMegahostColors ? 0.3 : 1,
+      )
+    }
   }, [showMegahostColors, city])
 
   useEffect(() => {
@@ -410,6 +431,8 @@ const Explore = () => {
         'visibility',
         showHotels ? 'visible' : 'none',
       )
+      // Also set the opacity when showing/hiding hotels
+      mapRef.current.setPaintProperty(`${targetCity}-hotels`, 'fill-opacity', showHotels ? 0.4 : 0)
     }
   }, [showHotels, city])
 

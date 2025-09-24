@@ -43,7 +43,7 @@ export const cityDefinitions = {
   },
 }
 
-// Map 1
+// Map 1 - Original styles for main page
 export const alPaint: mapboxgl.CirclePaint = {
   'circle-radius': [
     'interpolate',
@@ -56,6 +56,25 @@ export const alPaint: mapboxgl.CirclePaint = {
   'circle-opacity': 1,
 }
 
+// Explore page - Enhanced styles with better zoom scaling
+export const alPaintExplore: mapboxgl.CirclePaint = {
+  'circle-radius': [
+    'interpolate',
+    ['linear'],
+    ['zoom'],
+    10,
+    ['interpolate', ['linear'], ['get', 'weight'], 0, 1.5, 1, 4],
+    12,
+    ['interpolate', ['linear'], ['get', 'weight'], 0, 2, 1, 6],
+    15,
+    ['interpolate', ['linear'], ['get', 'weight'], 0, 4, 1, 10],
+    18,
+    ['interpolate', ['linear'], ['get', 'weight'], 0, 6, 1, 14],
+  ],
+  'circle-color': '#012169',
+  'circle-opacity': 1,
+}
+
 export const alPaintMegaHost: mapboxgl.CirclePaint = {
   'circle-radius': [
     'interpolate',
@@ -63,6 +82,33 @@ export const alPaintMegaHost: mapboxgl.CirclePaint = {
     ['zoom'],
     12,
     ['interpolate', ['linear'], ['get', 'weight'], 0, 2, 1, 6],
+  ],
+  'circle-color': [
+    'case',
+    ['>=', ['get', 'host_listings_number'], 10],
+    '#a30d35', // Dark magenta for 10+ listings
+    ['>=', ['get', 'host_listings_number'], 2],
+    '#ff1654', // Original magenta for 2-9 listings
+    '#012169', // Default blue for 1 listing
+  ],
+  'circle-opacity': 0,
+  'circle-opacity-transition': { duration: 500 },
+}
+
+// Explore page - Enhanced megahost styles with better zoom scaling
+export const alPaintMegaHostExplore: mapboxgl.CirclePaint = {
+  'circle-radius': [
+    'interpolate',
+    ['linear'],
+    ['zoom'],
+    10,
+    ['interpolate', ['linear'], ['get', 'weight'], 0, 1.5, 1, 4],
+    12,
+    ['interpolate', ['linear'], ['get', 'weight'], 0, 2, 1, 6],
+    15,
+    ['interpolate', ['linear'], ['get', 'weight'], 0, 4, 1, 10],
+    18,
+    ['interpolate', ['linear'], ['get', 'weight'], 0, 6, 1, 14],
   ],
   'circle-color': [
     'case',
