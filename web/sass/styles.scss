@@ -759,12 +759,6 @@ a {
   }
 }
 
-@media (max-width: 768px) {
-  .text-boxes-container .text-box:not(:last-child) {
-    margin-top: 80vh;
-  }
-}
-
 div.mapboxgl-ctrl-attrib,
 a.mapboxgl-ctrl-logo {
   visibility: visible;
