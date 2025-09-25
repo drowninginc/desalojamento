@@ -58,7 +58,7 @@ import { createScrollTriggers } from './extras/triggers'
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default
 
 mapboxgl.accessToken =
-  'pk.eyJ1Ijoiam9hb2Jlcm5hcmNpc28iLCJhIjoiY2xlNjFmdWo5MDFnZTNvcHBoZmtwa2gyMSJ9.yDJ6Z-4Ig2XJC4IK4CJ4MQ'
+  'pk.eyJ1Ijoiam9hb2Jlcm5hcmNpc28iLCJhIjoiY21mYnZzM2QyMDliYTJrcXd0bTRuZDc2OSJ9.wZp08LECe-x1McI0ETtXMA'
 
 type Props = {
   city: string
