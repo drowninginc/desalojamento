@@ -53,7 +53,7 @@ const Header = ({ language, setLanguage, city, setCity, isMapLoaded = false }: P
     let plaqueCount = 0
 
     const intervalId = setInterval(() => {
-      if (layer3 && plaqueCount < 100) {
+      if (layer3 && plaqueCount < 30) {
         // Use smaller size on mobile devices
         const isMobile = window.innerWidth <= 768
         const plaqueSize = isMobile ? 30 : 50
