@@ -163,7 +163,7 @@ const Header = ({ language, setLanguage, city, setCity, isMapLoaded = false }: P
               layout="responsive"
               priority={true}></Image>
             <div className="logoLegend">
-              por{' '}
+              {language === 'en' ? 'by' : 'por'}{' '}
               <a href="https://www.linkedin.com/in/joaobernardonarciso/">João Bernardo Narciso</a>
             </div>
 

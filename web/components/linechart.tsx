@@ -6,6 +6,7 @@ import { Group } from '@visx/group'
 import { useSpring, animated } from 'react-spring'
 import { ParentSize } from '@visx/responsive'
 import { formatNumber } from './extras/helpers'
+import { getTranslationString } from '../libs/translation'
 type Props = {
   language: string
   city: string
@@ -197,7 +198,7 @@ const Linechart = ({ language, city, triggerAnimation }: Props) => {
                                 return 0
                               }),
                             }}>
-                            Habitação
+                            {getTranslationString('linechart-label-1', language, city)}
                           </animated.text>
                           <defs>
                             <marker
@@ -334,7 +335,7 @@ const Linechart = ({ language, city, triggerAnimation }: Props) => {
                                   return 0
                                 }),
                               }}>
-                              Habitação + ALs
+                              {getTranslationString('linechart-label-2', language, city)}
                             </animated.text>
                             <defs>
                               <marker

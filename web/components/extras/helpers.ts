@@ -324,9 +324,10 @@ export const addCentroidMarkers = (map, data, properties) => {
 
         const textElement = document.createElement('div')
         textElement.className = 'cell-text'
-        textElement.innerText = `${value.toFixed(
-          value.toFixed(0) === '0' || value.toFixed(0) === '-0' ? 1 : 0,
-        )}%`
+        textElement.innerText =
+          value === 0
+            ? '0%'
+            : `${value.toFixed(value.toFixed(0) === '0' || value.toFixed(0) === '-0' ? 1 : 0)}%`
 
         if (value > 0) {
           textElement.classList.add('positive-number')

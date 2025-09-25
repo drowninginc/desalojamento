@@ -16,7 +16,7 @@ const GhostHotels = ({ language, city }: Props) => {
         {getTranslationString('actionManagers-1', language, city)}
       </div>
       <Image
-        src="/static/images/torneseproprietario.png"
+        src={`/static/images/torneseproprietario${language === 'en' ? '_en' : ''}.png`}
         alt="Proprietário"
         width={1374}
         height={736}
@@ -30,7 +30,7 @@ const GhostHotels = ({ language, city }: Props) => {
       </div>
       <Image
         id="servicos"
-        src="/static/images/servicos.png"
+        src={`/static/images/servicos${language === 'en' ? '_en' : ''}.png`}
         alt="Serviços"
         width={2190}
         height={788}
