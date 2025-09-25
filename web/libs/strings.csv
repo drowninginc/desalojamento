@@ -335,3 +335,7 @@ linechart-label-2;pt;Porto;Habitação + ALs;
 linechart-label-2;pt;Lisbon;Habitação + ALs;
 linechart-label-2;en;Porto;Housing + ALs;
 linechart-label-2;en;Lisbon;Housing + ALs;
+size-disclaimer;pt;Porto;Esta página é melhor visualizada num ecrã maior;
+size-disclaimer;pt;Lisbon;Esta página é melhor visualizada num ecrã maior;
+size-disclaimer;en;Porto;This website is best experienced on a larger screen;
+size-disclaimer;en;Lisbon;This website is best experienced on a larger screen;

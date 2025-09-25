@@ -170,6 +170,10 @@ const Header = ({ language, setLanguage, city, setCity, isMapLoaded = false }: P
             <div className="introDescription">
               {getTranslationString('subtitle', language, city)}
             </div>
+            {/* Show size disclaimer on mobile devices */}
+            <div className="size-disclaimer mobile-only">
+              {getTranslationString('size-disclaimer', language, city)}
+            </div>
             <div className={`arrow-container ${showArrow && isMapLoaded ? 'visible' : ''}`}>
               <div className="arrow"></div>
               <div className="arrow"></div>
