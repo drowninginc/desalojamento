@@ -589,7 +589,7 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
       const span = map2ContainerRef.current.querySelector('span')
       if (span && !span.classList.contains('processed')) {
         // Get the original text content before any modifications
-        const originalText = 'oferta de AL'
+        const originalText = language === 'en' ? 'number of ALs' : 'oferta de AL'
 
         // Clear any existing content and recreate the structure
         span.innerHTML = ''
