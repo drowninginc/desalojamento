@@ -44,7 +44,9 @@ const Regulation = forwardRef<HTMLDivElement, Props>(({ language, city }, ref) =
   return (
     <div className="regulation" ref={ref}>
       <Container>
-        <h1>O que fazem as outras cidades?</h1>
+        <h1>
+          {language === 'en' ? 'What are other cities doing?' : 'O que fazem as outras cidades?'}
+        </h1>
         <div className="regulation-stage">
           {points.map(p => (
             <div
