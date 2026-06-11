@@ -164,7 +164,9 @@ const Header = ({ language, setLanguage, city, setCity, isMapLoaded = false }: P
               priority={true}></Image>
             <div className="logoLegend">
               {language === 'en' ? 'by' : 'por'}{' '}
-              <a href="https://www.linkedin.com/in/joaobernardonarciso/">João Bernardo Narciso</a>
+              <a href={language === 'en' ? 'https://joaobernardo.me/en' : 'https://joaobernardo.me'}>
+                João Bernardo Narciso
+              </a>
             </div>
 
             <div className="introDescription">
