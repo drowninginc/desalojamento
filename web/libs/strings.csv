@@ -71,6 +71,10 @@ map7-revised-title;pt;Porto;Suspensão de novos registos e alterações à regul
 map7-revised-title;pt;Lisbon;Suspensão de novos registos e alterações à regulação municipal;
 map7-revised-title;en;Porto;Suspension of new registrations and amendments to municipal regulations;
 map7-revised-title;en;Lisbon;Suspension of new registrations and amendments to municipal regulations;
+mapLimpeza-title;pt;Lisbon;Uma limpeza que abre portas a mais AL;
+mapLimpeza-title;en;Lisbon;A cleanup that opens the door to more AL;
+mapLimpeza;pt;Lisbon;"<p>Em <mark>2026</mark>, a Câmara de Lisboa cancelou os registos de AL que não apresentaram seguro de responsabilidade civil. Lisboa passou de <mark>18.596</mark> para <mark>11.857</mark> registos: menos <mark>6.869</mark>, mais de um terço.</p><p>Mas menos registos não significa menos turismo. O novo regulamento, aprovado no final de 2025 por PSD, CDS, IL e Chega, já tinha duplicado os rácios previstos na versão em discussão pública: <mark>10%</mark> para contenção absoluta e <mark>5%</mark> para contenção relativa. Com a limpeza, os rácios caíram e <mark>Arroios, Estrela e São Vicente</mark> passaram de contenção absoluta para relativa, enquanto as <mark>Avenidas Novas</mark> deixaram de ter qualquer contenção.</p><p>Em vez de aliviar a pressão, a limpeza abre caminho a <mark>novas licenças</mark> e ao regresso de antigos registos à atividade, em freguesias que continuam entre as mais pressionadas da cidade.</p>";
+mapLimpeza;en;Lisbon;"<p>In <mark>2026</mark>, Lisbon City Council cancelled the AL registrations that did not provide proof of civil liability insurance. Lisbon went from <mark>18,596</mark> to <mark>11,857</mark> registrations: <mark>6,869</mark> fewer, more than a third.</p><p>But fewer registrations does not mean less tourism. The new regulation, approved at the end of 2025 by the right-wing parties PSD, CDS, IL and Chega, had already doubled the ratios set out in the version under public consultation: <mark>10%</mark> for absolute containment and <mark>5%</mark> for relative containment. With the cleanup, ratios dropped and <mark>Arroios, Estrela and São Vicente</mark> moved from absolute to relative containment, while <mark>Avenidas Novas</mark> no longer has any containment at all.</p><p>Instead of easing the pressure, the cleanup paves the way for <mark>new licenses</mark> and for old registrations to return to activity, in parishes that remain among the most pressured in the city.</p>";
 map1;pt;Porto;A figura jurídica do alojamento local foi introduzida em 2008. Só em 2014 passou a ser obrigatório o seu registo, integrando-se na designação os alojamentos que já operavam.;
 map1;pt;Lisbon;A figura jurídica do alojamento local foi introduzida em 2008. Só em 2014 passou a ser obrigatório o seu registo, integrando-se na designação os alojamentos que já operavam.;
 map1;en;Porto;;
@@ -214,9 +218,9 @@ actionRooms;pt;Lisbon;A esmagadora maioria são habitações que ficam vazias as
 actionRooms;en;Porto;The overwhelming majority are homes that are left empty as soon as tourists leave them.;
 actionRooms;en;Lisbon;The overwhelming majority are homes that are left empty as soon as tourists leave them.;
 actionRooms-title;pt;Porto;Apenas <mark>0.83%</mark> dos ALs estão registados como quartos;
-actionRooms-title;pt;Lisbon;Apenas <mark>0.63%</mark> dos ALs estão registados como quartos;
+actionRooms-title;pt;Lisbon;Apenas <mark>0.66%</mark> dos ALs estão registados como quartos;
 actionRooms-title;en;Porto;Only <mark>0.83%</mark> of all ALs are rooms;
-actionRooms-title;en;Lisbon;Only <mark>0.63%</mark> of all ALs are rooms;
+actionRooms-title;en;Lisbon;Only <mark>0.66%</mark> of all ALs are rooms;
 source;pt;Porto;Fonte: ;
 source;pt;Lisbon;Fonte: ;
 source;en;Porto;Source: ;

@@ -43,6 +43,18 @@ export const cityDefinitions = {
   },
 }
 
+// ALs in the current register: hides the Lisbon licences cancelled in the 2026 cleanup
+// (removed=1 in al.json), which are only shown while the timeline grows to the old peak.
+export const currentALFilter: any[] = ['!=', ['get', 'removed'], 1]
+
+// Timeline growth up to `date`. Before the cleanup step: the old register (no ALs registered
+// after Aug 2025). After it: the current register.
+export const timelineFilter = (date: number, cleaned: boolean): any[] => [
+  'all',
+  ['<=', ['get', 'normalized_date'], date],
+  cleaned ? currentALFilter : ['!=', ['get', 'added'], 1],
+]
+
 // Map 1 - Original styles for main page
 export const alPaint: mapboxgl.CirclePaint = {
   'circle-radius': [
@@ -136,6 +148,20 @@ export const freguesiaPaint: mapboxgl.FillPaint = {
     'rgba(0, 0, 139, 1)',
     100,
     'rgba(0, 0, 139, 1)',
+  ],
+  'fill-opacity': 0.7,
+  'fill-color-transition': { duration: 500 },
+}
+
+// Explore2 page - Custom parish colors based on propAL thresholds
+export const freguesiaPaintExplore2: mapboxgl.FillPaint = {
+  'fill-color': [
+    'case',
+    ['>', ['get', 'propAL'], 20],
+    '#012169', // Dark blue for propAL > 20
+    ['>=', ['get', 'propAL'], 10],
+    '#ADD8E6', // Light blue for propAL between 10 and 20
+    '#ff1654', // Red otherwise
   ],
   'fill-opacity': 0.7,
   'fill-color-transition': { duration: 500 },

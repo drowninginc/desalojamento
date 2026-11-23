@@ -1,6 +1,13 @@
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
-import { cityDefinitions, freguesiaPaint, alPaintMegaHost, hotelsPaint } from './mapStyles'
+import {
+  cityDefinitions,
+  freguesiaPaint,
+  alPaintMegaHost,
+  hotelsPaint,
+  currentALFilter,
+  timelineFilter,
+} from './mapStyles'
 gsap.registerPlugin(ScrollTrigger)
 
 import {
@@ -79,7 +86,14 @@ export const createScrollTriggers = (
   actionLastRegulationZoom,
   helpBubbleDismissed,
   setHelpBubbleDismissed,
+  actionLimpeza,
+  setCleaned,
 ) => {
+  // Lisbon only: the timeline grows to the old peak and stops at the cleanup text box
+  const timelineEnd = actionLimpeza.current
+    ? { endTrigger: actionLimpeza.current, end: 'top 80%' }
+    : { endTrigger: actionIntro.current, end: 'center center' }
+
   ScrollTrigger.create({
     id: 'map-pin',
     trigger: divTrigger.current,
@@ -112,8 +126,7 @@ export const createScrollTriggers = (
     id: 'progress-bar',
     trigger: divTrigger.current,
     start: 'top top',
-    endTrigger: actionIntro.current,
-    end: 'center center',
+    ...timelineEnd,
     onUpdate: self => {
       const scrollProgress = self.progress
       const dateValue = gsap.utils.clamp(0, 1, scrollProgress)
@@ -133,12 +146,8 @@ export const createScrollTriggers = (
         ease: 'back.out(1.7)',
       })
       // Only show help-bubble if it hasn't been dismissed yet
-      console.log('help-bubble', helpBubbleDismissed)
-
       if (!helpBubbleDismissed) {
-        console.log('help-bubble', helpBubbleDismissed)
-
-        gsap.to('.help-bubble', {
+          gsap.to('.help-bubble', {
           opacity: 1,
           duration: 0.5,
           delay: 0.8, // 0.2 (city-switcher delay) + 0.6 (city-switcher duration)
@@ -171,6 +180,23 @@ export const createScrollTriggers = (
       })
     },
   })
+
+  if (actionLimpeza.current) {
+    // Cancelled licences disappear and the counter shows the current register
+    ScrollTrigger.create({
+      id: 'limpeza-remove',
+      trigger: actionLimpeza.current,
+      start: 'top 60%',
+      onEnter: () => {
+        setCleaned(true)
+        map.current.setFilter(`${city}-al`, currentALFilter)
+      },
+      onLeaveBack: () => {
+        setCleaned(false)
+        map.current.setFilter(`${city}-al`, timelineFilter(1, false))
+      },
+    })
+  }
 
   ScrollTrigger.create({
     id: 'plot-full-screen',
@@ -390,7 +416,7 @@ export const createScrollTriggers = (
         },
         onEnterBack: () => {
           if (map.current && map.current.getLayer(`${city}-al`)) {
-            map.current.setFilter(`${city}-al`, null)
+            map.current.setFilter(`${city}-al`, currentALFilter)
           }
           setLayerVisibility(
             city,
@@ -455,7 +481,11 @@ export const createScrollTriggers = (
       setLayerVisibility(city, map.current, `${city}-al`)
       // Show only rooms (Quartos)
       if (map.current && map.current.getLayer(`${city}-al`)) {
-        map.current.setFilter(`${city}-al`, ['==', ['get', 'modalidade'], 'Quartos'])
+        map.current.setFilter(`${city}-al`, [
+          'all',
+          ['==', ['get', 'modalidade'], 'Quartos'],
+          currentALFilter,
+        ])
       }
     },
 
@@ -463,7 +493,11 @@ export const createScrollTriggers = (
       setLayerVisibility(city, map.current, `${city}-al`)
       // Show only rooms (Quartos)
       if (map.current && map.current.getLayer(`${city}-al`)) {
-        map.current.setFilter(`${city}-al`, ['==', ['get', 'modalidade'], 'Quartos'])
+        map.current.setFilter(`${city}-al`, [
+          'all',
+          ['==', ['get', 'modalidade'], 'Quartos'],
+          currentALFilter,
+        ])
       }
     },
   })

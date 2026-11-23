@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import translation, { getTranslationString } from '../libs/translation'
+import { getTranslationString } from '../libs/translation'
 
 type Props = {
   language: string
@@ -22,7 +22,8 @@ const Footer = ({ language, city }: Props) => {
             className="methodology-text"
             dangerouslySetInnerHTML={{
               __html: getTranslationString('methodology', language, city),
-            }}></div>
+            }}
+          ></div>
         </div>
       </div>
     </footer>

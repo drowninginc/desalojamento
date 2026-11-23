@@ -1,6 +1,6 @@
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import React, { useRef, useEffect, useCallback } from 'react'
+import React, { useRef, useEffect, useCallback, useMemo } from 'react'
 import Image from 'next/image'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
@@ -26,11 +26,11 @@ const megahostsData = {
   },
   megahosts: {
     Porto: 72,
-    Lisbon: 67,
+    Lisbon: 70,
   },
   companies: {
     Porto: 60,
-    Lisbon: 51,
+    Lisbon: 54,
   },
 }
 
@@ -40,13 +40,14 @@ import {
   alPaintMegaHost,
   freguesiaPaint,
   hotelsPaint,
+  timelineFilter,
 } from './extras/mapStyles'
 
 import {
   getBothCitiesData,
   getMinMax,
   createMap,
-  addSourcesAndLayersForBothCities,
+  addCitySourcesAndLayers,
   addCentroidMarkers,
   switchCity,
   setMapLanguage,
@@ -57,8 +58,12 @@ import { createScrollTriggers } from './extras/triggers'
 // @ts-ignore
 mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default
 
+// The production token only accepts requests from desalojamento.pt, so localhost uses the
+// older unrestricted one (the same the explore page uses)
 mapboxgl.accessToken =
-  'pk.eyJ1Ijoiam9hb2Jlcm5hcmNpc28iLCJhIjoiY21mYnZzM2QyMDliYTJrcXd0bTRuZDc2OSJ9.wZp08LECe-x1McI0ETtXMA'
+  process.env.NODE_ENV === 'development'
+    ? 'pk.eyJ1Ijoiam9hb2Jlcm5hcmNpc28iLCJhIjoiY2xlNjFmdWo5MDFnZTNvcHBoZmtwa2gyMSJ9.yDJ6Z-4Ig2XJC4IK4CJ4MQ'
+    : 'pk.eyJ1Ijoiam9hb2Jlcm5hcmNpc28iLCJhIjoiY21mYnZzM2QyMDliYTJrcXd0bTRuZDc2OSJ9.wZp08LECe-x1McI0ETtXMA'
 
 type Props = {
   city: string
@@ -68,7 +73,7 @@ type Props = {
 }
 
 const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
-  const citiesData = getBothCitiesData()
+  const citiesData = getBothCitiesData(city)
   const divTrigger = React.useRef(null!)
   const mapPin = React.useRef(null!)
   const mapContainer = React.useRef(null!)
@@ -93,6 +98,7 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
   const actionFullAirbnb = React.useRef(null!)
   const actionMap3 = React.useRef(null!)
   const actionLastRegulationZoom = React.useRef(null!)
+  const actionLimpeza = React.useRef(null)
 
   const imageWrappers = [useRef(null), useRef(null), useRef(null)]
 
@@ -108,6 +114,13 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
   const [isLoadingMarkers, setIsLoadingMarkers] = React.useState(false)
   const [isCitySwitching, setIsCitySwitching] = React.useState(false)
   const [helpBubbleDismissed, setHelpBubbleDismissed] = React.useState(false)
+  // Past the Lisbon cleanup step: map and counter show the current register
+  const [cleaned, setCleanedState] = React.useState(false)
+  const cleanedRef = useRef(false)
+  const setCleaned = (value: boolean) => {
+    cleanedRef.current = value
+    setCleanedState(value)
+  }
   const monthsTotalRef = useRef<number>(132)
   const map2ContainerRef = useRef<HTMLDivElement>(null)
 
@@ -198,6 +211,16 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
     return currentCityData[yearMonth] || 0 // Get the count or default to 0
   }
 
+  const alData = citiesData[city]?.alData
+  const currentCount = useMemo(
+    () =>
+      alData?.features.reduce(
+        (sum, f) => (f.properties.removed ? sum : sum + f.properties.entradas_repetidas),
+        0,
+      ) ?? 0,
+    [alData],
+  )
+
   gsap.registerPlugin(ScrollTrigger)
 
   const lastFilterValueRef = useRef<number>(-1)
@@ -219,7 +242,7 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
 
       rafIdRef.current = requestAnimationFrame(() => {
         if (mapInstance && mapInstance.getLayer(`${currentCity}-al`)) {
-          mapInstance.setFilter(`${currentCity}-al`, ['<=', ['get', 'normalized_date'], rounded])
+          mapInstance.setFilter(`${currentCity}-al`, timelineFilter(rounded, cleanedRef.current))
         }
         rafIdRef.current = null
       })
@@ -255,9 +278,26 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
       (endDate.getMonth() - startDate.getMonth()) +
       1
     monthsTotalRef.current = Math.max(1, monthsDiff)
-  }, [citiesData.isLoaded, city])
+  }, [citiesData[city]?.isLoaded, city])
 
-  // Initialize map only once when all data is loaded
+  // Adds every city whose data has arrived but isn't on the map yet
+  const addLoadedCities = (visibleCity: string | null) =>
+    ['Lisbon', 'Porto'].forEach(c => {
+      if (citiesData[c]?.isLoaded && !map.current.getSource(`${c}-al`)) {
+        addCitySourcesAndLayers(
+          map.current,
+          c,
+          citiesData[c],
+          c === visibleCity,
+          alPaint,
+          freguesiaPaint,
+          alPaintMegaHost,
+          hotelsPaint,
+        )
+      }
+    })
+
+  // Initialize map once the current city's data is loaded
   useEffect(() => {
     const checkMapLoaded = () => {
       if (map.current && map.current.loaded()) {
@@ -268,7 +308,7 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
       }
     }
 
-    if (!citiesData.isLoaded || isMapInitialized.current) {
+    if (!citiesData[city]?.isLoaded || isMapInitialized.current) {
       return
     }
 
@@ -340,15 +380,7 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
         // Set initial map language
         setMapLanguage(map.current, language)
 
-        // Add sources and layers for both cities
-        addSourcesAndLayersForBothCities(
-          map.current,
-          citiesData,
-          alPaint,
-          freguesiaPaint,
-          alPaintMegaHost,
-          hotelsPaint,
-        )
+        addLoadedCities(city)
 
         // Add centroid markers for current city
         const centroidMarkers = addCentroidMarkers(map.current, freguesiaData, [
@@ -391,6 +423,8 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
           actionLastRegulationZoom,
           helpBubbleDismissed,
           setHelpBubbleDismissed,
+          actionLimpeza,
+          setCleaned,
         )
 
         isMapInitialized.current = true
@@ -399,7 +433,12 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
 
       checkMapLoaded()
     }
-  }, [citiesData.isLoaded, isMobile])
+  }, [citiesData[city]?.isLoaded, isMobile])
+
+  // The other city's data arrives after the first paint; add it to the map once it's in
+  useEffect(() => {
+    if (isMapInitialized.current && map.current) addLoadedCities(previousCityRef.current)
+  })
 
   // Handle language changes
   useEffect(() => {
@@ -413,9 +452,12 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
     if (!isMapInitialized.current || !map.current || previousCityRef.current === city) {
       return
     }
+    // Switched before this city's data arrived: this effect reruns when it does
+    if (!map.current.getSource(`${city}-al`)) return
 
     // Set city switching state to prevent scroll jumping
     setIsCitySwitching(true)
+    setCleaned(false)
 
     // Store current scroll position before making changes
     const currentScrollY = window.scrollY
@@ -535,6 +577,8 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
           actionLastRegulationZoom,
           helpBubbleDismissed,
           setHelpBubbleDismissed,
+          actionLimpeza,
+          setCleaned,
         )
 
         // Restore scroll position after ScrollTriggers are recreated
@@ -698,7 +742,8 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
         }}
         dangerouslySetInnerHTML={{
           __html: getTranslationString(currentTooltipKey, language, city),
-        }}></div>
+        }}
+      ></div>
       <div className="whole-container">
         <div ref={progressBar} className="progress-bar">
           <div className="progress-fill" style={{ width: barWidth }}>
@@ -709,7 +754,7 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
           {formatDate(normalizedDate)}
         </div>
         <div ref={alCount} className="al-count">
-          {getMonthlyCount(normalizedDate) + ' ALs'}
+          {(cleaned ? currentCount : getMonthlyCount(normalizedDate)) + ' ALs'}
         </div>
         {(isLoadingMarkers || isCitySwitching) && (
           <div className="markers-loading">
@@ -788,6 +833,16 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
               }}
             />
           </div>
+          {city === 'Lisbon' && (
+            <div className="text-box glassy" ref={actionLimpeza}>
+              <h2>{getTranslationString('mapLimpeza-title', language, city)}</h2>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: getTranslationString('mapLimpeza', language, city),
+                }}
+              />
+            </div>
+          )}
 
           <div ref={actionIntro} className="text-box glassy">
             <h2>{getTranslationString('actionIntro-title', language, city)}</h2>
@@ -818,7 +873,8 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
                   id="hover_1"
                   onMouseEnter={e => handleMouseEnter(e, 'tooltip-content')}
                   onMouseLeave={handleMouseLeave}
-                  style={{ display: 'inline-flex', alignItems: 'center', cursor: 'pointer' }}>
+                  style={{ display: 'inline-flex', alignItems: 'center', cursor: 'pointer' }}
+                >
                   {getTranslationString('actionFreguesia-label', language, city)}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -826,7 +882,8 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
                     height="16"
                     viewBox="0 0 16 16"
                     fill="none"
-                    style={{ marginLeft: '6px' }}>
+                    style={{ marginLeft: '6px' }}
+                  >
                     <circle cx="8" cy="8" r="7" stroke="#888" strokeWidth="1.5" fill="#fff" />
                     <text
                       x="8"
@@ -835,7 +892,8 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
                       fontSize="10"
                       fill="#888"
                       fontFamily="Arial"
-                      fontWeight="bold">
+                      fontWeight="bold"
+                    >
                       ?
                     </text>
                   </svg>
@@ -906,11 +964,13 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
             <div
               dangerouslySetInnerHTML={{
                 __html: getTranslationString('actionLineChart', language, city),
-              }}></div>
+              }}
+            ></div>
             <Linechart
               language={language}
               city={city}
-              triggerAnimation={triggerAnimation}></Linechart>
+              triggerAnimation={triggerAnimation}
+            ></Linechart>
           </div>
 
           <div className="full-text-box" ref={actionFullAirbnb}>
@@ -973,13 +1033,15 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
               key={`megahosts-${city}`}
               percentage={megahostsData.megahosts[city]}
               title={getTranslationString('actionMegaHosts-label-1', language, city) as string}
-              triggerAnimation={triggerMegaHostAnimation}></Casas>
+              triggerAnimation={triggerMegaHostAnimation}
+            ></Casas>
 
             <Casas
               key={`companies-${city}`}
               percentage={megahostsData.companies[city]}
               title={getTranslationString('actionMegaHosts-label-2', language, city) as string}
-              triggerAnimation={triggerMegaHostAnimation}></Casas>
+              triggerAnimation={triggerMegaHostAnimation}
+            ></Casas>
 
             <div className="text-box-note text-box-note-megahosts">
               <div className="text-box-note-text">
@@ -999,14 +1061,16 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
             <div
               dangerouslySetInnerHTML={{
                 __html: getTranslationString('period-text', language, city),
-              }}></div>
+              }}
+            ></div>
           </div>
           <div className="text-box glassy">
             <h2>{getTranslationString('airbnb-title', language, city)}</h2>
             <div
               dangerouslySetInnerHTML={{
                 __html: getTranslationString('airbnb-text', language, city),
-              }}></div>
+              }}
+            ></div>
           </div>
         </div>
       </div>

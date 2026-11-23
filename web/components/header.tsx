@@ -7,7 +7,6 @@ import housesShorter from './images/houses_porto_shorter.png'
 import ALPlaque from './images/ALBlock.png'
 
 import { useEffect, useState } from 'react'
-import { createRoot } from 'react-dom/client'
 
 type Props = {
   language: string
@@ -29,60 +28,46 @@ const Header = ({ language, setLanguage, city, setCity, isMapLoaded = false }: P
     return () => clearTimeout(timer)
   }, [])
 
+  // AL plaques pop up on the skyline, one per second, at random spots (client-only, so no
+  // hydration mismatch)
+  const [plaques, setPlaques] = useState<{ top: number; left: number }[]>([])
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setPlaques(p => {
+        if (p.length >= 30) {
+          clearInterval(intervalId)
+          return p
+        }
+        return [...p, { top: Math.random() * 30 + 15, left: Math.random() * 85 + 5 }]
+      })
+    }, 1000)
+    return () => clearInterval(intervalId)
+  }, [])
+
   useEffect(() => {
     const layers = document.getElementsByClassName('parallaxLayer')
+    let frame: number | null = null
 
-    function topParallax() {
-      const top = window.scrollY
-      for (let i = 0; i < layers.length; i++) {
-        const layer = layers[i] as HTMLElement
-        const speed = parseFloat(layer.dataset.speed || '0')
-        const yPos = -((top * speed) / 1000)
-        layer.style.transform = `translate3d(0, ${yPos}rem, 0)`
-      }
-    }
-    function doParallax() {
-      topParallax()
+    const doParallax = () => {
+      if (frame !== null) return
+      frame = requestAnimationFrame(() => {
+        frame = null
+        const top = window.scrollY
+        for (let i = 0; i < layers.length; i++) {
+          const layer = layers[i] as HTMLElement
+          const speed = parseFloat(layer.dataset.speed || '0')
+          layer.style.transform = `translate3d(0, ${-((top * speed) / 1000)}rem, 0)`
+        }
+      })
     }
 
-    window.addEventListener('scroll', doParallax)
+    window.addEventListener('scroll', doParallax, { passive: true })
     window.addEventListener('resize', doParallax)
-
-    // Add ALPlaque at random positions on layer3 every second
-    const layer3 = document.getElementById('layer3')
-    let plaqueCount = 0
-
-    const intervalId = setInterval(() => {
-      if (layer3 && plaqueCount < 30) {
-        // Use smaller size on mobile devices
-        const isMobile = window.innerWidth <= 768
-        const plaqueSize = isMobile ? 30 : 50
-
-        // Generate random position (allowing overlaps)
-        const top = Math.random() * 30 + 15 // 15% to 45%
-        const left = Math.random() * 85 + 5 // 5% to 90%
-
-        const plaqueWrapper = document.createElement('div')
-        plaqueWrapper.style.position = 'absolute'
-        plaqueWrapper.style.width = `${plaqueSize}px`
-        plaqueWrapper.style.height = `${plaqueSize}px`
-        plaqueWrapper.style.top = `${top}%`
-        plaqueWrapper.style.left = `${left}%`
-        layer3.appendChild(plaqueWrapper)
-
-        const root = createRoot(plaqueWrapper)
-        root.render(<Image src={ALPlaque} alt="AL Plaque" layout="fill" objectFit="contain" />)
-
-        plaqueCount++
-      } else {
-        clearInterval(intervalId)
-      }
-    }, 1000)
 
     return () => {
       window.removeEventListener('scroll', doParallax)
       window.removeEventListener('resize', doParallax)
-      clearInterval(intervalId)
+      if (frame !== null) cancelAnimationFrame(frame)
     }
   }, [])
 
@@ -152,7 +137,7 @@ const Header = ({ language, setLanguage, city, setCity, isMapLoaded = false }: P
         </fieldset>
       </div>
       <header>
-        <Language language={language} setLanguage={setLanguage} />
+        <Language language={language} setLanguage={setLanguage} city={city} />
         <div className="parallaxWrapper">
           <div id="layer1" className="parallaxLayer" data-speed="30"></div>
           <div id="layer2" className="parallaxLayer" data-speed="-80">
@@ -161,10 +146,13 @@ const Header = ({ language, setLanguage, city, setCity, isMapLoaded = false }: P
               src={logoImage}
               alt="Logo Image"
               layout="responsive"
-              priority={true}></Image>
+              priority={true}
+            ></Image>
             <div className="logoLegend">
               {language === 'en' ? 'by' : 'por'}{' '}
-              <a href={language === 'en' ? 'https://joaobernardo.me/en' : 'https://joaobernardo.me'}>
+              <a
+                href={language === 'en' ? 'https://joaobernardo.me/en' : 'https://joaobernardo.me'}
+              >
                 João Bernardo Narciso
               </a>
             </div>
@@ -187,6 +175,16 @@ const Header = ({ language, setLanguage, city, setCity, isMapLoaded = false }: P
 
           <div id="layer3" className="parallaxLayer">
             <Image src={housesShorter} alt="City landscape image" layout="responsive"></Image>
+            {plaques.map((p, i) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={i}
+                className="al-plaque"
+                src={ALPlaque.src}
+                alt=""
+                style={{ top: `${p.top}%`, left: `${p.left}%` }}
+              />
+            ))}
           </div>
         </div>
         <div className="paragraphWrapper">

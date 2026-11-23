@@ -13,6 +13,7 @@ import {
   alPaintMegaHostExplore,
   freguesiaPaint,
   hotelsPaint,
+  currentALFilter,
 } from '../components/extras/mapStyles'
 import {
   getBothCitiesData,
@@ -215,7 +216,7 @@ const Explore = () => {
       // Show all AL points (no date filter) for both cities
       ;(['Lisbon', 'Porto'] as const).forEach(c => {
         if (mapRef.current && mapRef.current.getLayer(`${c}-al`)) {
-          mapRef.current.setFilter(`${c}-al`, ['<=', ['get', 'normalized_date'], 1])
+          mapRef.current.setFilter(`${c}-al`, currentALFilter)
           mapRef.current.setLayoutProperty(`${c}-al`, 'visibility', c === city ? 'visible' : 'none')
           mapRef.current.setPaintProperty(`${c}-al`, 'circle-opacity', 1)
         }
@@ -353,7 +354,7 @@ const Explore = () => {
     }
     // Ensure AL layer shows all points for the newly selected city
     if (mapRef.current.getLayer(`${city}-al`)) {
-      mapRef.current.setFilter(`${city}-al`, ['<=', ['get', 'normalized_date'], 1])
+      mapRef.current.setFilter(`${city}-al`, currentALFilter)
       mapRef.current.setPaintProperty(`${city}-al`, 'circle-opacity', showMegahostColors ? 0.3 : 1)
     }
 

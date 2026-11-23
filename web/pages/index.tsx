@@ -42,14 +42,30 @@ const Index = () => {
     }
   }, [router.isReady, router.query.language, router.query.city])
 
+  // Mirror user choices into the URL so a shared link opens the same city and language
+  const setQuery = (key: string, value: string) =>
+    router.replace({ query: { ...router.query, [key]: value } }, undefined, {
+      shallow: true,
+      scroll: false,
+    })
+  const changeLanguage = (value: string) => {
+    setLanguage(value)
+    setQuery('language', value)
+  }
+  const changeCity = (value: string) => {
+    setCity(value)
+    setQuery('city', value)
+  }
+
   return (
     <>
       <Layout
         language={language}
-        setLanguage={setLanguage}
+        setLanguage={changeLanguage}
         city={city}
-        setCity={setCity}
-        isMapLoaded={isMapLoaded}>
+        setCity={changeCity}
+        isMapLoaded={isMapLoaded}
+      >
         <Map
           language={language}
           city={city}

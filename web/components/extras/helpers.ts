@@ -2,41 +2,42 @@ import useSWR from 'swr'
 import fetcher from '../../libs/fetcher'
 import mapboxgl from 'mapbox-gl'
 import * as turf from '@turf/turf'
+import { currentALFilter } from './mapStyles'
 
-export const useData = (path: string) => useSWR<any>(`./static/data/${path}`, fetcher)
+// A null path skips the fetch (SWR's conditional fetching)
+export const useData = (path: string | null) =>
+  useSWR<any>(path ? `./static/data/${path}` : null, fetcher)
 
 export const getMinMax = (data, property) => {
   const values = data.features.map(feature => feature.properties[property])
   return [Math.min(...values), Math.max(...values)]
 }
 
-export const getCityData = city => {
-  const alData = useData(city + '/al.json').data
-  const freguesiaData = useData(city + '/censosFreguesia.json').data
-  const monthlyCountsData = useData(city + '/monthlyCounts.json').data
-  const hotelsData = useData(city + '/hotels.json').data
+const CITIES = ['Lisbon', 'Porto']
 
-  return { alData, freguesiaData, monthlyCountsData, hotelsData }
+const getCityData = (city: string, enabled = true) => {
+  const path = (file: string) => (enabled ? `${city}/${file}.json` : null)
+  const alData = useData(path('al')).data
+  const freguesiaData = useData(path('censosFreguesia')).data
+  const monthlyCountsData = useData(path('monthlyCounts')).data
+  const hotelsData = useData(path('hotels')).data
+  const isLoaded = !!(alData && freguesiaData && monthlyCountsData && hotelsData)
+
+  return { alData, freguesiaData, monthlyCountsData, hotelsData, isLoaded }
 }
 
-// New function to load data for both cities
-export const getBothCitiesData = () => {
-  const lisbonData = getCityData('Lisbon')
-  const portoData = getCityData('Porto')
+// Loads both cities. With a priorityCity, the other city is only fetched once that one is in,
+// so the first map paint doesn't compete with data the reader may never look at.
+export const getBothCitiesData = (priorityCity?: string) => {
+  const priorityData = getCityData(priorityCity ?? CITIES[0])
+  const other = CITIES.find(c => c !== (priorityCity ?? CITIES[0]))
+  const otherData = getCityData(other, !priorityCity || priorityData.isLoaded)
+  const data = { [priorityCity ?? CITIES[0]]: priorityData, [other]: otherData }
 
   return {
-    Lisbon: lisbonData,
-    Porto: portoData,
-    // Check if all data is loaded
-    isLoaded:
-      lisbonData.alData &&
-      lisbonData.freguesiaData &&
-      lisbonData.monthlyCountsData &&
-      lisbonData.hotelsData &&
-      portoData.alData &&
-      portoData.freguesiaData &&
-      portoData.monthlyCountsData &&
-      portoData.hotelsData,
+    Lisbon: data.Lisbon,
+    Porto: data.Porto,
+    isLoaded: priorityData.isLoaded && otherData.isLoaded,
   }
 }
 
@@ -66,93 +67,25 @@ export const addSourcesAndLayersForBothCities = (
   freguesiaPaint,
   alPaintMegaHost,
   hotelsPaint,
-) => {
-  const cities = ['Lisbon', 'Porto']
-  cities.forEach(city => {
-    const cityData = citiesData[city]
+) =>
+  CITIES.forEach(city =>
+    addCitySourcesAndLayers(
+      map,
+      city,
+      citiesData[city],
+      city === 'Lisbon',
+      alPaint,
+      freguesiaPaint,
+      alPaintMegaHost,
+      hotelsPaint,
+    ),
+  )
 
-    map.addSource(`${city}-al`, {
-      type: 'geojson',
-      data: cityData.alData,
-    })
-
-    map.addSource(`${city}-freguesia`, {
-      type: 'geojson',
-      data: cityData.freguesiaData,
-    })
-
-    map.addSource(`${city}-hotels`, {
-      type: 'geojson',
-      data: cityData.hotelsData,
-    })
-
-    // Add hotels layer first (bottom layer)
-    map.addLayer({
-      id: `${city}-hotels`,
-      type: 'fill',
-      source: `${city}-hotels`,
-      layout: {
-        visibility: 'visible', // Always visible, controlled by opacity
-      },
-      paint: {
-        ...hotelsPaint,
-        'fill-opacity': 0, // Start with opacity 0 for smooth transitions
-      },
-    })
-
-    map.addLayer({
-      id: `${city}-al`,
-      type: 'circle',
-      source: `${city}-al`,
-      layout: {
-        visibility: city === 'Lisbon' ? 'visible' : 'none', // Show only Lisbon initially
-      },
-      paint: alPaint,
-      filter: ['<=', ['get', 'normalized_date'], 0],
-    })
-
-    map.addLayer({
-      id: `${city}-freguesia`,
-      type: 'fill',
-      source: `${city}-freguesia`,
-      layout: {
-        visibility: 'none',
-      },
-      paint: freguesiaPaint,
-    })
-
-    map.addLayer({
-      id: `${city}-freguesia-outline`,
-      type: 'line',
-      source: `${city}-freguesia`,
-      layout: {
-        visibility: 'none',
-      },
-      paint: {
-        'line-color': '#007cbf',
-        'line-width': 3,
-      },
-    })
-
-    map.addLayer({
-      id: `${city}-al-megahosts`,
-      type: 'circle',
-      source: `${city}-al`,
-      layout: {
-        visibility: 'none',
-      },
-      paint: alPaintMegaHost,
-    })
-  })
-}
-
-// Original function for backward compatibility
-export const addSourcesAndLayers = (
-  city,
+export const addCitySourcesAndLayers = (
   map,
-  alData,
-  freguesiaData,
-  hotelsData,
+  city,
+  cityData,
+  visible,
   alPaint,
   freguesiaPaint,
   alPaintMegaHost,
@@ -160,17 +93,17 @@ export const addSourcesAndLayers = (
 ) => {
   map.addSource(`${city}-al`, {
     type: 'geojson',
-    data: alData,
+    data: cityData.alData,
   })
 
   map.addSource(`${city}-freguesia`, {
     type: 'geojson',
-    data: freguesiaData,
+    data: cityData.freguesiaData,
   })
 
   map.addSource(`${city}-hotels`, {
     type: 'geojson',
-    data: hotelsData,
+    data: cityData.hotelsData,
   })
 
   // Add hotels layer first (bottom layer)
@@ -191,6 +124,9 @@ export const addSourcesAndLayers = (
     id: `${city}-al`,
     type: 'circle',
     source: `${city}-al`,
+    layout: {
+      visibility: visible ? 'visible' : 'none',
+    },
     paint: alPaint,
     filter: ['<=', ['get', 'normalized_date'], 0],
   })
@@ -222,6 +158,7 @@ export const addSourcesAndLayers = (
     id: `${city}-al-megahosts`,
     type: 'circle',
     source: `${city}-al`,
+    filter: currentALFilter,
     layout: {
       visibility: 'none',
     },
@@ -327,7 +264,13 @@ export const addCentroidMarkers = (map, data, properties) => {
         textElement.innerText =
           value === 0
             ? '0%'
-            : `${value.toFixed(value.toFixed(0) === '0' || value.toFixed(0) === '-0' ? 1 : 0)}%`
+            : `${value.toFixed(
+                (property === 'propAL' && value < 10) ||
+                  value.toFixed(0) === '0' ||
+                  value.toFixed(0) === '-0'
+                  ? 1
+                  : 0,
+              )}%`
 
         if (value > 0) {
           textElement.classList.add('positive-number')
