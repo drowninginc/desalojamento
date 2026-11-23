@@ -71,3 +71,100 @@ button {
   z-index: 10; /* Bring it to the front */
   cursor: pointer; /* Change cursor to pointer on hover */
 }
+
+// Small title above a chart; the chart follows right under it
+.chart-title {
+  margin: 2em 0 0;
+  font-size: 0.9em;
+  font-weight: 600;
+
+  + .histogram-container {
+    margin-top: 0;
+  }
+}
+
+.time-chart {
+  &__grid {
+    line {
+      stroke: #e3e3e3;
+    }
+    text {
+      font-size: 0.75em;
+      fill: #777;
+    }
+  }
+
+  &__baseline {
+    line {
+      stroke: #999;
+    }
+    text {
+      font-size: 0.75em;
+      fill: #777;
+    }
+  }
+
+  &__hover {
+    pointer-events: none;
+
+    circle {
+      stroke: #fff;
+      stroke-width: 1.5;
+    }
+    text {
+      paint-order: stroke;
+      stroke: #fff;
+      stroke-width: 4px;
+      stroke-linejoin: round;
+    }
+  }
+
+  &__year {
+    font-size: 0.75em;
+    fill: #777;
+  }
+
+  &__value {
+    font-size: 0.85em;
+    font-weight: 600;
+  }
+}
+
+.rent-chart__event {
+  rect {
+    fill: rgba(0, 0, 0, 0.07);
+  }
+  text {
+    font-size: 0.75em;
+    fill: #555;
+  }
+}
+
+.housing-gap {
+  fill: rgba(1, 33, 105, 0.28);
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em 1.2em;
+  margin: 1em 0 0.5em;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8em;
+
+  span {
+    display: inline-block;
+    width: 1.4em;
+    height: 3px;
+    margin-right: 0.4em;
+    vertical-align: middle;
+  }
+
+  &__gap {
+    height: 0.8em !important;
+    background: rgba(1, 33, 105, 0.28);
+    border-top: 2px dashed #012169;
+    box-sizing: border-box;
+  }
+}

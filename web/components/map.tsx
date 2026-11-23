@@ -6,6 +6,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 import Casas from './casas'
 import Linechart from './linechart'
+import RentChart from './rentchart'
 import { getTranslationString } from '../libs/translation'
 
 import anuncioImage from './images/airbnb/anuncio.jpeg'
@@ -69,10 +70,11 @@ type Props = {
   city: string
   language: string
   regulationRef: React.RefObject<HTMLDivElement>
+  scrollAnchor?: React.RefObject<{ el: Element; top: number } | null>
   onMapLoad?: (isLoaded: boolean) => void
 }
 
-const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
+const Map = ({ language, city, regulationRef, scrollAnchor, onMapLoad }: Props) => {
   const citiesData = getBothCitiesData(city)
   const divTrigger = React.useRef(null!)
   const mapPin = React.useRef(null!)
@@ -113,6 +115,7 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
   const [currentTooltipKey, setCurrentTooltipKey] = React.useState('tooltip-content')
   const [isLoadingMarkers, setIsLoadingMarkers] = React.useState(false)
   const [isCitySwitching, setIsCitySwitching] = React.useState(false)
+  const lockedScrollY = useRef(0)
   const [helpBubbleDismissed, setHelpBubbleDismissed] = React.useState(false)
   // Past the Lisbon cleanup step: map and counter show the current register
   const [cleaned, setCleanedState] = React.useState(false)
@@ -132,8 +135,8 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
   // Prevent scroll jumping during city switching
   useEffect(() => {
     if (isCitySwitching) {
-      // Store current scroll position
-      const currentScrollY = window.scrollY
+      // Store current scroll position (the switch moves it on purpose via lockedScrollY)
+      lockedScrollY.current = window.scrollY
 
       // Prevent scrolling by setting overflow hidden temporarily
       const originalOverflow = document.body.style.overflow
@@ -141,7 +144,7 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
 
       // Force scroll position to stay the same
       const preventScroll = () => {
-        window.scrollTo(0, currentScrollY)
+        window.scrollTo(0, lockedScrollY.current)
       }
 
       // Add scroll prevention
@@ -584,9 +587,15 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
         // Restore scroll position after ScrollTriggers are recreated
         // Use requestAnimationFrame to ensure DOM is updated
         requestAnimationFrame(() => {
-          window.scrollTo(0, currentScrollY)
           // Refresh ScrollTrigger again to ensure proper positioning
           ScrollTrigger.refresh()
+          // Put the block the reader was on back where it was (see changeCity in index.tsx)
+          const anchor = scrollAnchor?.current
+          lockedScrollY.current = anchor?.el.isConnected
+            ? window.scrollY + anchor.el.getBoundingClientRect().top - anchor.top
+            : currentScrollY
+          window.scrollTo(0, lockedScrollY.current)
+          ScrollTrigger.update()
 
           // Add a small delay before allowing scroll again to ensure all animations are complete
           setTimeout(() => {
@@ -834,7 +843,7 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
             />
           </div>
           {city === 'Lisbon' && (
-            <div className="text-box glassy" ref={actionLimpeza}>
+            <div className="text-box glassy" ref={actionLimpeza} data-city-only>
               <h2>{getTranslationString('mapLimpeza-title', language, city)}</h2>
               <div
                 dangerouslySetInnerHTML={{
@@ -966,11 +975,28 @@ const Map = ({ language, city, regulationRef, onMapLoad }: Props) => {
                 __html: getTranslationString('actionLineChart', language, city),
               }}
             ></div>
+            <h3 className="chart-title">
+              {getTranslationString('linechart-title', language, city)}
+            </h3>
             <Linechart
               language={language}
               city={city}
               triggerAnimation={triggerAnimation}
             ></Linechart>
+          </div>
+          <div className="text-box glassy">
+            <h2>{getTranslationString('rents-title', language, city)}</h2>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: getTranslationString('rents', language, city),
+              }}
+            ></div>
+            <RentChart language={language} city={city} />
+            <div
+              dangerouslySetInnerHTML={{
+                __html: getTranslationString('rents-affordability', language, city),
+              }}
+            ></div>
           </div>
 
           <div className="full-text-box" ref={actionFullAirbnb}>

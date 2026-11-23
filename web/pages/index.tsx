@@ -52,7 +52,18 @@ const Index = () => {
     setLanguage(value)
     setQuery('language', value)
   }
+  // Lisbon has a block Porto doesn't (the 2026 cleanup), so the same scrollY lands elsewhere in
+  // the other city. Remember the topmost story block in view and where it is; the map scrolls
+  // it back to the same spot once the other city is laid out
+  const scrollAnchor = useRef<{ el: Element; top: number } | null>(null)
   const changeCity = (value: string) => {
+    const blocks = Array.from(
+      document.querySelectorAll('main .text-box, main .full-text-box, main h1, main h2'),
+    )
+    const i = blocks.findIndex(e => e.getBoundingClientRect().bottom > 0)
+    // Reading a block only this city has: the next shared block takes its place
+    const el = blocks.slice(Math.max(i, 0)).find(e => !e.closest('[data-city-only]'))
+    scrollAnchor.current = el ? { el, top: (blocks[i] ?? el).getBoundingClientRect().top } : null
     setCity(value)
     setQuery('city', value)
   }
@@ -70,6 +81,7 @@ const Index = () => {
           language={language}
           city={city}
           regulationRef={regulationRef}
+          scrollAnchor={scrollAnchor}
           onMapLoad={setIsMapLoaded}
         />
         <GhostHotels language={language} city={city} />

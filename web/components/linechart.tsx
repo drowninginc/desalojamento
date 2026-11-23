@@ -1,414 +1,72 @@
-import React, { useEffect, useState } from 'react'
-import { curveLinear } from '@visx/curve'
-import { LinePath } from '@visx/shape'
-import { scaleLinear } from '@visx/scale'
-import { Group } from '@visx/group'
-import { useSpring, animated } from 'react-spring'
-import { ParentSize } from '@visx/responsive'
-import { formatNumber } from './extras/helpers'
 import { getTranslationString } from '../libs/translation'
+import { formatNumber, useData } from './extras/helpers'
+import TimeChart from './timechart'
+
 type Props = {
   language: string
   city: string
   triggerAnimation: boolean
 }
 
-const AnimatedLinePath = animated(LinePath)
-const AnimatedImage = animated.image
+const HOUSING = { color: '#26603a', width: 3 }
+const WITH_AL = { color: '#012169', width: 2, dash: '5 4' } // the AL dots' colour
 
+// Housing stock per census (Habitacao), and what it would be if the homes now in AL were still
+// housing (AL). The gap between the two is shaded and is the point of the chart
 const Linechart = ({ language, city, triggerAnimation }: Props) => {
-  const [data, setData] = useState({ Habitacao: [], AL: [] })
-  const [startAnimation, setStartAnimation] = useState(false)
+  const { data } = useData(city === 'Porto' ? 'habitacao.json' : 'habitacao_lisboa.json')
+  const t = (key: string) => getTranslationString(key, language, city)
+  const format = (v: number) => formatNumber(v, language)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      let url = ''
-      if (city === 'Porto') {
-        url = '/static/data/habitacao.json'
-      } else if (city === 'Lisbon') {
-        url = '/static/data/habitacao_lisboa.json'
-      }
-      const response = await fetch(url)
-      const newData = await response.json()
-      setData(newData)
-    }
-
-    fetchData()
-  }, [language, city])
-
-  useEffect(() => {
-    if (triggerAnimation) {
-      setStartAnimation(true)
-    }
-  }, [triggerAnimation])
-
-  const margin = { top: 60, right: 30, bottom: 60, left: 30 }
-
-  const getX = d => d[0]
-  const getY = d => d[1]
+  const years = data ? Object.keys(data.Habitacao) : []
+  const last = years[years.length - 1]
+  // The shaded gap starts at the last census where both series were still equal
+  const start = Math.max(0, years.findIndex(yr => data.AL[yr] !== data.Habitacao[yr]) - 1)
 
   return (
     <>
-      <div className="histogram-container">
-        <ParentSize>
-          {({ width, height }) => {
-            // Calculate xScale here
-            const xScale = scaleLinear({
-              domain: [
-                Math.min(...Object.keys(data.Habitacao).map(Number)),
-                Math.max(...Object.keys(data.Habitacao).map(Number)),
-              ],
-              range: [margin.left, width - margin.right],
-            })
-
-            const yScale = scaleLinear({
-              domain: [
-                Math.min(...Object.values(data.Habitacao).map(Number)),
-                Math.max(...Object.values(data.Habitacao).map(Number)),
-              ],
-              range: [height - margin.bottom, margin.top],
-            })
-
-            const lineLength = width + margin.left + margin.right
-            const animationProps = useSpring({
-              from: { strokeDashoffset: lineLength, imageOpacity: 0 },
-              to: {
-                strokeDashoffset: startAnimation ? 0 : lineLength,
-                imageOpacity: startAnimation ? 1 : 0,
-              },
-              config: { duration: 5000 },
-              delay: 100,
-            })
-
-            return (
-              <svg width={width} height={500}>
-                <Group>
-                  <AnimatedLinePath
-                    data={Object.entries(data.AL)}
-                    curve={curveLinear}
-                    x={d => xScale(getX(d))}
-                    y={d => yScale(getY(d))}
-                    stroke={'#012169'}
-                    strokeWidth={3}
-                    strokeDasharray="10,15"
-                    style={animationProps}
-                  />
-                  <AnimatedLinePath
-                    data={Object.entries(data.Habitacao)}
-                    curve={curveLinear}
-                    x={d => xScale(getX(d))}
-                    y={d => yScale(getY(d))}
-                    stroke="#26603a"
-                    strokeWidth={3}
-                    strokeDasharray={lineLength}
-                    style={animationProps}
-                  />
-
-                  {Object.entries(data.Habitacao).map((d, i) => (
-                    <React.Fragment key={`habitacao-fragment-${i}`}>
-                      <AnimatedImage
-                        key={`habitacao-image-${i}`}
-                        href={'/static/images/casa_verde.png'}
-                        x={xScale(getX(d)) - 20}
-                        y={yScale(getY(d)) - 20}
-                        width="40"
-                        height="40"
-                        style={{
-                          opacity: animationProps.strokeDashoffset.to(offset => {
-                            const currentLength = lineLength - offset
-                            const pointPosition = xScale(getX(d))
-                            const diff = pointPosition - currentLength
-                            if (diff <= 0) {
-                              return 1
-                            }
-                            const fadeInDistance = 10
-                            if (diff < fadeInDistance) {
-                              return 1 - diff / fadeInDistance
-                            }
-                            return 0
-                          }),
-                        }}
-                      />
-                      {i === 0 && (
-                        <>
-                          <animated.circle
-                            cx={xScale(getX(d))}
-                            cy={yScale(getY(d)) + 10}
-                            r={33}
-                            stroke="grey"
-                            strokeWidth={1.5}
-                            fill="none"
-                            style={{
-                              opacity: animationProps.strokeDashoffset.to(offset => {
-                                const currentLength = lineLength - offset
-                                const pointPosition = xScale(getX(d))
-                                const diff = pointPosition - currentLength
-                                if (diff <= 0) {
-                                  return 1
-                                }
-                                const fadeInDistance = 10
-                                if (diff < fadeInDistance) {
-                                  return 1 - diff / fadeInDistance
-                                }
-                                return 0
-                              }),
-                            }}
-                          />
-                          <animated.path
-                            d={`M${xScale(getX(d)) - 33},${yScale(getY(d)) + 10} 
-                                Q${xScale(getX(d)) - 60},${yScale(getY(d)) - 10} 
-                                ${xScale(getX(d)) - 30},${yScale(getY(d)) - 40}`}
-                            fill="none"
-                            stroke="grey"
-                            strokeWidth={1.5}
-                            markerEnd="url(#arrowhead)"
-                            style={{
-                              opacity: animationProps.strokeDashoffset.to(offset => {
-                                const currentLength = lineLength - offset
-                                const pointPosition = xScale(getX(d))
-                                const diff = pointPosition - currentLength
-                                if (diff <= 0) {
-                                  return 1
-                                }
-                                const fadeInDistance = 10
-                                if (diff < fadeInDistance) {
-                                  return 1 - diff / fadeInDistance
-                                }
-                                return 0
-                              }),
-                            }}
-                          />
-                          <animated.text
-                            x={xScale(getX(d)) - 40}
-                            y={yScale(getY(d)) - 60}
-                            fill="grey"
-                            fontSize="14"
-                            style={{
-                              opacity: animationProps.strokeDashoffset.to(offset => {
-                                const currentLength = lineLength - offset
-                                const pointPosition = xScale(getX(d))
-                                const diff = pointPosition - currentLength
-                                if (diff <= 0) {
-                                  return 1
-                                }
-                                const fadeInDistance = 10
-                                if (diff < fadeInDistance) {
-                                  return 1 - diff / fadeInDistance
-                                }
-                                return 0
-                              }),
-                            }}>
-                            {getTranslationString('linechart-label-1', language, city)}
-                          </animated.text>
-                          <defs>
-                            <marker
-                              id="arrowhead"
-                              markerWidth="10"
-                              markerHeight="7"
-                              refX="0"
-                              refY="3.5"
-                              orient="auto">
-                              <polygon points="0 0, 10 3.5, 0 7" fill="grey" />
-                            </marker>
-                          </defs>
-                        </>
-                      )}
-                      <animated.text
-                        key={`habitacao-label-${i}`}
-                        x={city === 'Lisbon' && i === 3 ? xScale(getX(d)) + 10 : xScale(getX(d))}
-                        y={yScale(getY(d)) + 30}
-                        textAnchor="middle"
-                        fill="black"
-                        fontSize="14"
-                        style={{
-                          opacity: animationProps.strokeDashoffset.to(offset => {
-                            const currentLength = lineLength - offset
-                            const pointPosition = xScale(getX(d))
-                            const diff = pointPosition - currentLength
-                            if (diff <= 0) {
-                              return 1
-                            }
-                            const fadeInDistance = 10
-                            if (diff < fadeInDistance) {
-                              return 1 - diff / fadeInDistance
-                            }
-                            return 0
-                          }),
-                        }}>
-                        {formatNumber(getY(d), language)}
-                      </animated.text>
-                    </React.Fragment>
-                  ))}
-                  {Object.entries(data.AL)
-                    .slice(4)
-                    .map((d, i) => (
-                      <React.Fragment key={`AL-fragment-${i}`}>
-                        <AnimatedImage
-                          key={`al-point-${i + 1}`}
-                          href={'/static/images/casa_azul_verde.png'}
-                          x={xScale(getX(d)) - 20}
-                          y={yScale(getY(d)) - 20}
-                          width="40"
-                          height="40"
-                          style={{
-                            opacity: animationProps.strokeDashoffset.to(offset => {
-                              const currentLength = lineLength - offset
-                              const pointPosition = xScale(getX(d))
-                              const diff = pointPosition - currentLength
-                              if (diff <= 0) {
-                                return 1
-                              }
-                              const fadeInDistance = 10
-                              if (diff < fadeInDistance) {
-                                return 1 - diff / fadeInDistance
-                              }
-                              return 0
-                            }),
-                          }}
-                        />{' '}
-                        {i === 0 && (
-                          <>
-                            <animated.circle
-                              cx={xScale(getX(d))}
-                              cy={yScale(getY(d)) - 10}
-                              r={33}
-                              stroke="grey"
-                              strokeWidth={1.5}
-                              fill="none"
-                              style={{
-                                opacity: animationProps.strokeDashoffset.to(offset => {
-                                  const currentLength = lineLength - offset
-                                  const pointPosition = xScale(getX(d))
-                                  const diff = pointPosition - currentLength
-                                  if (diff <= 0) {
-                                    return 1
-                                  }
-                                  const fadeInDistance = 10
-                                  if (diff < fadeInDistance) {
-                                    return 1 - diff / fadeInDistance
-                                  }
-                                  return 0
-                                }),
-                              }}
-                            />
-                            <animated.path
-                              d={`M${xScale(getX(d)) + 30},${yScale(getY(d)) + 6} 
-                                Q${xScale(getX(d)) + 60},${yScale(getY(d)) - 30} 
-                                ${xScale(getX(d)) + 30},${yScale(getY(d)) - 50}`}
-                              fill="none"
-                              stroke="grey"
-                              strokeWidth={1.5}
-                              markerEnd="url(#arrowhead)"
-                              style={{
-                                opacity: animationProps.strokeDashoffset.to(offset => {
-                                  const currentLength = lineLength - offset
-                                  const pointPosition = xScale(getX(d))
-                                  const diff = pointPosition - currentLength
-                                  if (diff <= 0) {
-                                    return 1
-                                  }
-                                  const fadeInDistance = 10
-                                  if (diff < fadeInDistance) {
-                                    return 1 - diff / fadeInDistance
-                                  }
-                                  return 0
-                                }),
-                              }}
-                            />
-                            <animated.text
-                              x={xScale(getX(d)) - 92}
-                              y={yScale(getY(d)) - 57}
-                              fill="grey"
-                              fontSize="14"
-                              style={{
-                                opacity: animationProps.strokeDashoffset.to(offset => {
-                                  const currentLength = lineLength - offset
-                                  const pointPosition = xScale(getX(d))
-                                  const diff = pointPosition - currentLength
-                                  if (diff <= 0) {
-                                    return 1
-                                  }
-                                  const fadeInDistance = 10
-                                  if (diff < fadeInDistance) {
-                                    return 1 - diff / fadeInDistance
-                                  }
-                                  return 0
-                                }),
-                              }}>
-                              {getTranslationString('linechart-label-2', language, city)}
-                            </animated.text>
-                            <defs>
-                              <marker
-                                id="arrowhead"
-                                markerWidth="10"
-                                markerHeight="7"
-                                refX="0"
-                                refY="3.5"
-                                orient="auto">
-                                <polygon points="0 0, 10 3.5, 0 7" fill="grey" />
-                              </marker>
-                            </defs>
-                          </>
-                        )}
-                        <animated.text
-                          key={`habitacao-label-${i}`}
-                          x={xScale(getX(d))}
-                          y={yScale(getY(d)) - 22}
-                          textAnchor="middle"
-                          fill="black"
-                          fontSize="14"
-                          style={{
-                            opacity: animationProps.strokeDashoffset.to(offset => {
-                              const currentLength = lineLength - offset
-                              const pointPosition = xScale(getX(d))
-                              const diff = pointPosition - currentLength
-                              if (diff <= 0) {
-                                return 1
-                              }
-                              const fadeInDistance = 10
-                              if (diff < fadeInDistance) {
-                                return 1 - diff / fadeInDistance
-                              }
-                              return 0
-                            }),
-                          }}>
-                          {formatNumber(getY(d), language)}
-                        </animated.text>
-                      </React.Fragment>
-                    ))}
-                  {Object.entries(data.Habitacao).map(d => (
-                    <animated.text
-                      key={`label-${d}`}
-                      x={xScale(getX(d))}
-                      y={height}
-                      textAnchor="middle"
-                      fontSize="20"
-                      fill="black"
-                      fontWeight="bold"
-                      style={{
-                        opacity: animationProps.strokeDashoffset.to(offset => {
-                          const currentLength = lineLength - offset
-                          const pointPosition = xScale(getX(d))
-                          const diff = pointPosition - currentLength
-                          if (diff <= 0) {
-                            return 1
-                          }
-                          const fadeInDistance = 10
-                          if (diff < fadeInDistance) {
-                            return 1 - diff / fadeInDistance
-                          }
-                          return 0
-                        }),
-                      }}>
-                      {d[0]}
-                    </animated.text>
-                  ))}
-                </Group>
-              </svg>
-            )
+      {data && (
+        <TimeChart
+          series={[
+            {
+              key: 'al',
+              ...WITH_AL,
+              icon: '/static/images/casa_azul_verde.png',
+              iconFrom: Number(years[start + 1]),
+              data: data.AL,
+            },
+            {
+              key: 'housing',
+              ...HOUSING,
+              icon: '/static/images/casa_verde.png',
+              data: data.Habitacao,
+            },
+          ]}
+          format={format}
+          label={t('linechart-title')}
+          drawn={triggerAnimation}
+          behind={({ x, y }) => {
+            const gap = years.slice(start)
+            const top = gap.map(yr => `${x(Number(yr))},${y(data.AL[yr])}`)
+            const bottom = [...gap].reverse().map(yr => `${x(Number(yr))},${y(data.Habitacao[yr])}`)
+            return <path className="housing-gap" d={`M${[...top, ...bottom].join('L')}Z`} />
           }}
-        </ParentSize>
-      </div>
+        />
+      )}
+      <ul className="chart-legend">
+        <li>
+          <span style={{ background: HOUSING.color }} />
+          {t('linechart-label-1')}
+        </li>
+        {data && (
+          <li>
+            <span className="chart-legend__gap" />
+            {t('linechart-label-2')
+              .replace('{n}', format(data.AL[last] - data.Habitacao[last]))
+              .replace('{year}', last)}
+          </li>
+        )}
+      </ul>
     </>
   )
 }
