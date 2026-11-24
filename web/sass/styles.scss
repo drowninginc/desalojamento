@@ -2,7 +2,6 @@ body {
   overflow-x: hidden !important;
   font-weight: light;
   font-family: $font-stack-primary;
-  // Add bottom padding to ensure footer can be revealed
 }
 
 main {
@@ -11,16 +10,8 @@ main {
   background-color: $background-color;
   position: relative;
   z-index: 1;
-  margin-bottom: 60vh;
-  position: relative;
   // Add bottom shadow to main
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.12);
-}
-
-@media (max-width: 768px) {
-  main {
-    margin-bottom: 100vh;
-  }
 }
 
 p {
@@ -421,20 +412,18 @@ header {
   transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-// Footer with grainy gradient - fixed drawer style
+// Footer revealed from behind main: sticky in flow, so the page scrolls exactly as far as its height
 .footer {
-  position: fixed;
+  position: sticky;
   bottom: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  display: flex;
-  align-items: end;
+  // taller than the screen (mobile): cap it and scroll inside, or its top could never be reached
+  max-height: 100vh;
+  max-height: 100dvh;
+  overflow-y: auto;
   opacity: 0;
 
   background-color: rgb(225, 235, 246);
-  z-index: -1;
+  z-index: 0; // under main (z-index 1) but above #__next, so the button stays clickable
 
   .footer__content {
     max-width: 768px;
@@ -469,6 +458,20 @@ header {
   .footer .footer__content {
     padding-bottom: 2rem;
     font-size: $font-size-xl;
+
+    // small enough that the methodology fits a phone screen without scrolling inside the footer
+    .explore-button-wrapper {
+      margin: 2.4rem 0;
+    }
+    h3 {
+      font-size: 1.6rem;
+      margin-bottom: 1.2rem;
+    }
+    p {
+      font-size: 1.3rem;
+      line-height: 1.45;
+      margin-bottom: 1rem;
+    }
   }
 }
 
@@ -689,9 +692,6 @@ a {
 }
 
 @media (min-width: 768px) and (max-width: 1440px) {
-  main {
-    margin-bottom: 85vh !important;
-  }
   .full-text-box .content-wrapper .text-container h2 {
     font-size: 2em !important;
   }
